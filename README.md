@@ -17,4 +17,4 @@ cmake ../
 make
 ```
 
-Si des dépendances manquent, CMake vous le fera savoir et ne génèrera pas de `Makefile`. Une fois la compilation terminée, l'exécutable `untitled-file-manager` sera présent dans le dossier `build_release`.
+Si des dépendances manquent, CMake vous le fera savoir et ne génèrera pas de `Makefile`. Une fois la compilation terminée, l'exécutable `untitled-file-manager` sera présent dans le dossier `untitled-file-manager/build_release/src`.
