@@ -4,8 +4,8 @@ link_directories(
 include_directories(
     ${GTKMM_INCLUDE_DIRS}  )
 
-add_executable(example # name of the executable on Windows will be example.exe 
+add_executable(untitled-file-manager
     fenetre.cc)
 
-target_link_libraries(example 
+target_link_libraries(untitled-file-manager 
     ${GTKMM_LIBRARIES}  )

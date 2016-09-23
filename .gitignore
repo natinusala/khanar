@@ -27,3 +27,10 @@
 *.exe
 *.out
 *.app
+
+#CMake
+build_debug/*
+build_release/*
+
+#gedit
+*~
