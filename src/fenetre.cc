@@ -19,7 +19,6 @@ int main(int argc, char* argv[]) {
 //Paramétrage
 
 	fenetre.set_title("Ma belle fenetre!");
-	fenetre.set_icon_from_file("icone.ico");
 	fenetre.set_border_width(10);
 	fenetre.add(vb);
 	vb.show();
@@ -47,7 +46,7 @@ int main(int argc, char* argv[]) {
 //Connexion des boutons aux signaux correspondants
 	quitter.signal_clicked().connect(sigc::ptr_fun(&Gtk::Main::quit));
 
-	test.signal_clicked().connect(sigc::slot(&on_button_clicked));
+	test.signal_clicked().connect(sigc::ptr_fun(&on_button_clicked));
 //Ouverture de la fenêtre
 	Gtk::Main::run(fenetre);
     return 0;
