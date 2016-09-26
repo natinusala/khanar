@@ -9,7 +9,7 @@
 #define FILE_HPP
 
 /**
- * \namespace khanar-common-file
+ * \namespace khanar_common_file
  *
  * Namespace des classes d'abstraction des fichiers
 **/
