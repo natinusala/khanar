@@ -12,7 +12,7 @@ link_directories(
 include_directories(
     ${GTKMM_INCLUDE_DIRS}  )
     
-file(GLOB khanar_src
+file(GLOB_RECURSE khanar_src
     "src/*.*"
 )
 
