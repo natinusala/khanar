@@ -1,6 +1,8 @@
 #include <gtkmm.h>
 #include <iostream>
 
+#include "khanar-common/file/File.hpp"
+
 //Fonctions/////////////////////////////////////////////////////////////
 
 void on_button_clicked() {

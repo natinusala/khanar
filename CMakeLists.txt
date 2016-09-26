@@ -6,5 +6,17 @@ find_package(PkgConfig)
 
 pkg_check_modules(GTKMM REQUIRED gtkmm-3.0) 
 
+link_directories(
+    ${GTKMM_LIBRARY_DIRS}  )
 
-add_subdirectory(src) 
+include_directories(
+    ${GTKMM_INCLUDE_DIRS}  )
+    
+file(GLOB khanar_src
+    "src/*.*"
+)
+
+add_executable(khanar ${khanar_src})
+
+target_link_libraries(khanar 
+    ${GTKMM_LIBRARIES}  )
