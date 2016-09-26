@@ -5,6 +5,9 @@
  * et les dossiers, en suivant le pattern Composite
 **/
 
+#ifndef FILE_HPP
+#define FILE_HPP
+
 /**
  * \namespace khanar-common-file
  *
@@ -46,3 +49,5 @@ namespace khanar_common_file
     };
 
 }
+
+#endif
