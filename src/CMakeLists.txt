@@ -4,8 +4,8 @@ link_directories(
 include_directories(
     ${GTKMM_INCLUDE_DIRS}  )
 
-add_executable(untitled-file-manager
+add_executable(khanar
     fenetre.cc)
 
-target_link_libraries(untitled-file-manager 
+target_link_libraries(khanar 
     ${GTKMM_LIBRARIES}  )
