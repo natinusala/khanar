@@ -8,38 +8,41 @@
 
 namespace khanar_common_file
 {
-      /* FileComponent */
+      //TODO Vérifier si les paramètres ne sont pas vides
 
-      //TODO Tester les constructeurs
-
-      FileComponent::FileComponent(shared_ptr<FileComponent> parent, string name)
+      File::File(shared_ptr<File> parent, string name)
       {
         this->_name = name;
 
         if (parent != NULL)
         {
-          this->_absolutePath = parent->_absolutePath + name;
+          this->_parentFolderAbsolutePath = parent->getParentFolderAbsolutePath();
         }
         else
         {
-          this->_absolutePath = "/" + name;
+          this->_parentFolderAbsolutePath = "";
         }
       }
 
-      FileComponent::FileComponent(string absolutepath)
+      File::File(string absolutepath)
       {
-        this->_absolutePath = absolutepath;
         size_t pos = absolutepath.find_last_of("/");
         this->_name = absolutepath.substr(pos+1);
+        this->_parentFolderAbsolutePath = absolutepath.substr(0, pos);
       }
 
-      string FileComponent::getName()
+      string File::getName()
       {
         return this->_name;
       }
 
-      string FileComponent::getAbsolutePath()
+      string File::getAbsolutePath()
       {
-        return this->_absolutePath;
+        return this->_parentFolderAbsolutePath + "/" + this->_name;
+      }
+
+      string File::getParentFolderAbsolutePath()
+      {
+        return this->_parentFolderAbsolutePath;
       }
 }

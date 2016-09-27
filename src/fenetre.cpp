@@ -3,19 +3,29 @@
 
 #include "khanar-common/file/File.hpp"
 
+using namespace khanar_common_file;
+using namespace std;
+
 //Fonctions/////////////////////////////////////////////////////////////
 
 void on_button_clicked() {
 	std::cout << "Bonjour" << std::endl;
 	}
 
+int main(void)
+{
+	File file = File("/home/natinusala");
 
+	cout << file.getName() << endl;
+	cout << file.getAbsolutePath() << endl;
+	cout << file.getParentFolderAbsolutePath() << endl;
+}
 
 
 //Fenêtre///////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
+int main2(int argc, char* argv[]) {
 	Gtk::Main app(argc, argv);
-	Gtk::Window fenetre; 
+	Gtk::Window fenetre;
 	Gtk::VBox vb;
 
 //Paramétrage
