@@ -10,6 +10,7 @@
 
 #include <string>
 #include <memory>
+#include <sys/stat.h>
 
 using namespace std;
 
@@ -21,7 +22,7 @@ using namespace std;
 namespace khanar
 {
     /**
-     * \class FileComponent
+     * \class File
      *
      * Wrapper autour des fonctions de manipulation de fichiers
      * de C/C++
@@ -32,7 +33,13 @@ namespace khanar
 
         private:
            string _name;
+           string _absolutePath;
            string _parentFolderAbsolutePath;
+
+           struct stat _fileStat; ///< "Statistiques" du fichier, par stat.h (contient des données utiles)
+           bool _exists; ///< Défini par stat() et lors de la suppression/création du fichier à la main
+
+           void updateStat();
 
         public:
            /**
@@ -51,6 +58,30 @@ namespace khanar
            string getName();  ///< Récupère le nom du fichier
            string getParentFolderAbsolutePath(); ///< Récupère le chemin absolu vers le dossier parent
            string getAbsolutePath(); ///< Récupère le chemin absolu vers le fichier (parentAbsolutePath + name)
+
+           bool isDirectory(); ///< Indique si le fichier est un dossier
+           bool exists(); ///< Renvoie si le fichier existe ou non
+           bool isHidden(); ///< Renvoie si le fichier est caché ou non (commence par un .)
+    };
+
+    /**
+    * \class FileException
+    *
+    * Classe servant à reporter des erreurs sur les fichiers (entrée/sortie, opérations impossibles...)
+    */
+    class FileException
+    {
+      private:
+        string _description;
+
+      public:
+        /*
+        * \brief Constructeur de l'exception
+        * \param[in] description la description de l'erreur
+        */
+        FileException(string description);
+
+        string getDescription(); ///< Renvoie la description de l'exception
     };
 }
 
