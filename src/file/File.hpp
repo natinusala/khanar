@@ -75,7 +75,7 @@ namespace khanar
         string _description;
 
       public:
-        /*
+        /**
         * \brief Constructeur de l'exception
         * \param[in] description la description de l'erreur
         */
