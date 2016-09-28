@@ -18,7 +18,7 @@ using namespace std;
  *
  * Namespace de la classe d'abstraction des fichiers
  */
-namespace khanar_common_file
+namespace khanar
 {
     /**
      * \class FileComponent
@@ -40,7 +40,7 @@ namespace khanar_common_file
            * \param[in] parent le fichier parent
            * \param[in] name le nom du fichier actuel
            */
-           File(shared_ptr<File> parent, string name);
+           File(File* parent, string name);
 
            /**
            * \brief Constructeur prenant le chemin absolu du fichier

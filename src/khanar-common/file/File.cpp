@@ -6,17 +6,18 @@
 
 #include "File.hpp"
 
-namespace khanar_common_file
+namespace khanar
 {
       //TODO Vérifier si les paramètres ne sont pas vides
 
-      File::File(shared_ptr<File> parent, string name)
+      File::File(File* parent, string name)
       {
+        //TODO Vérifier que le parent est un dossier
         this->_name = name;
 
         if (parent != NULL)
         {
-          this->_parentFolderAbsolutePath = parent->getParentFolderAbsolutePath();
+          this->_parentFolderAbsolutePath = parent->getAbsolutePath();
         }
         else
         {

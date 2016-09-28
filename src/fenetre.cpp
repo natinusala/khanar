@@ -3,7 +3,7 @@
 
 #include "khanar-common/file/File.hpp"
 
-using namespace khanar_common_file;
+using namespace khanar;
 using namespace std;
 
 //Fonctions/////////////////////////////////////////////////////////////
@@ -14,12 +14,7 @@ void on_button_clicked() {
 
 int main(void)
 {
-        //TODO Tester l'autre constructeur
-	File file = File("/home/natinusala");
 
-	cout << file.getName() << endl;
-	cout << file.getAbsolutePath() << endl;
-	cout << file.getParentFolderAbsolutePath() << endl;
 }
 
 
