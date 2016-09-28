@@ -2,7 +2,7 @@
  * \file File.hpp
  *
  * Header des suites de classes pour abstraire les fichiers
- * et les dossiers, en suivant le pattern Composite
+ * et les dossiers, en suivant le pattern Decorator
  */
 
 #ifndef FILE_HPP
@@ -16,23 +16,23 @@ using namespace std;
 /**
  * \namespace khanar_common_file
  *
- * Namespace des classes d'abstraction des fichiers
+ * Namespace de la classe d'abstraction des fichiers
  */
 namespace khanar_common_file
 {
     /**
      * \class FileComponent
      *
-     * Classe mère du pattern, représente un fichier -ou- un dossier
-     * Représente le Component dans le pattern
+     * Wrapper autour des fonctions de manipulation de fichiers
+     * de C/C++
      */
-    class FileComponent
+    class File
     {
-        //TODO Ajouter les permissions
+        //TODO Ajouter les attributs
 
         private:
            string _name;
-           string _absolutePath;
+           string _parentFolderAbsolutePath;
 
         public:
            /**
@@ -40,42 +40,18 @@ namespace khanar_common_file
            * \param[in] parent le fichier parent
            * \param[in] name le nom du fichier actuel
            */
-           FileComponent(shared_ptr<FileComponent> parent, string name);
+           File(shared_ptr<File> parent, string name);
 
            /**
            * \brief Constructeur prenant le chemin absolu du fichier
            * \param[in] string le chemin absolu du fichier
            */
-           FileComponent(string absolutepath);
+           File(string absolutepath);
 
            string getName();  ///< Récupère le nom du fichier
-           string getAbsolutePath(); ///< Récupère le chemin absolu vers le fichier
-
-           virtual bool isFolder() = 0; ///< Renvoie si le fichier est un dossier
+           string getParentFolderAbsolutePath(); ///< Récupère le chemin absolu vers le dossier parent
+           string getAbsolutePath(); ///< Récupère le chemin absolu vers le fichier (parentAbsolutePath + name)
     };
-
-    /**
-     * \class Folder
-     *
-     * Classe représentant le Composite dans le pattern
-     * contient une liste de fihiers (FileComponent)
-    */
-    class Folder : public FileComponent
-    {
-      //TODO Override isFolder, remplir les sous fichiers dans le constructeur
-    };
-
-    /**
-     * \class File
-     *
-     * Classe représentant la "feuille" dans le pattern
-     * contient un fichier simple
-    */
-    class File : public FileComponent
-    {
-      //TODO Méthodes pour ouvrir, déterminer les attributs du fichier, les propriétés
-    };
-
 }
 
 #endif
