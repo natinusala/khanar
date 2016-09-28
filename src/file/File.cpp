@@ -8,13 +8,12 @@
 
 namespace khanar
 {
+      // File
       File::File(File* parent, string name)
       {
-        //TODO Vérifier que le parent est un dossier et existe dans la condition
-
-        if (parent == NULL)
+        if (parent == NULL || !parent->exists() || !parent->isDirectory())
         {
-          //TODO Throw exception
+          throw FileException("Fichier parent invalide");
         }
         else
         {
@@ -34,9 +33,13 @@ namespace khanar
         this->_parentFolderAbsolutePath = absolutepath.substr(0, pos);
 
         this->_absolutePath = absolutepath;
+        this->updateStat();
+      }
 
+      void File::updateStat()
+      {
         this->_fileStat = (const struct stat) {0};
-        this->_exists = stat(this->getAbsolutePath().c_str(), &this->_fileStat);
+        this->_exists = stat(this->getAbsolutePath().c_str(), &this->_fileStat) == 0;
       }
 
       string File::getName()
@@ -67,5 +70,17 @@ namespace khanar
       bool File::isHidden()
       {
         return this->_name[0] == '.';
+      }
+
+      // FileException
+
+      FileException::FileException(string description)
+      {
+        this->_description = description;
+      }
+
+      string FileException::getDescription()
+      {
+        return this->_description;
       }
 }

@@ -14,7 +14,19 @@ void on_button_clicked() {
 
 int main(void)
 {
+	File file = File("/home/natinusala");
 
+	cout << file.exists() << endl;
+	cout << file.isDirectory() << endl;
+
+	try
+	{
+		File file2 = File(&file, ".config");
+	}
+	catch (FileException ex)
+	{
+		cout << ex.getDescription() << endl;
+	}
 }
 
 
