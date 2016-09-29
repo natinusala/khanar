@@ -1,7 +1,7 @@
 #include <gtkmm.h>
 #include <iostream>
 
-#include "khanar-common/file/File.hpp"
+#include "file/File.hpp"
 
 using namespace khanar;
 using namespace std;

@@ -7,7 +7,7 @@ Gestionnaire de fichiers en C++, dans le cadre d'un projet de développement de 
  * gtkmm (`libgtkmm-3.0-dev`)
  * `cmake`
  * `doxygen` pour la documentation
- 
+
 ##Compilation
 ```
 git clone https://github.com/natinusala/khanar.git
@@ -18,7 +18,7 @@ cmake ../
 make
 ```
 
-Si des dépendances manquent, CMake vous le fera savoir et ne génèrera pas de `Makefile`. Une fois la compilation terminée, l'exécutable `khanar` sera présent dans le dossier `khanar/build/src`.
+Si des dépendances manquent, CMake vous le fera savoir et ne génèrera pas de `Makefile`. Une fois la compilation terminée, l'exécutable `khanar` sera présent dans le dossier `khanar/build`.
 
 ##Documentation
 
