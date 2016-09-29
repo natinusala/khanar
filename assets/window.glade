@@ -78,6 +78,7 @@
     <property name="margin_left">8</property>
     <property name="margin_right">8</property>
     <property name="border_width">10</property>
+    <signal name="destroy" handler="on_window1_destroy" swapped="no"/>
     <child>
       <object class="GtkNotebook" id="notebook1">
         <property name="visible">True</property>
