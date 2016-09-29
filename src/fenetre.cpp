@@ -12,20 +12,19 @@ void on_button_clicked() {
 	std::cout << "Bonjour" << std::endl;
 	}
 
-int main(void)
+int main(int argc, char* argv[])
 {
-	File file = File("/home/natinusala");
-
-	cout << file.exists() << endl;
-	cout << file.isDirectory() << endl;
-
+	Gtk::Main app(argc, argv);
 	try
 	{
-		File file2 = File(&file, ".config");
+		Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file("/home/natinusala/khanar/assets/window.glade");
+		Gtk::Window* win = nullptr;
+		builder->get_widget("window1", win);
+		Gtk::Main::run(*win);
 	}
-	catch (FileException ex)
+	catch (Gtk::BuilderError err)
 	{
-		cout << ex.getDescription() << endl;
+		cout << err.what() << endl;
 	}
 }
 
