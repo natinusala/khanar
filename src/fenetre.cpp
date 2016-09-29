@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
 	{
 		Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file("/home/natinusala/khanar/assets/window.glade");
 		Gtk::Window* win = nullptr;
-		builder->get_widget("window1", win);
+		builder->get_widget("window1", cd .win);
 		Gtk::Main::run(*win);
 	}
 	catch (Gtk::BuilderError err)
