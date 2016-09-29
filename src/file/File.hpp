@@ -11,6 +11,7 @@
 #include <string>
 #include <memory>
 #include <sys/stat.h>
+#include <vector>
 
 using namespace std;
 
@@ -61,7 +62,9 @@ namespace khanar
 
            bool isDirectory(); ///< Indique si le fichier est un dossier
            bool exists(); ///< Renvoie si le fichier existe ou non
-           bool isHidden(); ///< Renvoie si le fichier est caché ou non (commence par un .)
+           bool isHidden(); ///< Renvoie si le fichier est caché ou non (commence par un '.')
+
+           vector<File> getSubFiles(); ///< Si le fichier est un dossier, renvoie la liste des sous dossiers
     };
 
     /**

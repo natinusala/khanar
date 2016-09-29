@@ -72,6 +72,20 @@ namespace khanar
         return this->_name[0] == '.';
       }
 
+      vector<File> File::getSubFiles()
+      {
+        if (!this->isDirectory())
+        {
+          throw FileException("Le fichier n'est pas un dossier");
+        }
+
+        vector<File> list;
+
+        //TODO utiliser dirent
+
+        return list;
+      }
+
       // FileException
 
       FileException::FileException(string description)
