@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 	Gtk::Main app(argc, argv);
 	try
 	{
-		Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file("/home/natinusala/khanar/assets/window.glade");
+		Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_string("osef");
 		Gtk::Window* win = nullptr;
 		builder->get_widget("window1", win);
 		Gtk::Main::run(*win);
