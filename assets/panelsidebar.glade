@@ -2,20 +2,10 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
-  <object class="GtkImage" id="Image-ico">
+  <object class="GtkImage" id="home">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="icon_name">image-x-generic</property>
-  </object>
-  <object class="GtkImage" id="download">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">emblem-downloads</property>
-  </object>
-  <object class="GtkImage" id="folder">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">folder</property>
+    <property name="icon_name">go-home</property>
   </object>
   <object class="GtkPaned" id="pane">
     <property name="visible">True</property>
@@ -34,114 +24,81 @@
         <property name="spacing">5</property>
         <property name="baseline_position">bottom</property>
         <child>
+          <object class="GtkExpander" id="expander2">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="resize_mode">immediate</property>
+            <child>
+              <placeholder/>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Favoris</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="box4">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkButton" id="button1">
+                <property name="label" translatable="yes">Dossier Personnel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="image">home</property>
+                <property name="relief">none</property>
+                <property name="xalign">0</property>
+                <property name="yalign">0</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button2">
+                <property name="label" translatable="yes">Utilisés recemment</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="image">recently-used</property>
+                <property name="relief">none</property>
+                <property name="xalign">0</property>
+                <property name="yalign">0</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkExpander" id="expander1">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="expanded">True</property>
             <property name="spacing">5</property>
             <child>
-              <object class="GtkExpander" id="expander2">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="expanded">True</property>
-                <child>
-                  <object class="GtkBox" id="box4">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="orientation">vertical</property>
-                    <child>
-                      <object class="GtkButton" id="button1">
-                        <property name="label" translatable="yes">Documents</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="image">folder</property>
-                        <property name="relief">none</property>
-                        <property name="xalign">0</property>
-                        <property name="yalign">0</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="button2">
-                        <property name="label" translatable="yes">Images</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="image">Image-ico</property>
-                        <property name="relief">none</property>
-                        <property name="xalign">0</property>
-                        <property name="yalign">0</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="button3">
-                        <property name="label" translatable="yes">Vidéos</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="image">video-ico</property>
-                        <property name="relief">none</property>
-                        <property name="xalign">0</property>
-                        <property name="yalign">0</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="button4">
-                        <property name="label" translatable="yes">Téléchargement</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="image">download</property>
-                        <property name="relief">none</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="button5">
-                        <property name="label" translatable="yes">Corbeille</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="image">trashbin</property>
-                        <property name="relief">none</property>
-                        <property name="xalign">0</property>
-                        <property name="yalign">0</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">4</property>
-                      </packing>
-                    </child>
-                  </object>
-                </child>
-                <child type="label">
-                  <object class="GtkLabel" id="label4">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Dossier Personnel</property>
-                  </object>
-                </child>
-              </object>
+              <placeholder/>
             </child>
             <child type="label">
               <object class="GtkLabel" id="label5">
@@ -155,14 +112,8 @@
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="padding">2</property>
-            <property name="position">0</property>
+            <property name="position">2</property>
           </packing>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
         </child>
         <child>
           <placeholder/>
@@ -191,14 +142,9 @@
       </packing>
     </child>
   </object>
-  <object class="GtkImage" id="trashbin">
+  <object class="GtkImage" id="recently-used">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="icon_name">user-trash</property>
-  </object>
-  <object class="GtkImage" id="video-ico">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">video-x-generic</property>
+    <property name="icon_name">appointment-soon</property>
   </object>
 </interface>
