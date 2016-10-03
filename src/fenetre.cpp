@@ -14,7 +14,7 @@ void on_button_clicked() {
 	std::cout << "Bonjour" << std::endl;
 	}
 
-int main(int argc, char* argv[])
+int main3(int argc, char* argv[])
 {
 	Gtk::Main app(argc, argv);
 	try
