@@ -21,11 +21,12 @@ FILE(GLOB_RECURSE COMPILED_RESOURCES "assets/*")
 FOREACH(INPUT_FILE ${COMPILED_RESOURCES})
     get_filename_component(INPUT_DIRECTORY ${INPUT_FILE} DIRECTORY)
     get_filename_component(INPUT_NAME ${INPUT_FILE} NAME)
+    get_filename_component(INPUT_NAME_WE ${INPUT_FILE} NAME_WE)
     SET(OUTPUT_FILE ../src/compiled_assets/${INPUT_NAME}.hex)
     ADD_CUSTOM_COMMAND(
         OUTPUT ${OUTPUT_FILE}
-        COMMAND cd ${INPUT_DIRECTORY} && ${RESOURCE_COMPILER} -i ${INPUT_NAME} > ${OUTPUT_FILE}
-      COMMENT "Compiling ${INPUT_NAME} to binary")
+      COMMAND cd ${INPUT_DIRECTORY} && echo "\\#ifndef ${INPUT_NAME_WE}" > ${OUTPUT_FILE} && echo "\\#define ${INPUT_NAME_WE}" >> ${OUTPUT_FILE} && ${RESOURCE_COMPILER} -i ${INPUT_NAME} >> ${OUTPUT_FILE} && echo "\\#endif" >> ${OUTPUT_FILE}
+        COMMENT "Compiling ${INPUT_NAME} to binary")
     LIST(APPEND COMPILED_RESOURCES ${OUTPUT_FILE})
 ENDFOREACH()
 

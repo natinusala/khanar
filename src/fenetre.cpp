@@ -1,4 +1,4 @@
-#include <gtkmm.h>
+/*#include <gtkmm.h>
 #include <iostream>
 #include <cstdint>
 
@@ -14,7 +14,7 @@ void on_button_clicked() {
 	std::cout << "Bonjour" << std::endl;
 	}
 
-int main3(int argc, char* argv[])
+int main1(int argc, char* argv[])
 {
 	Gtk::Main app(argc, argv);
 	try
@@ -73,3 +73,4 @@ int main2(int argc, char* argv[]) {
 	Gtk::Main::run(fenetre);
     return 0;
 }
+*/
