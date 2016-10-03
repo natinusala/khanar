@@ -1,1 +1,1 @@
-rm -rf src/assets/*.hex
+rm -rf src/compiled_assets/*.hex

@@ -3,7 +3,7 @@
 #include <cstdint>
 
 #include "file/File.hpp"
-#include "assets/window.glade.hex"
+#include "compiled_assets/window.glade.hex"
 
 using namespace khanar;
 using namespace std;
@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
 	Gtk::Main app(argc, argv);
 	try
 	{
-		string glade_str = string(reinterpret_cast<char*>(_home_natinusala_khanar_src_assets_window_glade));
+		string glade_str = string(reinterpret_cast<char*>(window_glade));
 		Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_string(glade_str);
 		Gtk::Window* win = nullptr;
 		builder->get_widget("window1", win);
