@@ -1,0 +1,66 @@
+--------window.glade --------
+
+(window)window1
+|
+--(notebook)notebook1
+  |
+  --(label)onglet1
+  --(box) container1
+
+--------topbar.glade --------
+
+(box) box1
+|
+--(box) topbar
+   |
+   --(entry) entry1
+   --(searchentry) searchentry1
+   --(buttonbox)buttonbox1
+      |
+      --(button)precedent
+      --(button)suivant
+      --(button) remonter
+      --(actualiser)
+
+
+--------propertiesbar.glade --------
+
+(box)proprietes
+|
+--(Image)Icone
+--(box)nomType
+| |
+| --(label) nom
+| --(label) type
+--(box)taille
+| |
+| --(label)taille
+| --(label) filler
+--(box)accesModif
+| |
+| --(label)acces
+| --(label)modifie
+--(box) proprietaire
+|  |
+|  --(label)proprietaire
+|  --(label)labelacces
+--(box)accesPropri
+| |
+| --(label)nomProprietaire
+| --(comboboxtext)comboaccespropri
+--(box)groupeacces
+| |
+| --(label)groupe
+| --(label)acces
+--(box)accesgroupe
+| |
+| --(comboboxtext)groupecombo
+| --(comboboxtext)accescombo
+--(box)autresacces
+| |
+| --(label)Autres
+| --(box)autrebox
+|   |
+|   --(label)accesautres
+|   --(comboboxtext)autrecombo
+

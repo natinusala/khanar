@@ -13,7 +13,7 @@
         <property name="can_focus">True</property>
         <property name="show_border">False</property>
         <child>
-          <object class="GtkBox" id="box1">
+          <object class="GtkBox" id="container1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
