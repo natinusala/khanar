@@ -6,6 +6,9 @@
 
 #include "File.hpp"
 
+#include <dirent.h>
+#include <wordexp.h>
+
 namespace khanar
 {
       // File
@@ -28,6 +31,17 @@ namespace khanar
           absolutepath = "/";
         }
 
+        //Expansion et formattage du nom
+        wordexp_t exp_result;
+        wordexp(absolutepath.c_str(), &exp_result, 0);
+        absolutepath = string(exp_result.we_wordv[0]);
+
+        if (absolutepath.back() == '/')
+        {
+          absolutepath = absolutepath.substr(0, absolutepath.length()-1);
+        }
+
+        //Construction
         size_t pos = absolutepath.find_last_of("/");
         this->_name = absolutepath.substr(pos+1);
         this->_parentFolderAbsolutePath = absolutepath.substr(0, pos);
@@ -81,7 +95,22 @@ namespace khanar
 
         vector<File> list;
 
-        //TODO utiliser dirent
+        DIR* dir = opendir(this->_absolutePath.c_str());
+
+        if (dir == NULL)
+        {
+          throw FileException("Impossible de lister les fichiers du dossier " + this->_absolutePath);
+        }
+
+        struct dirent* fichier = readdir(dir);
+
+        while (fichier != NULL)
+        {
+          list.push_back(File(this->_absolutePath + "/" + string(fichier->d_name)));
+          fichier = readdir(dir);
+        }
+
+        closedir(dir);
 
         return list;
       }
