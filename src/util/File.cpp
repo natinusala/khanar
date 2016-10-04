@@ -20,6 +20,12 @@ namespace khanar
         }
         else
         {
+          //Formattage du nom
+          if (name.back() == '/')
+          {
+            name = name.substr(0, name.length()-1);
+          }
+
           File(parent->getAbsolutePath() + "/" + name);
         }
       }
@@ -31,15 +37,16 @@ namespace khanar
           absolutepath = "/";
         }
 
-        //Expansion et formattage du nom
-        wordexp_t exp_result;
-        wordexp(absolutepath.c_str(), &exp_result, 0);
-        absolutepath = string(exp_result.we_wordv[0]);
-
+        //Formattage du nom
         if (absolutepath.back() == '/')
         {
           absolutepath = absolutepath.substr(0, absolutepath.length()-1);
         }
+
+        //Expansion du nom (par exemple transformer "~" en "/home/user")
+        wordexp_t exp_result;
+        wordexp(absolutepath.c_str(), &exp_result, 0);
+        absolutepath = string(exp_result.we_wordv[0]);
 
         //Construction
         size_t pos = absolutepath.find_last_of("/");
