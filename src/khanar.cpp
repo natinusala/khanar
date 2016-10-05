@@ -43,21 +43,21 @@ int main(int argc, char* argv[])
 		win_builder->get_widget("box1", box_window);
     Box* box_window2 = nullptr;
     //Initialisation de la boite conteneur test
-    box_builder->get_widget("box1", bow_window2);
+    box_builder->get_widget("box1", box_window2);
 
 
-	Label label = Label("Mdrcopter");
+	
 
     Box* topbarbox = nullptr;
     topbar_builder->get_widget("box1", topbarbox);
 
-    //notebook->remove_page(0);
+    notebook->remove_page(0);
     notebook->append_page(*box_window, "lolMdr Khanar Fdp");
 
     notebook->append_page(*box_window2, "Mange tes morts");
 
     box_window->pack_start(*topbarbox,true, true);
-
+    box_window2->pack_start(label,true,true);
 
 
 		Main::run(*win);
