@@ -5,7 +5,7 @@
 --(notebook)notebook1
   |
   --(label)onglet1
-  --(Box)bo1
+  --(Box)box1
      |
      --(paned)volet
 
@@ -86,7 +86,7 @@
 -------Utilisation------
 
 window -> Fenetre mère
-Insérer topbar dans la section 1 ( deuxième section) de box1 de window.
+Insérer topbar dans la section 0 ( première section) de box1 de window.
 Insérer le main de panelsidebar.glade dans le 0 ( première section) du paned volet
 Créer une box de taille 2 contenant la vue arborescente de la racine du dossier courant en 0 ainsi que les propriétés du fichier séléctionné, soit propertiesbar.glade en 1.
 

@@ -13,33 +13,49 @@
 
 using namespace std;
 using namespace khanar;
+using namespace Glib;
+using namespace Gtk;
 
-int main_khanar(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
   //Ouverture de la fenêtre principale
-  Gtk::Main app(argc, argv);
+  Main app(argc, argv);
 
   try
 	{
-		Glib::RefPtr<Gtk::Builder> win_builder = Assets::buildGtkFromResource(window_glade);
 
-		Gtk::Window* win = nullptr;
+		
+		RefPtr<Builder> win_builder = Assets::buildGtkFromResource(window_glade);
+
+		Window* win = nullptr;
 		win_builder->get_widget("window1", win);
 
-    Gtk::Notebook* notebook = nullptr;
+    Notebook* notebook = nullptr;
 		win_builder->get_widget("notebook1", notebook);
+    Box* box_window = nullptr;
+		win_builder->get_widget("box1", box_window);
+    Box box_window2 = Box();
+    RefPtr<Builder> topbar_builder = Assets::buildGtkFromResource(topbar_glade);
 
-    Glib::RefPtr<Gtk::Builder> topbar_builder = Assets::buildGtkFromResource(topbar_glade);
+	Label label = Label("Mdrcopter");
 
-    Gtk::Box* topbarbox = nullptr;
+    Box* topbarbox = nullptr;
     topbar_builder->get_widget("box1", topbarbox);
+    
+    notebook->remove_page(0);
+    notebook->append_page(*box_window, "lolMdr Khanar Fdp");
+    box_window2.pack_start(label,true, true);
 
-    notebook->append_page(*topbarbox);
+    notebook->append_page(box_window2, "Mange tes morts");
 
-		Gtk::Main::run(*win);
+    box_window->pack_start(*topbarbox,true, true);
+ 
+
+
+		Main::run(*win);
     return 0;
 	}
-	catch (Gtk::BuilderError err)
+	catch (BuilderError err)
 	{
 		cout << err.what() << endl;
     return 1;
