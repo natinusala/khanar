@@ -5,7 +5,9 @@
 --(notebook)notebook1
   |
   --(label)onglet1
-  --(box) container1
+  --(Box)bo1
+     |
+     --(paned)volet
 
 --------topbar.glade --------
 
@@ -63,4 +65,34 @@
 |   |
 |   --(label)accesautres
 |   --(comboboxtext)autrecombo
+
+
+----panelsidebar.glade--------
+
+
+(box)Raccourcis
+|
+--(expander)favoris
+|  |
+|  --(label)label1
+--(box)boutons
+| |
+| --(button)dossierPerso
+| --(button)recentlyUsed
+--(expander)arboPc
+  |
+  --(label)label5
+
+-------Utilisation------
+
+window -> Fenetre mère
+Insérer topbar dans la section 1 ( deuxième section) de box1 de window.
+Insérer le main de panelsidebar.glade dans le 0 ( première section) du paned volet
+Créer une box de taille 2 contenant la vue arborescente de la racine du dossier courant en 0 ainsi que les propriétés du fichier séléctionné, soit propertiesbar.glade en 1.
+
+	
+
+
+
+
 
