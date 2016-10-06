@@ -22,6 +22,10 @@ using namespace std;
  */
 namespace khanar
 {
+    class File;
+
+    typedef bool (*FileSortStrategy)(File const& a, File const& b);  ///< Critère de tri (abstrai)t pour les fichiers a et b, dans l'ordre ascendant ou descendant
+
     /**
      * \class File
      *
@@ -37,10 +41,19 @@ namespace khanar
            string _absolutePath;
            string _parentFolderAbsolutePath;
 
+           FileSortStrategy _sortStrategy;
+
+           vector<File> _subFiles;
+           bool _subFilesCreated;
+
            struct stat _fileStat; ///< "Statistiques" du fichier, par stat.h (contient des données utiles)
            bool _exists; ///< Défini par stat() et lors de la suppression/création du fichier à la main
 
+           bool _sortDescending;
+
            void updateStat();
+           void updateSubFiles();
+           void sortSubFiles();
 
         public:
            /**
@@ -56,15 +69,23 @@ namespace khanar
            */
            File(string absolutepath);
 
-           string getName();  ///< Récupère le nom du fichier
-           string getParentFolderAbsolutePath(); ///< Récupère le chemin absolu vers le dossier parent
-           string getAbsolutePath(); ///< Récupère le chemin absolu vers le fichier (parentAbsolutePath + name)
+           string getName() const;  ///< Récupère le nom du fichier
+           string getParentFolderAbsolutePath() const; ///< Récupère le chemin absolu vers le dossier parent
+           string getAbsolutePath() const; ///< Récupère le chemin absolu vers le fichier (parentAbsolutePath + name)
 
-           bool isDirectory(); ///< Indique si le fichier est un dossier
-           bool exists(); ///< Renvoie si le fichier existe ou non
-           bool isHidden(); ///< Renvoie si le fichier est caché ou non (commence par un '.')
+           bool isDirectory() const; ///< Indique si le fichier est un dossier
+           bool exists() const; ///< Renvoie si le fichier existe ou non
+           bool isHidden() const; ///< Renvoie si le fichier est caché ou non (commence par un '.')
 
-           vector<File> getSubFiles(); ///< Si le fichier est un dossier, renvoie la liste des sous dossiers
+           vector<File>* getSubFiles(); ///< Si le fichier est un dossier, renvoie la liste des sous dossiers
+
+           void setSortStrategy(FileSortStrategy strategy, bool descending); ///< Change la stratégie de tri des fichiers du dossier
+
+           static bool NAME_FILESORTSTRATEGY(File const& a, File const& b)  ///< Tri alphabétique des noms
+           {
+             return a.getName() < b.getName();
+           }
+
     };
 
     /**

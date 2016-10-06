@@ -8,6 +8,8 @@
 
 #include <dirent.h>
 #include <wordexp.h>
+#include <algorithm>
+#include <iostream>
 
 namespace khanar
 {
@@ -52,6 +54,9 @@ namespace khanar
         size_t pos = absolutepath.find_last_of("/");
         this->_name = absolutepath.substr(pos+1);
         this->_parentFolderAbsolutePath = absolutepath.substr(0, pos);
+        this->_sortStrategy = &NAME_FILESORTSTRATEGY;
+        this->_subFilesCreated = false;
+        this->_sortDescending = false;
 
         this->_absolutePath = absolutepath;
         this->updateStat();
@@ -63,43 +68,51 @@ namespace khanar
         this->_exists = stat(this->getAbsolutePath().c_str(), &this->_fileStat) == 0;
       }
 
-      string File::getName()
+      string File::getName() const
       {
         return this->_name;
       }
 
-      string File::getAbsolutePath()
+      string File::getAbsolutePath() const
       {
         return this->_absolutePath;
       }
 
-      string File::getParentFolderAbsolutePath()
+      string File::getParentFolderAbsolutePath() const
       {
         return this->_parentFolderAbsolutePath;
       }
 
-      bool File::exists()
+      bool File::exists() const
       {
         return this->_exists;
       }
 
-      bool File::isDirectory()
+      void File::setSortStrategy(FileSortStrategy strategy, bool descending)
+      {
+        this->_sortStrategy = strategy;
+        this->_sortDescending = descending;
+        this->sortSubFiles();
+      }
+
+      bool File::isDirectory() const
       {
         return this->_fileStat.st_mode & S_IFDIR;
       }
 
-      bool File::isHidden()
+      bool File::isHidden() const
       {
         return this->_name[0] == '.';
       }
 
-      vector<File> File::getSubFiles()
+      void File::updateSubFiles()
       {
         if (!this->isDirectory())
         {
-          throw FileException("Le fichier n'est pas un dossier");
+          return;
         }
 
+        //Construction
         vector<File> list;
 
         DIR* dir = opendir(this->_absolutePath.c_str());
@@ -119,7 +132,41 @@ namespace khanar
 
         closedir(dir);
 
-        return list;
+        //Tri
+        this->_subFiles = list;
+        this->_subFilesCreated = true;
+
+        sortSubFiles();
+      }
+
+      void File::sortSubFiles()
+      {
+        if (!this->isDirectory() || !this->_subFilesCreated)
+        {
+          return;
+        }
+
+        if (this->_sortDescending)
+        {
+          sort(_subFiles.rbegin(), _subFiles.rend(), this->_sortStrategy);
+        }
+        else
+        {
+          sort(_subFiles.begin(), _subFiles.end(), this->_sortStrategy);
+        }
+      }
+
+      vector<File>* File::getSubFiles()
+      {
+        if (!this->isDirectory())
+        {
+          return NULL;
+        }
+
+        if (!this->_subFilesCreated)
+          updateSubFiles();
+
+        return (&this->_subFiles);
       }
 
       // FileException
