@@ -31,7 +31,7 @@
     <property name="can_focus">False</property>
     <property name="orientation">vertical</property>
     <child>
-      <object class="GtkBox" id="Barre sup">
+      <object class="GtkBox" id="topbar">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="hexpand">False</property>

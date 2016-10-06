@@ -7,37 +7,58 @@
     <property name="can_focus">False</property>
     <property name="icon_name">go-home</property>
   </object>
-  <object class="GtkPaned" id="pane">
+  <object class="GtkImage" id="recently-used">
     <property name="visible">True</property>
-    <property name="can_focus">True</property>
-    <property name="hexpand">True</property>
-    <property name="wide_handle">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">appointment-soon</property>
+  </object>
+  <object class="GtkBox" id="Raccourcis">
+    <property name="width_request">60</property>
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="opacity">0.9882352941176471</property>
+    <property name="margin_top">7</property>
+    <property name="resize_mode">immediate</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">5</property>
+    <property name="baseline_position">bottom</property>
     <child>
-      <object class="GtkBox" id="Raccourcis">
-        <property name="width_request">60</property>
+      <object class="GtkExpander" id="favoris">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="resize_mode">immediate</property>
+        <child>
+          <placeholder/>
+        </child>
+        <child type="label">
+          <object class="GtkLabel" id="label1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Favoris</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkBox" id="boutons">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="opacity">0.9882352941176471</property>
-        <property name="margin_top">7</property>
-        <property name="resize_mode">immediate</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">5</property>
-        <property name="baseline_position">bottom</property>
         <child>
-          <object class="GtkExpander" id="expander2">
+          <object class="GtkButton" id="dossierPerso">
+            <property name="label" translatable="yes">Dossier Personnel</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="resize_mode">immediate</property>
-            <child>
-              <placeholder/>
-            </child>
-            <child type="label">
-              <object class="GtkLabel" id="label1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Favoris</property>
-              </object>
-            </child>
+            <property name="receives_default">True</property>
+            <property name="image">home</property>
+            <property name="relief">none</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -46,44 +67,15 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="box4">
+          <object class="GtkButton" id="recentlyUsed">
+            <property name="label" translatable="yes">Utilisés recemment</property>
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="orientation">vertical</property>
-            <child>
-              <object class="GtkButton" id="button1">
-                <property name="label" translatable="yes">Dossier Personnel</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="image">home</property>
-                <property name="relief">none</property>
-                <property name="xalign">0</property>
-                <property name="yalign">0</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="button2">
-                <property name="label" translatable="yes">Utilisés recemment</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="image">recently-used</property>
-                <property name="relief">none</property>
-                <property name="xalign">0</property>
-                <property name="yalign">0</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="image">recently-used</property>
+            <property name="relief">none</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -91,60 +83,39 @@
             <property name="position">1</property>
           </packing>
         </child>
-        <child>
-          <object class="GtkExpander" id="expander1">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="expanded">True</property>
-            <property name="spacing">5</property>
-            <child>
-              <placeholder/>
-            </child>
-            <child type="label">
-              <object class="GtkLabel" id="label5">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Ce PC</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="padding">2</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
       </object>
       <packing>
-        <property name="resize">False</property>
-        <property name="shrink">False</property>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
       </packing>
     </child>
     <child>
-      <object class="GtkBox" id="pane 2">
+      <object class="GtkExpander" id="arboPc">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
+        <property name="can_focus">True</property>
+        <property name="expanded">True</property>
+        <property name="spacing">5</property>
         <child>
           <placeholder/>
         </child>
-        <child>
-          <placeholder/>
+        <child type="label">
+          <object class="GtkLabel" id="label5">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Ce PC</property>
+          </object>
         </child>
       </object>
       <packing>
-        <property name="resize">True</property>
-        <property name="shrink">True</property>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="padding">2</property>
+        <property name="position">2</property>
       </packing>
     </child>
-  </object>
-  <object class="GtkImage" id="recently-used">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">appointment-soon</property>
+    <child>
+      <placeholder/>
+    </child>
   </object>
 </interface>

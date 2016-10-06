@@ -23,13 +23,13 @@
       </packing>
     </child>
     <child>
-      <object class="GtkBox" id="box9">
+      <object class="GtkBox" id="nomType">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <property name="homogeneous">True</property>
         <child>
-          <object class="GtkLabel" id="label2">
+          <object class="GtkLabel" id="nom">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">CMOSH.glade</property>
@@ -41,7 +41,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="label10">
+          <object class="GtkLabel" id="type">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">Fichier GLADE</property>
@@ -60,13 +60,13 @@
       </packing>
     </child>
     <child>
-      <object class="GtkBox" id="box10">
+      <object class="GtkBox" id="taille">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <property name="homogeneous">True</property>
         <child>
-          <object class="GtkLabel" id="label11">
+          <object class="GtkLabel" id="taill">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">124ko</property>
@@ -78,7 +78,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="label1">
+          <object class="GtkLabel" id="filler">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
           </object>
@@ -96,13 +96,13 @@
       </packing>
     </child>
     <child>
-      <object class="GtkBox" id="box11">
+      <object class="GtkBox" id="accesModif">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <property name="homogeneous">True</property>
         <child>
-          <object class="GtkLabel" id="label6">
+          <object class="GtkLabel" id="acces">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">Accédé : 31/12/2015 </property>
@@ -114,7 +114,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="label3">
+          <object class="GtkLabel" id="modifie">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">Modifié : 28/09/2016</property>
@@ -133,13 +133,13 @@
       </packing>
     </child>
     <child>
-      <object class="GtkBox" id="box7">
+      <object class="GtkBox" id="propiertaire">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <property name="homogeneous">True</property>
         <child>
-          <object class="GtkLabel" id="label8">
+          <object class="GtkLabel" id="proprietaire">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">Propriétaire : </property>
@@ -151,7 +151,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="label7">
+          <object class="GtkLabel" id="labelacces">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">Accès :</property>
@@ -170,13 +170,13 @@
       </packing>
     </child>
     <child>
-      <object class="GtkBox" id="box13">
+      <object class="GtkBox" id="accesPropri">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <property name="homogeneous">True</property>
         <child>
-          <object class="GtkLabel" id="label14">
+          <object class="GtkLabel" id="nomProprietaire">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">Killy</property>
@@ -188,7 +188,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkComboBoxText" id="comboboxtext1">
+          <object class="GtkComboBoxText" id="comboaccespropri">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="opacity">0.9882352941176471</property>
@@ -214,14 +214,14 @@
       </packing>
     </child>
     <child>
-      <object class="GtkBox" id="box8">
+      <object class="GtkBox" id="groupeacces">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="opacity">0.90980392156862744</property>
         <property name="orientation">vertical</property>
         <property name="homogeneous">True</property>
         <child>
-          <object class="GtkLabel" id="label9">
+          <object class="GtkLabel" id="groupe">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="halign">start</property>
@@ -234,7 +234,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="label12">
+          <object class="GtkLabel" id="acce">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">Accès :</property>
@@ -253,12 +253,12 @@
       </packing>
     </child>
     <child>
-      <object class="GtkBox" id="box12">
+      <object class="GtkBox" id="accesgroupe">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkComboBoxText" id="comboboxtext2">
+          <object class="GtkComboBoxText" id="groupecombo">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="active">0</property>
@@ -274,7 +274,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkComboBoxText" id="comboboxtext3">
+          <object class="GtkComboBoxText" id="accescombo">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="opacity">0.9882352941176471</property>
@@ -300,13 +300,13 @@
       </packing>
     </child>
     <child>
-      <object class="GtkBox" id="box14">
+      <object class="GtkBox" id="autresacces">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <property name="homogeneous">True</property>
         <child>
-          <object class="GtkLabel" id="label15">
+          <object class="GtkLabel" id="Autres">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">Autres</property>
@@ -318,11 +318,11 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="box15">
+          <object class="GtkBox" id="autresbox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkLabel" id="label13">
+              <object class="GtkLabel" id="accesautres">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Accès :</property>
@@ -334,7 +334,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkComboBoxText" id="comboboxtext4">
+              <object class="GtkComboBoxText" id="autrecombo">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="opacity">0.9882352941176471</property>

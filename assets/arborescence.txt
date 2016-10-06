@@ -1,0 +1,98 @@
+--------window.glade --------
+
+(window)window1
+|
+--(notebook)notebook1
+  |
+  --(label)onglet1
+  --(Box)box1
+     |
+     --(paned)volet
+
+--------topbar.glade --------
+
+(box) box1
+|
+--(box) topbar
+   |
+   --(entry) entry1
+   --(searchentry) searchentry1
+   --(buttonbox)buttonbox1
+      |
+      --(button)precedent
+      --(button)suivant
+      --(button) remonter
+      --(actualiser)
+
+
+--------propertiesbar.glade --------
+
+(box)proprietes
+|
+--(Image)Icone
+--(box)nomType
+| |
+| --(label) nom
+| --(label) type
+--(box)taille
+| |
+| --(label)taille
+| --(label) filler
+--(box)accesModif
+| |
+| --(label)acces
+| --(label)modifie
+--(box) proprietaire
+|  |
+|  --(label)proprietaire
+|  --(label)labelacces
+--(box)accesPropri
+| |
+| --(label)nomProprietaire
+| --(comboboxtext)comboaccespropri
+--(box)groupeacces
+| |
+| --(label)groupe
+| --(label)acces
+--(box)accesgroupe
+| |
+| --(comboboxtext)groupecombo
+| --(comboboxtext)accescombo
+--(box)autresacces
+| |
+| --(label)Autres
+| --(box)autrebox
+|   |
+|   --(label)accesautres
+|   --(comboboxtext)autrecombo
+
+
+----panelsidebar.glade--------
+
+
+(box)Raccourcis
+|
+--(expander)favoris
+|  |
+|  --(label)label1
+--(box)boutons
+| |
+| --(button)dossierPerso
+| --(button)recentlyUsed
+--(expander)arboPc
+  |
+  --(label)label5
+
+-------Utilisation------
+
+window -> Fenetre mère
+Insérer topbar dans la section 0 ( première section) de box1 de window.
+Insérer le main de panelsidebar.glade dans le 0 ( première section) du paned volet
+Créer une box de taille 2 contenant la vue arborescente de la racine du dossier courant en 0 ainsi que les propriétés du fichier séléctionné, soit propertiesbar.glade en 1.
+
+	
+
+
+
+
+
