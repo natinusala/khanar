@@ -16,15 +16,15 @@
 using namespace std;
 
 /**
- * \namespace khanar_common_file
+ * \namespace khanar
  *
- * Namespace de la classe d'abstraction des fichiers
+ * Namespace du projet
  */
 namespace khanar
 {
     class File;
 
-    typedef bool (*FileSortStrategy)(File const& a, File const& b);  ///< Critère de tri (abstrai)t pour les fichiers a et b, dans l'ordre ascendant ou descendant
+    typedef bool (*FileSortStrategy)(File const& a, File const& b);  ///< Critère de tri pour les fichiers a et b
 
     /**
      * \class File
@@ -80,19 +80,20 @@ namespace khanar
            long getSize(); ///< Renvoie la taille du fichier en octets (ou -1 si c'est un dossier)
            string getFormattedSize(); ///< Renvoie la taille du fichier formattée dans un String
 
-           vector<File>* getSubFiles(); ///< Si le fichier est un dossier, renvoie la liste des sous dossiers
+           vector<File>* getSubFiles(); ///< Si le fichier est un dossier, renvoie la liste des sous dossiers, NULL sinon
 
-           void setSortStrategy(FileSortStrategy strategy, bool descending); ///< Change la stratégie de tri des fichiers du dossier
+           void setSortStrategy(FileSortStrategy strategy, bool descending); ///< Change la stratégie de tri des fichiers du dossier ; une stratégie ici est un critère de tri et un ordre
 
-           static bool NAME_FILESORTSTRATEGY(File const& a, File const& b)  ///< Tri alphabétique par nom
+           //Stratégies de tri
+           static bool NAME_FILESORTSTRATEGY(File const& a, File const& b)
            {
              return a.getName() < b.getName();
-           }
+           }  ///< Tri alphabétique par nom
 
-           static bool SIZE_FILESORTSTRATEGY(File const& a, File const& b)  ///< Tri alphabétique par taille
+           static bool SIZE_FILESORTSTRATEGY(File const& a, File const& b)
            {
              return a.getName() < b.getName();
-           }
+           }  ///< Tri alphabétique par taille
     };
 
     /**
