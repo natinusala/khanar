@@ -77,6 +77,9 @@ namespace khanar
            bool exists() const; ///< Renvoie si le fichier existe ou non
            bool isHidden() const; ///< Renvoie si le fichier est caché ou non (commence par un '.')
 
+           long getSize(); ///< Renvoie la taille du fichier en octets
+           string getFormattedSize(); ///< Renvoie la taille du fichier formattée dans un String
+
            vector<File>* getSubFiles(); ///< Si le fichier est un dossier, renvoie la liste des sous dossiers
 
            void setSortStrategy(FileSortStrategy strategy, bool descending); ///< Change la stratégie de tri des fichiers du dossier
@@ -85,7 +88,6 @@ namespace khanar
            {
              return a.getName() < b.getName();
            }
-
     };
 
     /**

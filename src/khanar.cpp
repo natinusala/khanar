@@ -17,7 +17,7 @@ using namespace khanar;
 using namespace Glib;
 using namespace Gtk;
 
-int main(int argc, char* argv[])
+int main_khanar(int argc, char* argv[])
 {
   //Ouverture de la fenêtre principale
   Main app(argc, argv);
@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
     box_builder->get_widget("box1", box_window2);
 
 
-	
+
 
     Box* topbarbox = nullptr;
     topbar_builder->get_widget("box1", topbarbox);

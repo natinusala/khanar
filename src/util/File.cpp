@@ -88,6 +88,11 @@ namespace khanar
         return this->_exists;
       }
 
+      long File::getSize()
+      {
+        return this->_fileStat.st_size;
+      }
+
       void File::setSortStrategy(FileSortStrategy strategy, bool descending)
       {
         this->_sortStrategy = strategy;
