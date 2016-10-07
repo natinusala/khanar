@@ -5,6 +5,7 @@
 **/
 
 #include "File.hpp"
+#include "../libs/FileSize.hpp"
 
 #include <dirent.h>
 #include <wordexp.h>
@@ -86,6 +87,26 @@ namespace khanar
       bool File::exists() const
       {
         return this->_exists;
+      }
+
+      long File::getSize() const
+      {
+        if (this->isDirectory())
+        {
+          return -1;
+        }
+
+        return this->_fileStat.st_size;
+      }
+
+      string File::getFormattedSize() const
+      {
+        if (this->isDirectory())
+        {
+          return "n/a";
+        }
+
+        return convertSize(this->_fileStat.st_size);
       }
 
       void File::setSortStrategy(FileSortStrategy strategy, bool descending)

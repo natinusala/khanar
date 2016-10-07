@@ -4,11 +4,11 @@
 using namespace khanar;
 using namespace std;
 
-int main_khanar()
+int main()
 {
   try
   {
-    File file = File("~");
+    File file = File("~/efl");
 
     /*cout << file.getAbsolutePath() << endl;
     cout << file.getParentFolderAbsolutePath() << endl;
@@ -23,17 +23,7 @@ int main_khanar()
       File f = (*subFiles)[i];
 
       if (!f.isHidden())
-        cout << f.getName() << endl;
-    }
-
-    file.setSortStrategy(&File::NAME_FILESORTSTRATEGY, true);
-
-    for (int i = 0; i < subFiles->size(); i++)
-    {
-      File f = (*subFiles)[i];
-
-      if (!f.isHidden())
-        cout << f.getName() << endl;
+        cout << f.getName() << " - " << f.getFormattedSize() << " (" << f.getSize() << "o)" << endl;
     }
   }
   catch (FileException e)

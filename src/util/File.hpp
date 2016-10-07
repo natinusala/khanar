@@ -16,15 +16,15 @@
 using namespace std;
 
 /**
- * \namespace khanar_common_file
+ * \namespace khanar
  *
- * Namespace de la classe d'abstraction des fichiers
+ * Namespace du projet
  */
 namespace khanar
 {
     class File;
 
-    typedef bool (*FileSortStrategy)(File const& a, File const& b);  ///< Critère de tri (abstrai)t pour les fichiers a et b, dans l'ordre ascendant ou descendant
+    typedef bool (*FileSortStrategy)(File const& a, File const& b);  ///< Critère de tri pour les fichiers a et b
 
     /**
      * \class File
@@ -77,15 +77,23 @@ namespace khanar
            bool exists() const; ///< Renvoie si le fichier existe ou non
            bool isHidden() const; ///< Renvoie si le fichier est caché ou non (commence par un '.')
 
-           vector<File>* getSubFiles(); ///< Si le fichier est un dossier, renvoie la liste des sous dossiers
+           long getSize() const; ///< Renvoie la taille du fichier en octets (ou -1 si c'est un dossier)
+           string getFormattedSize() const; ///< Renvoie la taille du fichier formattée dans un String
 
-           void setSortStrategy(FileSortStrategy strategy, bool descending); ///< Change la stratégie de tri des fichiers du dossier
+           vector<File>* getSubFiles(); ///< Si le fichier est un dossier, renvoie la liste des sous dossiers, NULL sinon
 
-           static bool NAME_FILESORTSTRATEGY(File const& a, File const& b)  ///< Tri alphabétique des noms
+           void setSortStrategy(FileSortStrategy strategy, bool descending); ///< Change la stratégie de tri des fichiers du dossier ; une stratégie ici est un critère de tri et un ordre
+
+           //Stratégies de tri
+           static bool NAME_FILESORTSTRATEGY(File const& a, File const& b)
            {
              return a.getName() < b.getName();
-           }
+           }  ///< Tri alphabétique par nom
 
+           static bool SIZE_FILESORTSTRATEGY(File const& a, File const& b)
+           {
+             return a.getName() < b.getName();
+           }  ///< Tri alphabétique par taille
     };
 
     /**
