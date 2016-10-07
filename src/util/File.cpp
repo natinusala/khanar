@@ -89,7 +89,7 @@ namespace khanar
         return this->_exists;
       }
 
-      long File::getSize()
+      long File::getSize() const
       {
         if (this->isDirectory())
         {
@@ -99,7 +99,7 @@ namespace khanar
         return this->_fileStat.st_size;
       }
 
-      string File::getFormattedSize()
+      string File::getFormattedSize() const
       {
         if (this->isDirectory())
         {

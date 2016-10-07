@@ -77,8 +77,8 @@ namespace khanar
            bool exists() const; ///< Renvoie si le fichier existe ou non
            bool isHidden() const; ///< Renvoie si le fichier est caché ou non (commence par un '.')
 
-           long getSize(); ///< Renvoie la taille du fichier en octets (ou -1 si c'est un dossier)
-           string getFormattedSize(); ///< Renvoie la taille du fichier formattée dans un String
+           long getSize() const; ///< Renvoie la taille du fichier en octets (ou -1 si c'est un dossier)
+           string getFormattedSize() const; ///< Renvoie la taille du fichier formattée dans un String
 
            vector<File>* getSubFiles(); ///< Si le fichier est un dossier, renvoie la liste des sous dossiers, NULL sinon
 
