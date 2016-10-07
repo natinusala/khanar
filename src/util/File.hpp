@@ -84,7 +84,12 @@ namespace khanar
 
            void setSortStrategy(FileSortStrategy strategy, bool descending); ///< Change la stratégie de tri des fichiers du dossier
 
-           static bool NAME_FILESORTSTRATEGY(File const& a, File const& b)  ///< Tri alphabétique des noms
+           static bool NAME_FILESORTSTRATEGY(File const& a, File const& b)  ///< Tri alphabétique par nom
+           {
+             return a.getName() < b.getName();
+           }
+
+           static bool SIZE_FILESORTSTRATEGY(File const& a, File const& b)  ///< Tri alphabétique par taille
            {
              return a.getName() < b.getName();
            }
