@@ -28,78 +28,6 @@ namespace khanar
     typedef bool (*FileSortStrategy)(File const& a, File const& b);  ///< Critère de tri pour les fichiers a et b
 
     /**
-     * \class File
-     *
-     * Wrapper autour des fonctions de manipulation de fichiers
-     * de C/C++
-     */
-    class File
-    {
-        //TODO Ajouter les attributs
-
-        private:
-           string _name;
-           string _absolutePath;
-           string _parentFolderAbsolutePath;
-           string _extension;
-
-           FileSortStrategy _sortStrategy;
-
-           vector<File> _subFiles;
-           bool _subFilesCreated;
-
-           struct stat _fileStat; ///< "Statistiques" du fichier, par stat.h (contient des données utiles)
-           bool _exists; ///< Défini par stat() et lors de la suppression/création du fichier à la main
-
-           bool _sortDescending;
-
-           void updateStat();
-           void updateSubFiles();
-           void sortSubFiles();
-
-        public:
-           /**
-           * \brief Constructeur prenant le fichier parent et le nom du fichier actuel
-           * \param[in] parent le fichier parent
-           * \param[in] name le nom du fichier actuel
-           */
-           File(File* parent, string name);
-
-           /**
-           * \brief Constructeur prenant le chemin absolu du fichier
-           * \param[in] string le chemin absolu du fichier
-           */
-           File(string absolutepath);
-
-           string getName() const;  ///< Récupère le nom du fichier
-           string getParentFolderAbsolutePath() const; ///< Récupère le chemin absolu vers le dossier parent
-           string getAbsolutePath() const; ///< Récupère le chemin absolu vers le fichier (parentAbsolutePath + name)
-           string getExtension() const; ///< Récupère l'extension du fichier
-
-           bool isDirectory() const; ///< Indique si le fichier est un dossier
-           bool exists() const; ///< Renvoie si le fichier existe ou non
-           bool isHidden() const; ///< Renvoie si le fichier est caché ou non (commence par un '.')
-
-           long getSize() const; ///< Renvoie la taille du fichier en octets (ou -1 si c'est un dossier)
-           string getFormattedSize() const; ///< Renvoie la taille du fichier formattée dans un String
-
-           vector<File>* getSubFiles(); ///< Si le fichier est un dossier, renvoie la liste des sous dossiers, NULL sinon
-
-           void setSortStrategy(FileSortStrategy strategy, bool descending); ///< Change la stratégie de tri des fichiers du dossier ; une stratégie ici est un critère de tri et un ordre
-
-           //Stratégies de tri
-           static bool NAME_FILESORTSTRATEGY(File const& a, File const& b)
-           {
-             return a.getName() < b.getName();
-           }  ///< Tri alphabétique par nom
-
-           static bool SIZE_FILESORTSTRATEGY(File const& a, File const& b)
-           {
-             return a.getName() < b.getName();
-           }  ///< Tri alphabétique par taille
-    };
-
-    /**
     * \class FileType
     *
     * Classe servant à représenter un type de fichier : constitué d'un nom et d'un icône
@@ -171,6 +99,99 @@ namespace khanar
       {"mid", FILETYPE_AUDIO("MIDI")},
       {"midi", FILETYPE_AUDIO("MIDI")},
     }; ///< Mapping entre les extensions et le type de fichier correspondant
+
+    /**
+     * \class File
+     *
+     * Wrapper autour des fonctions de manipulation de fichiers
+     * de C/C++
+     */
+    class File
+    {
+        //TODO Ajouter les attributs
+
+
+        private:
+           string _name;
+           string _absolutePath;
+           string _parentFolderAbsolutePath;
+           string _extension;
+
+           FileSortStrategy _sortStrategy;
+
+           vector<File> _subFiles;
+           bool _subFilesCreated;
+
+           struct stat _fileStat; ///< "Statistiques" du fichier, par stat.h (contient des données utiles)
+           bool _exists; ///< Défini par stat() et lors de la suppression/création du fichier à la main
+
+           bool _sortDescending;
+
+           void updateStat();
+           void updateSubFiles();
+           void sortSubFiles();
+
+        public:
+           /**
+           * \brief Constructeur prenant le fichier parent et le nom du fichier actuel
+           * \param[in] parent le fichier parent
+           * \param[in] name le nom du fichier actuel
+           */
+           File(File* parent, string name);
+
+           /**
+           * \brief Constructeur prenant le chemin absolu du fichier
+           * \param[in] string le chemin absolu du fichier
+           */
+           File(string absolutepath);
+
+           string getName() const;  ///< Récupère le nom du fichier
+           string getParentFolderAbsolutePath() const; ///< Récupère le chemin absolu vers le dossier parent
+           string getAbsolutePath() const; ///< Récupère le chemin absolu vers le fichier (parentAbsolutePath + name)
+           string getExtension() const; ///< Récupère l'extension du fichier
+           FileType getFileType() const; ///< Récupère le type du fichier (type de données + icône)
+
+           bool isDirectory() const; ///< Indique si le fichier est un dossier
+           bool exists() const; ///< Renvoie si le fichier existe ou non
+           bool isHidden() const; ///< Renvoie si le fichier est caché ou non (commence par un '.')
+
+           bool getPermission(int perm) const; ///< Renvoie si la permission demandée est accordée ou non (depuis l'enum PERMISSIONS)
+           bool isExecutable() const; ///< Renvoie si le fichier est exécutable (si il y a la permission X sur usr ou grp ou oth)
+
+           long getSize() const; ///< Renvoie la taille du fichier en octets (ou -1 si c'est un dossier)
+           string getFormattedSize() const; ///< Renvoie la taille du fichier formattée dans un String
+
+           vector<File>* getSubFiles(); ///< Si le fichier est un dossier, renvoie la liste des sous dossiers, NULL sinon
+
+           void setSortStrategy(FileSortStrategy strategy, bool descending); ///< Change la stratégie de tri des fichiers du dossier ; une stratégie ici est un critère de tri et un ordre
+
+           //Stratégies de tri
+           static bool NAME_FILESORTSTRATEGY(File const& a, File const& b)
+           {
+             return a.getName() < b.getName();
+           }  ///< Tri alphabétique par nom
+
+           static bool SIZE_FILESORTSTRATEGY(File const& a, File const& b)
+           {
+             return a.getName() < b.getName();
+           }  ///< Tri alphabétique par taille
+
+           static const enum
+           {
+             USR_R = 0,
+             USR_W,
+             USR_X,
+
+             GRP_R,
+             GRP_W,
+             GRP_X,
+
+             OTH_R,
+             OTH_W,
+             OTH_X
+           } PERMISSIONS; ///< Liste des différentes permissions possibles
+
+    };
 
     /**
     * \class FileException

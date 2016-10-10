@@ -6,6 +6,7 @@
 
 #include "File.hpp"
 #include "../libs/FileSize.hpp"
+#include "StringUtil.hpp"
 
 #include <dirent.h>
 #include <wordexp.h>
@@ -58,7 +59,15 @@ namespace khanar
         this->_sortStrategy = &NAME_FILESORTSTRATEGY;
         this->_subFilesCreated = false;
         this->_sortDescending = false;
-        this->_extension = this->_name.substr(this->_name.find_first_of('.')+1, this->_name.length());
+        size_t posOfDot = this->_name.find_first_of('.');
+        if (posOfDot != string::npos)
+        {
+          this->_extension = this->_name.substr(posOfDot+1, this->_name.length()); //TODO
+        }
+        else
+        {
+          this->_extension = "";
+        }
 
         this->_absolutePath = absolutepath;
         this->updateStat();
@@ -80,6 +89,41 @@ namespace khanar
         return this->_absolutePath;
       }
 
+      bool File::isExecutable() const
+      {
+        return this->getPermission(USR_X) || this->getPermission(GRP_X) || this->getPermission(OTH_X);
+      }
+
+      bool File::getPermission(int perm) const
+      {
+        switch (perm)
+        {
+          case USR_R:
+            return _fileStat.st_mode & S_IRUSR;
+          case USR_W:
+            return _fileStat.st_mode & S_IWUSR;
+          case USR_X:
+            return _fileStat.st_mode & S_IXUSR;
+
+          case GRP_R:
+            return _fileStat.st_mode & S_IRGRP;
+          case GRP_W:
+            return _fileStat.st_mode & S_IWGRP;
+          case GRP_X:
+            return _fileStat.st_mode & S_IXGRP;
+
+          case OTH_R:
+            return _fileStat.st_mode & S_IROTH;
+          case OTH_W:
+            return _fileStat.st_mode & S_IWOTH;
+          case OTH_X:
+            return _fileStat.st_mode & S_IXOTH;
+
+          default:
+            return false;
+        }
+      }
+
       string File::getParentFolderAbsolutePath() const
       {
         return this->_parentFolderAbsolutePath;
@@ -88,6 +132,33 @@ namespace khanar
       bool File::exists() const
       {
         return this->_exists;
+      }
+
+      FileType File::getFileType() const
+      {
+        if (FILETYPE_EXTENSIONS_MAP.find(this->_extension) != FILETYPE_EXTENSIONS_MAP.end())
+        {
+          return FILETYPE_EXTENSIONS_MAP.at(this->_extension);
+        }
+        else
+        {
+          if (this->isExecutable())
+          {
+            return FileType("Fichier exécutable", "application-x-executable");
+          }
+
+          string extension = this->_extension;
+
+          if (extension.empty())
+          {
+            return FileType("Fichier", "text-x-generic");
+          }
+          else
+          {
+            STR_TOUPPER(extension);
+            return FileType("Fichier " + extension, "text-x-generic");
+          }
+        }
       }
 
       long File::getSize() const
