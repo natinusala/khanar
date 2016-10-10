@@ -25,7 +25,7 @@ FOREACH(INPUT_FILE ${COMPILED_RESOURCES})
     SET(OUTPUT_FILE ../src/compiled_assets/${INPUT_NAME}.hex)
     ADD_CUSTOM_COMMAND(
         OUTPUT ${OUTPUT_FILE}
-      COMMAND cd ${INPUT_DIRECTORY} && echo "\\#ifndef ${INPUT_NAME_WE}" > ${OUTPUT_FILE} && echo "\\#define ${INPUT_NAME_WE}" >> ${OUTPUT_FILE} && ${RESOURCE_COMPILER} -i ${INPUT_NAME} >> ${OUTPUT_FILE} && echo "\\#endif" >> ${OUTPUT_FILE}
+      COMMAND cd ${INPUT_DIRECTORY} && echo "\\#ifndef ${INPUT_NAME_WE}_hex" > ${OUTPUT_FILE} && echo "\\#define ${INPUT_NAME_WE}_hex" >> ${OUTPUT_FILE} && ${RESOURCE_COMPILER} -i ${INPUT_NAME} >> ${OUTPUT_FILE} && echo "\\#endif" >> ${OUTPUT_FILE}
         COMMENT "Compiling ${INPUT_NAME} to binary")
     LIST(APPEND COMPILED_RESOURCES ${OUTPUT_FILE})
 ENDFOREACH()

@@ -8,7 +8,9 @@ int main()
 {
   try
   {
-    File file = File("~/efl");
+    File file = File("~/efl/config.sub");
+
+    cout << file.getExtension() << endl;
 
     /*cout << file.getAbsolutePath() << endl;
     cout << file.getParentFolderAbsolutePath() << endl;
@@ -16,7 +18,9 @@ int main()
     cout << file.isDirectory() << endl;
     cout << file.exists() << endl;*/
 
-    vector<File>* subFiles = file.getSubFiles();
+
+
+    /*vector<File>* subFiles = file.getSubFiles();
 
     for (int i = 0; i < subFiles->size(); i++)
     {
@@ -24,7 +28,7 @@ int main()
 
       if (!f.isHidden())
         cout << f.getName() << " - " << f.getFormattedSize() << " (" << f.getSize() << "o)" << endl;
-    }
+    }*/
   }
   catch (FileException e)
   {
