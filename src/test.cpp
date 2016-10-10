@@ -8,9 +8,9 @@ int main()
 {
   try
   {
-    File file = File("~/efl/config.sub");
+    File file = File("/home/natinusala/Bureau/myimage.png");
 
-    cout << file.getExtension() << endl;
+    cout << file.getFileType().getName() << endl;
 
     /*cout << file.getAbsolutePath() << endl;
     cout << file.getParentFolderAbsolutePath() << endl;
