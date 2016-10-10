@@ -12,6 +12,7 @@
 #include <memory>
 #include <sys/stat.h>
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -40,6 +41,7 @@ namespace khanar
            string _name;
            string _absolutePath;
            string _parentFolderAbsolutePath;
+           string _extension;
 
            FileSortStrategy _sortStrategy;
 
@@ -72,6 +74,7 @@ namespace khanar
            string getName() const;  ///< Récupère le nom du fichier
            string getParentFolderAbsolutePath() const; ///< Récupère le chemin absolu vers le dossier parent
            string getAbsolutePath() const; ///< Récupère le chemin absolu vers le fichier (parentAbsolutePath + name)
+           string getExtension() const; ///< Récupère l'extension du fichier
 
            bool isDirectory() const; ///< Indique si le fichier est un dossier
            bool exists() const; ///< Renvoie si le fichier existe ou non
@@ -95,6 +98,79 @@ namespace khanar
              return a.getName() < b.getName();
            }  ///< Tri alphabétique par taille
     };
+
+    /**
+    * \class FileType
+    *
+    * Classe servant à représenter un type de fichier : constitué d'un nom et d'un icône
+    */
+    class FileType
+    {
+      private:
+        string _name;
+        string _icon;
+
+      public:
+        FileType(string n, string i);
+
+        string getName();
+        string getIcon();
+    };
+
+    #define FILETYPE_IMAGE(E) FileType(string("Image ") + string(E), "image-x-generic")
+    #define FILETYPE_FONT(E) FileType(string("Police ") + string(E), "font-x-generic")
+    #define FILETYPE_DOCUMENT(E) FileType(string("Document ") + string(E), "x-office-document")
+    #define FILETYPE_VIDEO(E) FileType(string("Vidéo ") + string(E), "video-x-generic")
+    #define FILETYPE_AUDIO(E) FileType(string("Fichier son ") + string(E), "video-x-generic")
+
+    static map<string, FileType> FILETYPE_EXTENSIONS_MAP = {
+      //Images
+      {"png", FILETYPE_IMAGE("PNG")},
+      {"jpg", FILETYPE_IMAGE("JPG")},
+      {"jpeg", FILETYPE_IMAGE("JPG")},
+      {"gif", FILETYPE_IMAGE("GIF")},
+      {"bmp", FILETYPE_IMAGE("Bitmap")},
+      {"tiff", FILETYPE_IMAGE("TIFF")},
+      {"tif", FILETYPE_IMAGE("TIFF")},
+      {"raw", FILETYPE_IMAGE("RAW")},
+
+      //Polices
+      {"ttf", FILETYPE_FONT("TTF")},
+      {"otf", FILETYPE_FONT("OTF")},
+      {"woff", FILETYPE_FONT("WOFF")},
+
+      //Documents textes et office
+      {"pdf", FILETYPE_DOCUMENT("PDF")},
+      {"odt", FILETYPE_DOCUMENT("ODT")},
+      {"odp", FILETYPE_DOCUMENT("ODP")},
+      {"ods", FILETYPE_DOCUMENT("ODS")},
+      {"rtf", FILETYPE_DOCUMENT("RTF")},
+      {"xls", FILETYPE_DOCUMENT("Excel")},
+      {"xlsx", FILETYPE_DOCUMENT("Excel")},
+      {"doc", FILETYPE_DOCUMENT("Word")},
+      {"docx", FILETYPE_DOCUMENT("Word")},
+      {"ppt", FILETYPE_DOCUMENT("Powerpoint")},
+      {"pptx", FILETYPE_DOCUMENT("Powerpoint")},
+      {"txt", FILETYPE_DOCUMENT("Texte")},
+
+      //Vidéos
+      {"mkv", FILETYPE_VIDEO("MKV")},
+      {"mp4", FILETYPE_VIDEO("MP4")},
+      {"flv", FILETYPE_VIDEO("Flash")},
+      {"avi", FILETYPE_VIDEO("AVI")},
+      {"wmv", FILETYPE_VIDEO("WMV")},
+
+      //Sons
+      {"mp3", FILETYPE_AUDIO("MP3")},
+      {"wav", FILETYPE_AUDIO("WAV")},
+      {"aif", FILETYPE_AUDIO("AIFF")},
+      {"aiff", FILETYPE_AUDIO("AIFF")},
+      {"flac", FILETYPE_AUDIO("FLAC")},
+      {"wma", FILETYPE_AUDIO("WMA")},
+      {"ogg", FILETYPE_AUDIO("OGG")},
+      {"mid", FILETYPE_AUDIO("MIDI")},
+      {"midi", FILETYPE_AUDIO("MIDI")},
+    }; ///< Mapping entre les extensions et le type de fichier correspondant
 
     /**
     * \class FileException

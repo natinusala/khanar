@@ -58,6 +58,7 @@ namespace khanar
         this->_sortStrategy = &NAME_FILESORTSTRATEGY;
         this->_subFilesCreated = false;
         this->_sortDescending = false;
+        this->_extension = this->_name.substr(this->_name.find_first_of('.')+1, this->_name.length());
 
         this->_absolutePath = absolutepath;
         this->updateStat();
@@ -177,6 +178,18 @@ namespace khanar
         }
       }
 
+      string File::getExtension() const
+      {
+        if (this->isDirectory())
+        {
+          return "";
+        }
+        else
+        {
+          return this->_extension;
+        }
+      }
+
       vector<File>* File::getSubFiles()
       {
         if (!this->isDirectory())
@@ -190,12 +203,25 @@ namespace khanar
         return (&this->_subFiles);
       }
 
+      // FileType
+
+      FileType::FileType(string n, string i) : _name(n), _icon(i)
+      {}
+
+      string FileType::getName()
+      {
+        return _name;
+      }
+
+      string FileType::getIcon()
+      {
+        return _icon;
+      }
+
       // FileException
 
-      FileException::FileException(string description)
-      {
-        this->_description = description;
-      }
+      FileException::FileException(string description) : _description(description)
+      {}
 
       string FileException::getDescription()
       {
