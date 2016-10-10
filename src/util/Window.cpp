@@ -6,15 +6,25 @@
 
 #include "Window.hpp"
 
+#include "../compiled_assets/window.glade.hex"
+
+
 namespace khanar
 {
   Window::Window()
   {
     this->_win_builder = Assets::buildGtkFromResource(window_glade);
+    this->_win = nullptr;
+    this->_notebook=nullptr;
+    this->_win_builder->get_widget("window1", _win);
+    this->_win_builder->get_widget("notebook1", _notebook);
   }
-  Gtk::Window*::getWindow(){
-      Window* win = nullptr;
-      this->win_builder->getwidget("window1", win);
-      return win;
+  Gtk::Window* Window::getWindow(){
+
+      return this->_win;
   }
+  void Window::addOnglet(Gtk::Widget* widget, string str){
+      this->_notebook->append_page(*widget,str);
+  }
+
 }

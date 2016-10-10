@@ -4,7 +4,7 @@
  * Header des suites de classes pour abstraire la création de la fenêtre
  */
 
-#include "../compiled_assets/window.glade.hex"
+
 #include <gtkmm.h>
 #include "../util/Assets.hpp"
 #include <cstdint>
@@ -28,10 +28,14 @@ namespace khanar
     {
         private:
           RefPtr<Builder> _win_builder;
+          Gtk::Window* _win;
+          Gtk::Notebook* _notebook;
 
         public:
           Window();
-          getWindow();
+          Gtk::Window* getWindow();
+          void addOnglet(Gtk::Widget* widget ,string str );
+
     };
 }
 #endif
