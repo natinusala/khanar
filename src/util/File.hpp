@@ -123,6 +123,9 @@ namespace khanar
      */
     class File
     {
+        //TODO Patron Observateur pour notifier des changements du fichier à l'interface
+        //TODO Vérifier que le fichier existe un peu partout
+
         private:
            string _name;
            string _absolutePath;
@@ -142,6 +145,8 @@ namespace khanar
            void updateStat();
            void updateSubFiles();
            void sortSubFiles();
+
+           void updateAttributes(string absolutepath);
 
         public:
            /**
@@ -166,6 +171,9 @@ namespace khanar
            bool isDirectory() const; ///< Indique si le fichier est un dossier
            bool exists() const; ///< Renvoie si le fichier existe ou non
            bool isHidden() const; ///< Renvoie si le fichier est caché ou non (commence par un '.')
+
+           void setName(string newname); ///< Renomme le fichier
+           void move(string newpath); ///< Déplace/renomme le fichier
 
            bool getPermission(enum Permission perm) const; ///< Renvoie si la permission demandée est accordée ou non (depuis l'enum Permission)
            void setPermission(enum Permission perm, bool value); ///< Modifie la permission (depuis l'enum Permission)

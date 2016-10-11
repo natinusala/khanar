@@ -12,6 +12,7 @@
 #include <wordexp.h>
 #include <algorithm>
 #include <iostream>
+#include <cstdio>
 
 namespace khanar
 {
@@ -35,6 +36,11 @@ namespace khanar
       }
 
       File::File(string absolutepath)
+      {
+        updateAttributes(absolutepath);
+      }
+
+      void File::updateAttributes(string absolutepath)
       {
         if (absolutepath.empty())
         {
@@ -62,7 +68,7 @@ namespace khanar
         size_t posOfDot = this->_name.find_first_of('.');
         if (posOfDot != string::npos)
         {
-          this->_extension = this->_name.substr(posOfDot+1, this->_name.length()); //TODO
+          this->_extension = this->_name.substr(posOfDot+1, this->_name.length());
         }
         else
         {
@@ -92,6 +98,17 @@ namespace khanar
       bool File::isExecutable() const
       {
         return this->getPermission(OTH_X) || this->getPermission(GRP_X) || this->getPermission(OTH_X);
+      }
+
+      void File::setName(string newname)
+      {
+        move(this->_parentFolderAbsolutePath + '/' + newname);
+      }
+
+      void File::move(string newpath)
+      {
+        rename(this->_absolutePath.c_str(), newpath.c_str());
+        updateAttributes(newpath);
       }
 
       void File::setPermission(enum Permission perm, bool value)

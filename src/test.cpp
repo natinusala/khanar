@@ -10,11 +10,13 @@ int main()
   {
     File file = File("/home/natinusala/Bureau/myimage.png");
 
+    cout << file.getName() << endl;
     cout << file.getFileType().getName() << endl;
 
-    file.setPermission(USR_W, true);
-    file.setPermission(GRP_W, true);
-    file.setPermission(OTH_W, true);
+    file.setName("lel.mp3");
+
+    cout << file.getName() << endl;
+    cout << file.getFileType().getName() << endl;
 
     /*cout << file.getAbsolutePath() << endl;
     cout << file.getParentFolderAbsolutePath() << endl;
