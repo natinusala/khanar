@@ -31,11 +31,16 @@ namespace khanar
           Gtk::Window* _win;
           Gtk::Notebook* _notebook;
 
+
         public:
           Window();
           Gtk::Window* getWindow();
-          void addOnglet(Gtk::Widget* widget ,string str );
-
+          void addOnglet(Gtk::Widget* widget ,string str , bool topBar, bool Prop);
+          void addOnglet(string str , bool topBar, bool Prop);
+          void delOnglet(int idOnglet);
+          void setPropInfo(string name, string type); //TO DO -> Ajouter les arguments correspondant au changement d'informations d'une barre de propriétés
+          Gtk::Box* getTopBar();
+          Gtk::Box* getPropBar();
     };
 }
 #endif
