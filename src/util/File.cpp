@@ -91,10 +91,62 @@ namespace khanar
 
       bool File::isExecutable() const
       {
-        return this->getPermission(USR_X) || this->getPermission(GRP_X) || this->getPermission(OTH_X);
+        return this->getPermission(OTH_X) || this->getPermission(GRP_X) || this->getPermission(OTH_X);
       }
 
-      bool File::getPermission(int perm) const
+      void File::setPermission(enum Permission perm, bool value)
+      {
+        int toSet = 0;
+
+        switch (perm)
+        {
+          case USR_R:
+            toSet = S_IRUSR;
+            break;
+          case USR_W:
+            toSet = S_IWUSR;
+            break;
+          case USR_X:
+            toSet = S_IXUSR;
+            break;
+
+          case GRP_R:
+            toSet = S_IRGRP;
+            break;
+          case GRP_W:
+            toSet = S_IWGRP;
+            break;
+          case GRP_X:
+            toSet = S_IXGRP;
+            break;
+
+          case OTH_R:
+            toSet = S_IROTH;
+            break;
+          case OTH_W:
+            toSet = S_IWOTH;
+            break;
+          case OTH_X:
+            toSet = S_IXOTH;
+            break;
+
+          default:
+            return;
+        }
+
+        if (value)
+        {
+          chmod(this->_absolutePath.c_str(), this->_fileStat.st_mode | toSet);
+        }
+        else
+        {
+          chmod(this->_absolutePath.c_str(), this->_fileStat.st_mode & ~toSet);
+        }
+
+        this->updateStat();
+      }
+
+      bool File::getPermission(enum Permission perm) const
       {
         switch (perm)
         {

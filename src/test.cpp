@@ -4,13 +4,17 @@
 using namespace khanar;
 using namespace std;
 
-int main_khanar()
+int main()
 {
   try
   {
     File file = File("/home/natinusala/Bureau/myimage.png");
 
     cout << file.getFileType().getName() << endl;
+
+    file.setPermission(USR_W, true);
+    file.setPermission(GRP_W, true);
+    file.setPermission(OTH_W, true);
 
     /*cout << file.getAbsolutePath() << endl;
     cout << file.getParentFolderAbsolutePath() << endl;

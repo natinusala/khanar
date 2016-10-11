@@ -100,6 +100,21 @@ namespace khanar
       {"midi", FILETYPE_AUDIO("MIDI")},
     }; ///< Mapping entre les extensions et le type de fichier correspondant
 
+    enum Permission
+    {
+      USR_R = 0,
+      USR_W,
+      USR_X,
+
+      GRP_R,
+      GRP_W,
+      GRP_X,
+
+      OTH_R,
+      OTH_W,
+      OTH_X
+    }; ///< Liste des différentes permissions possibles
+
     /**
      * \class File
      *
@@ -108,8 +123,6 @@ namespace khanar
      */
     class File
     {
-        //TODO setPermissions
-
         private:
            string _name;
            string _absolutePath;
@@ -154,7 +167,8 @@ namespace khanar
            bool exists() const; ///< Renvoie si le fichier existe ou non
            bool isHidden() const; ///< Renvoie si le fichier est caché ou non (commence par un '.')
 
-           bool getPermission(int perm) const; ///< Renvoie si la permission demandée est accordée ou non (depuis l'enum PERMISSIONS)
+           bool getPermission(enum Permission perm) const; ///< Renvoie si la permission demandée est accordée ou non (depuis l'enum Permission)
+           void setPermission(enum Permission perm, bool value); ///< Modifie la permission (depuis l'enum Permission)
            bool isExecutable() const; ///< Renvoie si le fichier est exécutable (si il y a la permission X sur usr ou grp ou oth)
 
            long getSize() const; ///< Renvoie la taille du fichier en octets (ou -1 si c'est un dossier)
@@ -174,22 +188,6 @@ namespace khanar
            {
              return a.getName() < b.getName();
            }  ///< Tri alphabétique par taille
-
-           static const enum
-           {
-             USR_R = 0,
-             USR_W,
-             USR_X,
-
-             GRP_R,
-             GRP_W,
-             GRP_X,
-
-             OTH_R,
-             OTH_W,
-             OTH_X
-           } PERMISSIONS; ///< Liste des différentes permissions possibles
-
     };
 
     /**
