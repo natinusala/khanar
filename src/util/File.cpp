@@ -136,6 +136,9 @@ namespace khanar
 
       FileType File::getFileType() const
       {
+        string extension = this->_extension;
+        STR_TOLOWER(extension);
+
         if (FILETYPE_EXTENSIONS_MAP.find(this->_extension) != FILETYPE_EXTENSIONS_MAP.end())
         {
           return FILETYPE_EXTENSIONS_MAP.at(this->_extension);
@@ -146,8 +149,6 @@ namespace khanar
           {
             return FileType("Fichier exécutable", "application-x-executable");
           }
-
-          string extension = this->_extension;
 
           if (extension.empty())
           {

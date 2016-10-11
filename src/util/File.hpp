@@ -108,8 +108,7 @@ namespace khanar
      */
     class File
     {
-        //TODO Ajouter les attributs
-
+        //TODO setPermissions
 
         private:
            string _name;
