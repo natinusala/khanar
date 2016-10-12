@@ -12,6 +12,7 @@
 #include <wordexp.h>
 #include <algorithm>
 #include <iostream>
+#include <cstdio>
 
 namespace khanar
 {
@@ -35,6 +36,11 @@ namespace khanar
       }
 
       File::File(string absolutepath)
+      {
+        updateAttributes(absolutepath);
+      }
+
+      void File::updateAttributes(string absolutepath)
       {
         if (absolutepath.empty())
         {
@@ -62,7 +68,7 @@ namespace khanar
         size_t posOfDot = this->_name.find_first_of('.');
         if (posOfDot != string::npos)
         {
-          this->_extension = this->_name.substr(posOfDot+1, this->_name.length()); //TODO
+          this->_extension = this->_name.substr(posOfDot+1, this->_name.length());
         }
         else
         {
@@ -91,10 +97,73 @@ namespace khanar
 
       bool File::isExecutable() const
       {
-        return this->getPermission(USR_X) || this->getPermission(GRP_X) || this->getPermission(OTH_X);
+        return this->getPermission(OTH_X) || this->getPermission(GRP_X) || this->getPermission(OTH_X);
       }
 
-      bool File::getPermission(int perm) const
+      void File::setName(string newname)
+      {
+        move(this->_parentFolderAbsolutePath + '/' + newname);
+      }
+
+      void File::move(string newpath)
+      {
+        rename(this->_absolutePath.c_str(), newpath.c_str());
+        updateAttributes(newpath);
+      }
+
+      void File::setPermission(enum Permission perm, bool value)
+      {
+        int toSet = 0;
+
+        switch (perm)
+        {
+          case USR_R:
+            toSet = S_IRUSR;
+            break;
+          case USR_W:
+            toSet = S_IWUSR;
+            break;
+          case USR_X:
+            toSet = S_IXUSR;
+            break;
+
+          case GRP_R:
+            toSet = S_IRGRP;
+            break;
+          case GRP_W:
+            toSet = S_IWGRP;
+            break;
+          case GRP_X:
+            toSet = S_IXGRP;
+            break;
+
+          case OTH_R:
+            toSet = S_IROTH;
+            break;
+          case OTH_W:
+            toSet = S_IWOTH;
+            break;
+          case OTH_X:
+            toSet = S_IXOTH;
+            break;
+
+          default:
+            return;
+        }
+
+        if (value)
+        {
+          chmod(this->_absolutePath.c_str(), this->_fileStat.st_mode | toSet);
+        }
+        else
+        {
+          chmod(this->_absolutePath.c_str(), this->_fileStat.st_mode & ~toSet);
+        }
+
+        this->updateStat();
+      }
+
+      bool File::getPermission(enum Permission perm) const
       {
         switch (perm)
         {
@@ -136,6 +205,9 @@ namespace khanar
 
       FileType File::getFileType() const
       {
+        string extension = this->_extension;
+        STR_TOLOWER(extension);
+
         if (FILETYPE_EXTENSIONS_MAP.find(this->_extension) != FILETYPE_EXTENSIONS_MAP.end())
         {
           return FILETYPE_EXTENSIONS_MAP.at(this->_extension);
@@ -146,8 +218,6 @@ namespace khanar
           {
             return FileType("Fichier exécutable", "application-x-executable");
           }
-
-          string extension = this->_extension;
 
           if (extension.empty())
           {

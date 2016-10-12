@@ -20,7 +20,7 @@ using namespace khanar;
 using namespace Glib;
 using namespace Gtk;
 
-int main(int argc, char* argv[])
+int main_khanar(int argc, char* argv[])
 {
   //Ouverture de la fenêtre principale
   Main app(argc, argv);

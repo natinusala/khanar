@@ -4,12 +4,18 @@
 using namespace khanar;
 using namespace std;
 
-int main_khanar()
+int main()
 {
   try
   {
     File file = File("/home/natinusala/Bureau/myimage.png");
 
+    cout << file.getName() << endl;
+    cout << file.getFileType().getName() << endl;
+
+    file.setName("lel.mp3");
+
+    cout << file.getName() << endl;
     cout << file.getFileType().getName() << endl;
 
     /*cout << file.getAbsolutePath() << endl;
