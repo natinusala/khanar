@@ -7,7 +7,7 @@
 #include <cstdint>
 #include <iostream>
 // #include "util/Assets.hpp"
-#include "util/Window.hpp"
+#include "gui/Window.hpp"
 
 /*#include "compiled_assets/window.glade.hex"
 #include "compiled_assets/topbar.glade.hex"/*
