@@ -8,9 +8,10 @@
 
 #include "../compiled_assets/window.glade.hex"
 #include "../compiled_assets/close.glade.hex"
+#include "../compiled_assets/new.glade.hex"
 #include "../compiled_assets/topbar.glade.hex"
 #include "../compiled_assets/propertiesbar.glade.hex"
-#include "../compiled_assets/vboxlayout.glade.hex"
+//#include "../compiled_assets/vboxlayout.glade.hex"
 
 namespace khanar
 {
@@ -24,8 +25,11 @@ namespace khanar
   }
   Gtk::Window* Window::getWindow(){
       this->_notebook->remove_page(0);
+      labelOngletPlus();
       return this->_win;
   }
+
+
   void Window::addOnglet(Gtk::Widget* widget, string str, bool topBar, bool Prop){
     Gtk::Box* tmp = nullptr;
     Gtk::Label* label = nullptr;
@@ -33,8 +37,9 @@ namespace khanar
     box_builder->get_widget("label",label);
     label->set_text(str);
     box_builder->get_widget("box1",tmp);
-     this->_notebook->append_page(*widget,*tmp);
-
+    this->_notebook->remove_page(-1);
+    this->_notebook->append_page(*widget,*tmp);
+    labelOngletPlus();
   }
 
 
@@ -63,6 +68,13 @@ namespace khanar
 
   }
 
+  void Window::labelOngletPlus(){
+    Gtk::Box* tmp = nullptr;
+    RefPtr<Builder> box_builder = Assets::buildGtkFromResource(new_glade);
+    box_builder->get_widget("box1",tmp);
+    this->_notebook->append_page(*tmp,*tmp);
+
+  }
 
 
 }

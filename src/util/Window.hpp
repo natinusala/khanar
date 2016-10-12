@@ -41,6 +41,7 @@ namespace khanar
           void setPropInfo(string name, string type); //TO DO -> Ajouter les arguments correspondant au changement d'informations d'une barre de propriétés
           Gtk::Box* getTopBar();
           Gtk::Box* getPropBar();
+          void labelOngletPlus();
     };
 }
 #endif
