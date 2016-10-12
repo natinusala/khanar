@@ -172,8 +172,9 @@ namespace khanar
            bool exists() const; ///< Renvoie si le fichier existe ou non
            bool isHidden() const; ///< Renvoie si le fichier est caché ou non (commence par un '.')
 
-           void setName(string newname); ///< Renomme le fichier
+           void setName(string newname); ///< Renomme le fichier (le nom rename n'a pas pu être utilisé à cause d'un conflit avec le rename de cstdio)
            void move(string newpath); ///< Déplace/renomme le fichier
+           File copy(string newpath); ///< Copie le fichier dans newpath et renvoie son objet File
 
            bool getPermission(enum Permission perm) const; ///< Renvoie si la permission demandée est accordée ou non (depuis l'enum Permission)
            void setPermission(enum Permission perm, bool value); ///< Modifie la permission (depuis l'enum Permission)

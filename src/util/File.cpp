@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <iostream>
 #include <cstdio>
+#include <fstream>
 
 namespace khanar
 {
@@ -103,6 +104,16 @@ namespace khanar
       void File::setName(string newname)
       {
         move(this->_parentFolderAbsolutePath + '/' + newname);
+      }
+
+      File File::copy(string newpath)
+      {
+        ifstream src = ifstream(this->_absolutePath, ios::binary);
+        ofstream dst = ofstream(newpath, ios::binary);
+
+        dst << src.rdbuf();
+
+        return File(newpath);
       }
 
       void File::move(string newpath)
