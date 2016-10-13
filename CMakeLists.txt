@@ -1,5 +1,6 @@
 project(khanar)
 set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_BUILD_TYPE Debug)
 cmake_minimum_required(VERSION 2.8)
 
 find_package(PkgConfig)

@@ -174,7 +174,8 @@ namespace khanar
 
            void setName(string newname); ///< Renomme le fichier (le nom rename n'a pas pu être utilisé à cause d'un conflit avec le rename de cstdio)
            void move(string newpath); ///< Déplace/renomme le fichier
-           File copy(string newpath); ///< Copie le fichier dans newpath et renvoie son objet File
+           File copy(string newpath) const; ///< Copie le fichier dans newpath et renvoie son objet File
+           void removeFile(); ///< Supprime le fichier/dossier (récursivement) (le nom remove n'a pas pu être utilisé à cause d'un conflit avec le rename de cstdio)
 
            bool getPermission(enum Permission perm) const; ///< Renvoie si la permission demandée est accordée ou non (depuis l'enum Permission)
            void setPermission(enum Permission perm, bool value); ///< Modifie la permission (depuis l'enum Permission)

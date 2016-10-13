@@ -8,11 +8,13 @@ int main()
 {
   try
   {
-    File file = File("/home/natinusala/Bureau/myimage.png");
+    File file = File("/home/natinusala/Bureau/testestest");
 
     cout << file.exists() << endl;
 
-    cout << file.copy("/home/natinusala/Bureau/myimagecopy.png").exists() << endl;
+    file.removeFile();
+
+    cout << file.exists() << endl;
 
     /*cout << file.getAbsolutePath() << endl;
     cout << file.getParentFolderAbsolutePath() << endl;

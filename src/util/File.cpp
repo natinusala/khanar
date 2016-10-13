@@ -14,6 +14,7 @@
 #include <iostream>
 #include <cstdio>
 #include <fstream>
+#include <cstring>
 
 namespace khanar
 {
@@ -56,8 +57,8 @@ namespace khanar
 
         //Expansion du nom (par exemple transformer "~" en "/home/user")
         wordexp_t exp_result;
-        wordexp(absolutepath.c_str(), &exp_result, 0);
-        absolutepath = string(exp_result.we_wordv[0]);
+        if (wordexp(absolutepath.c_str(), &exp_result, 0) == 0)
+          absolutepath = string(exp_result.we_wordv[0]);
 
         //Construction
         size_t pos = absolutepath.find_last_of("/");
@@ -106,7 +107,22 @@ namespace khanar
         move(this->_parentFolderAbsolutePath + '/' + newname);
       }
 
-      File File::copy(string newpath)
+      void File::removeFile()
+      {
+        if (this->isDirectory())
+        {
+          this->updateSubFiles();
+          for (int i = 0; i < this->_subFiles.size(); i++)
+          {
+            this->_subFiles.at(i).removeFile();
+          }
+        }
+
+        remove(this->_absolutePath.c_str());
+        this->updateStat();
+      }
+
+      File File::copy(string newpath) const
       {
         ifstream src = ifstream(this->_absolutePath, ios::binary);
         ofstream dst = ofstream(newpath, ios::binary);
@@ -300,7 +316,10 @@ namespace khanar
 
         while (fichier != NULL)
         {
-          list.push_back(File(this->_absolutePath + "/" + string(fichier->d_name)));
+          if (strcmp(fichier->d_name, ".") != 0 && strcmp(fichier->d_name, ".."))
+          {
+            list.push_back(File(this->_absolutePath + "/" + string(fichier->d_name)));
+          }
           fichier = readdir(dir);
         }
 
