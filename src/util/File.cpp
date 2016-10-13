@@ -92,6 +92,26 @@ namespace khanar
         return this->_name;
       }
 
+      long File::getLastAccessTime() const
+      {
+        return this->_fileStat.st_atime;
+      }
+
+      unsigned File::getUID() const
+      {
+        return this->_fileStat.st_uid;
+      }
+
+      unsigned File::getGID() const
+      {
+        return this->_fileStat.st_gid;
+      }
+
+      long File::getLastModificationTime() const
+      {
+        return this->_fileStat.st_mtime;
+      }
+
       string File::getAbsolutePath() const
       {
         return this->_absolutePath;

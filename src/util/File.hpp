@@ -167,6 +167,10 @@ namespace khanar
            string getAbsolutePath() const; ///< Récupère le chemin absolu vers le fichier (parentAbsolutePath + name)
            string getExtension() const; ///< Récupère l'extension du fichier
            FileType getFileType() const; ///< Récupère le type du fichier (type de données + icône)
+           long getLastAccessTime() const; ///< Récupère la date du dernier accès
+           long getLastModificationTime() const; ///< Récupère la date de la dernière modification
+           unsigned getUID() const; ///< Récupère l'utilisateur du fichier
+           unsigned getGID() const; ///< Récupère le groupe du fichier
 
            bool isDirectory() const; ///< Indique si le fichier est un dossier
            bool exists() const; ///< Renvoie si le fichier existe ou non
