@@ -97,6 +97,20 @@ namespace khanar
         return this->_fileStat.st_atime;
       }
 
+      void File::createNewFile()
+      {
+        if (this->_exists)
+        {
+          throw FileException("Le fichier existe déjà");
+        }
+
+        fstream fs;
+        fs.open(this->_absolutePath, ios::out);
+        fs.close();
+
+        this->updateStat();
+      }
+
       unsigned File::getUID() const
       {
         return this->_fileStat.st_uid;

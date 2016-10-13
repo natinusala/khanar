@@ -180,6 +180,7 @@ namespace khanar
            void move(string newpath); ///< Déplace/renomme le fichier
            File copy(string newpath) const; ///< Copie le fichier dans newpath et renvoie son objet File
            void removeFile(); ///< Supprime le fichier/dossier (récursivement) (le nom remove n'a pas pu être utilisé à cause d'un conflit avec le rename de cstdio)
+           void createNewFile(); ///< Si le fichier n'existe pas, le crée (fichier vide)
 
            bool getPermission(enum Permission perm) const; ///< Renvoie si la permission demandée est accordée ou non (depuis l'enum Permission)
            void setPermission(enum Permission perm, bool value); ///< Modifie la permission (depuis l'enum Permission)

@@ -8,11 +8,11 @@ int main()
 {
   try
   {
-    File file = File("/home/natinusala/Bureau/testestest");
+    File file = File("/home/natinusala/Bureau/ilebomonfichier");
 
     cout << file.exists() << endl;
 
-    file.removeFile();
+    file.createNewFile();
 
     cout << file.exists() << endl;
 
