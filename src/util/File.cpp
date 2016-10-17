@@ -15,6 +15,8 @@
 #include <cstdio>
 #include <fstream>
 #include <cstring>
+#include <grp.h>
+#include <pwd.h>
 
 namespace khanar
 {
@@ -119,6 +121,16 @@ namespace khanar
       unsigned File::getGID() const
       {
         return this->_fileStat.st_gid;
+      }
+
+      string File::getGIDName(gid_t gid)
+      {
+        return string(getgrgid(gid)->gr_name);
+      }
+
+      string File::getUIDName(uid_t uid)
+      {
+        return string(getpwuid(uid)->pw_name);
       }
 
       long File::getLastModificationTime() const

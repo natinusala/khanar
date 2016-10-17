@@ -10,11 +10,7 @@ int main()
   {
     File file = File("/home/natinusala/Bureau/ilebomonfichier");
 
-    cout << file.exists() << endl;
-
-    file.createNewFile();
-
-    cout << file.exists() << endl;
+    cout << File::getGIDName(file.getUID()) << endl;
 
     /*cout << file.getAbsolutePath() << endl;
     cout << file.getParentFolderAbsolutePath() << endl;
