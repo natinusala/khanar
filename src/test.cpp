@@ -9,14 +9,28 @@ int main()
 {
   try
   {
-    File file = File("/home/natinusala/Bureau");
+    /**File file = File("/home/natinusala/Bureau");
 
     vector<File> v = file.search("(.*?)png");
 
     for (int i = 0; i < v.size(); i++)
     {
       cout << v.at(i).getName() << endl;
+    }*/
+
+    vector<File> mounted = File::getMountedVolumes();
+    for (int i = 0; i < mounted.size(); i++)
+    {
+      File f = mounted.at(i);
+      cout << f.getName() << " : " << f.getAbsolutePath() << endl;
     }
+
+
+    /*char path[4096];
+    FILE *fp = popen("fdisk -l | grep \"Disk /\" | awk '{print $2};' | sed 's/://'", "r");
+    while(fgets(path, sizeof(path) -1,fp) != NULL)
+    //your code
+    pclose(fp);*/
 
 
     /*cout << file.getAbsolutePath() << endl;

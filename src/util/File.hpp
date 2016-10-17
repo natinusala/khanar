@@ -213,6 +213,8 @@ namespace khanar
 
            static string getUIDName(uid_t gid); ///< Renvoie le nom d'un UID donné
            static string getGIDName(gid_t gid); ///< Renvoie le nom d'un GID donné
+
+           static vector<File> getMountedVolumes(); ///< Renvoie la liste des volumes montés sur le système (volume monté dans la racine exclu)
     };
 
     /**

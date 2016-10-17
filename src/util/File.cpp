@@ -19,6 +19,9 @@
 #include <unistd.h>
 #include <regex>
 #include <pwd.h>
+#include <mntent.h>
+#include <sys/vfs.h>
+#include <sys/types.h>
 
 namespace khanar
 {
@@ -46,6 +49,36 @@ namespace khanar
         updateAttributes(absolutepath);
       }
 
+      vector<File> File::getMountedVolumes()
+      {
+        FILE* mtab = setmntent("/etc/mtab", "r");
+        struct mntent* m;
+        struct mntent mnt;
+        char strings[4096];
+
+        vector<File> result;
+
+        while ((m = getmntent_r(mtab, &mnt, strings, sizeof(strings))))
+        {
+          struct statfs fs;
+          if (mnt.mnt_dir != NULL && statfs(mnt.mnt_dir, &fs) == 0)
+          {
+            string name = string(mnt.mnt_fsname);
+            string prefix = "/dev/";
+            string dir = string(mnt.mnt_dir);
+
+            if (!name.compare(0, prefix.size(), prefix) && dir != "/")
+            {
+              result.push_back(File(dir));
+            }
+          }
+        }
+
+        endmntent(mtab);
+
+        return result;
+      }
+
       void File::updateAttributes(string absolutepath)
       {
         if (absolutepath.empty())
@@ -60,9 +93,13 @@ namespace khanar
         }
 
         //Expansion du nom (par exemple transformer "~" en "/home/user")
-        wordexp_t exp_result;
-        if (wordexp(absolutepath.c_str(), &exp_result, 0) == 0)
-          absolutepath = string(exp_result.we_wordv[0]);
+        try
+        {
+          wordexp_t exp_result;
+          if (wordexp(absolutepath.c_str(), &exp_result, 0) == 0)
+            absolutepath = string(exp_result.we_wordv[0]);
+        }
+        catch (...){}
 
         //Construction
         size_t pos = absolutepath.find_last_of("/");
