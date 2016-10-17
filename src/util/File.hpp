@@ -124,7 +124,6 @@ namespace khanar
     class File
     {
         //TODO Patron Observateur pour notifier des changements du fichier à l'interface
-        //TODO Vérifier que le fichier existe un peu partout
 
         private:
            string _name;
@@ -206,6 +205,11 @@ namespace khanar
            {
              return a.getName() < b.getName();
            }  ///< Tri alphabétique par taille
+
+           static bool ACCESSTIME_FILESORTSTRATEGY(File const& a, File const& b)
+           {
+             return a.getLastAccessTime() < b.getLastAccessTime();
+           }  ///< Tri alphabétique par date de modification
 
            static string getUIDName(uid_t gid); ///< Renvoie le nom d'un UID donné
            static string getGIDName(gid_t gid); ///< Renvoie le nom d'un GID donné
