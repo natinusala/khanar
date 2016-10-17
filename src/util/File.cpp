@@ -16,6 +16,7 @@
 #include <fstream>
 #include <cstring>
 #include <grp.h>
+#include <unistd.h>
 #include <pwd.h>
 
 namespace khanar
@@ -87,6 +88,18 @@ namespace khanar
       {
         this->_fileStat = (const struct stat) {0};
         this->_exists = stat(this->getAbsolutePath().c_str(), &this->_fileStat) == 0;
+      }
+
+      void File::setUID(uid_t uid)
+      {
+        chown(this->_absolutePath.c_str(), uid, -1);
+        this->updateStat();
+      }
+
+      void File::setGID(gid_t gid)
+      {
+        chown(this->_absolutePath.c_str(), -1, gid);
+        this->updateStat();
       }
 
       string File::getName() const
