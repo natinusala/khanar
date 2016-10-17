@@ -17,6 +17,7 @@
 #include <cstring>
 #include <grp.h>
 #include <unistd.h>
+#include <regex>
 #include <pwd.h>
 
 namespace khanar
@@ -100,6 +101,30 @@ namespace khanar
       {
         chown(this->_absolutePath.c_str(), -1, gid);
         this->updateStat();
+      }
+
+      vector<File> File::search(string expression)
+      {
+        if (!this->isDirectory())
+        {
+          throw FileException("Le fichier n'est pas un dossier");
+        }
+        this->updateSubFiles();
+
+        vector<File> result;
+        regex r = regex(expression);
+
+        for (int i = 0; i < this->_subFiles.size(); i++)
+        {
+          File f = this->_subFiles.at(i);
+
+          if (regex_match(f.getName(), r))
+          {
+            result.push_back(f);
+          }
+        }
+
+        return result;
       }
 
       string File::getName() const

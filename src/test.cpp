@@ -1,4 +1,5 @@
 #include <iostream>
+#include <regex>
 #include "util/File.hpp"
 
 using namespace khanar;
@@ -8,9 +9,15 @@ int main()
 {
   try
   {
-    File file = File("/home/natinusala/Bureau/ilebomonfichier");
+    File file = File("/home/natinusala/Bureau");
 
-    cout << File::getGIDName(file.getUID()) << endl;
+    vector<File> v = file.search("(.*?)png");
+
+    for (int i = 0; i < v.size(); i++)
+    {
+      cout << v.at(i).getName() << endl;
+    }
+
 
     /*cout << file.getAbsolutePath() << endl;
     cout << file.getParentFolderAbsolutePath() << endl;
@@ -33,5 +40,9 @@ int main()
   catch (FileException e)
   {
     cout << e.getDescription() << endl;
+  }
+  catch (regex_error e)
+  {
+    cout << e.what() << endl;
   }
 }
