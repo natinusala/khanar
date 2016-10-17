@@ -183,6 +183,8 @@ namespace khanar
            void setGID(gid_t gid); ///< Modifie le GID du fichier
            void setUID(uid_t uid); ///< Modifie le UID du fichier
 
+           void openXterm() const; ///< Si c'est un dossier, ouvre Xterm dans un nouveau processus
+
            bool getPermission(enum Permission perm) const; ///< Renvoie si la permission demandée est accordée ou non (depuis l'enum Permission)
            void setPermission(enum Permission perm, bool value); ///< Modifie la permission (depuis l'enum Permission)
            bool isExecutable() const; ///< Renvoie si le fichier est exécutable (si il y a la permission X sur usr ou grp ou oth)

@@ -5,10 +5,18 @@
 using namespace khanar;
 using namespace std;
 
+#include <stdio.h>
+#include <unistd.h>
+
 int main()
 {
   try
   {
+
+    File file = File("/");
+    cout << file.exists() << endl;
+    file.openXterm();
+
     /**File file = File("/home/natinusala/Bureau");
 
     vector<File> v = file.search("(.*?)png");
@@ -18,13 +26,12 @@ int main()
       cout << v.at(i).getName() << endl;
     }*/
 
-    vector<File> mounted = File::getMountedVolumes();
+    /*vector<File> mounted = File::getMountedVolumes();
     for (int i = 0; i < mounted.size(); i++)
     {
       File f = mounted.at(i);
       cout << f.getName() << " : " << f.getAbsolutePath() << endl;
-    }
-
+    }*/
 
     /*char path[4096];
     FILE *fp = popen("fdisk -l | grep \"Disk /\" | awk '{print $2};' | sed 's/://'", "r");

@@ -63,9 +63,9 @@ namespace khanar
           struct statfs fs;
           if (mnt.mnt_dir != NULL && statfs(mnt.mnt_dir, &fs) == 0)
           {
-            string name = string(mnt.mnt_fsname);
+            string name = string(mnt.mnt_fsname); // /dev/machin (utilisé pour trier les volumes voulus)
+            string dir = string(mnt.mnt_dir);     // /media/machin/truc (chemin final du File retourné)
             string prefix = "/dev/";
-            string dir = string(mnt.mnt_dir);
 
             if (!name.compare(0, prefix.size(), prefix) && dir != "/")
             {
@@ -79,6 +79,21 @@ namespace khanar
         return result;
       }
 
+      void File::openXterm() const
+      {
+        if (!this->isDirectory())
+        {
+          throw FileException("Ce fichier n'est pas un dossier.");
+        }
+
+        if (fork() == 0)
+        {
+          string command = "cd \"" + this->_absolutePath + "\" && xterm";
+          system(command.c_str());
+          exit(0);
+        }
+      }
+
       void File::updateAttributes(string absolutepath)
       {
         if (absolutepath.empty())
@@ -87,19 +102,19 @@ namespace khanar
         }
 
         //Formattage du nom
-        if (absolutepath.back() == '/')
+        if (absolutepath.back() == '/' && absolutepath != "/")
         {
           absolutepath = absolutepath.substr(0, absolutepath.length()-1);
         }
 
         //Expansion du nom (par exemple transformer "~" en "/home/user")
-        try
+        wordexp_t exp_result;
+        if (wordexp(absolutepath.c_str(), &exp_result, 0) == 0)
         {
-          wordexp_t exp_result;
-          if (wordexp(absolutepath.c_str(), &exp_result, 0) == 0)
-            absolutepath = string(exp_result.we_wordv[0]);
+          absolutepath = string(exp_result.we_wordv[0]);
         }
-        catch (...){}
+
+        cout << absolutepath << endl;
 
         //Construction
         size_t pos = absolutepath.find_last_of("/");
