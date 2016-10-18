@@ -8,6 +8,7 @@ Gestionnaire de fichiers en C++, dans le cadre d'un projet de développement de 
  * `cmake`
  * `doxygen` pour la documentation
  * `xxd` pour convertir les ressources en .h
+ * `xterm`
 
 ##Compilation
 ```
