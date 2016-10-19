@@ -9,6 +9,7 @@ Gestionnaire de fichiers en C++, dans le cadre d'un projet de développement de 
  * `doxygen` pour la documentation
  * `xxd` pour convertir les ressources en .h
  * `xterm`
+ * `pkg-config`
 
 ##Compilation
 ```
