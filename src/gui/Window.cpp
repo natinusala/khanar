@@ -1,17 +1,15 @@
 /**
- * \file File.cpp
+ * \file Window.cpp
  *
- * Implémentation des classes d'abstraction des fichiers (File.hpp)
+ * Implémentation des classes d'abstraction de l'interface graphique
 **/
 
 #include "Window.hpp"
+#include "../util/File.hpp"
 
 #include "../compiled_assets/window.glade.hex"
 #include "../compiled_assets/close.glade.hex"
 #include "../compiled_assets/new.glade.hex"
-#include "../compiled_assets/topbar.glade.hex"
-#include "../compiled_assets/propertiesbar.glade.hex"
-//#include "../compiled_assets/vboxlayout.glade.hex"
 
 namespace khanar
 {
@@ -30,17 +28,47 @@ namespace khanar
   }
 
 
-  void Window::addOnglet(Gtk::Widget* widget, string str, bool topBar, bool Prop){
+  void Window::addOnglet(Gtk::Widget* widget, string str){
+    TabContent onglet = TabContent();
+
+    Gtk::Box *add = onglet.getContent(widget);
+    this->_onglets.push_back(onglet);
     Gtk::Box* tmp = nullptr;
     Gtk::Label* label = nullptr;
-    RefPtr<Builder> box_builder = Assets::buildGtkFromResource(close_glade);
-    box_builder->get_widget("label",label);
+    RefPtr<Builder> tab_builder = Assets::buildGtkFromResource(close_glade);
+    tab_builder->get_widget("label",label);
     label->set_text(str);
-    box_builder->get_widget("box1",tmp);
+    tab_builder->get_widget("box1",tmp);
+
+
     this->_notebook->remove_page(-1);
-    this->_notebook->append_page(*widget,*tmp);
+    this->_notebook->append_page(*add,*tmp);
     labelOngletPlus();
+
   }
+  void Window::addOnglet(string filepath, string title){
+      //TODO Récupérer la liste des fichier du répèrtoire à afficher
+
+      TreeViewLib tvl(filepath);
+
+      TabContent onglet = TabContent();
+
+      Gtk::Box *add = onglet.getContent(tvl.getVBox());
+      this->_onglets.push_back(onglet);
+      Gtk::Box* tmp = nullptr;
+      Gtk::Label* label = nullptr;
+      RefPtr<Builder> tab_builder = Assets::buildGtkFromResource(close_glade);
+      tab_builder->get_widget("label",label);
+      label->set_text(title);
+      tab_builder->get_widget("box1",tmp);
+
+
+      this->_notebook->remove_page(-1);
+      //this->_notebook->append_page(*add,*tmp);
+      labelOngletPlus();
+
+  }
+
 
 
   void Window::delOnglet(int idOnglet){
@@ -49,32 +77,13 @@ namespace khanar
 
 
 
-  Gtk::Box* Window::getTopBar(){
-    RefPtr<Builder> topbar_builder = Assets::buildGtkFromResource(topbar_glade);
-    Gtk::Box* top_bar = nullptr;
-    topbar_builder->get_widget("box1", top_bar);
-    return top_bar;
-
-  }
-
-
-
-  Gtk::Box* Window::getPropBar(){
-    RefPtr<Builder> topbar_builder = Assets::buildGtkFromResource(propertiesbar_glade);
-    Gtk::Box* top_bar = nullptr;
-    topbar_builder->get_widget("proprietes", top_bar);
-    return top_bar;
-
-
-  }
-
   void Window::labelOngletPlus(){
     Gtk::Box* tmp = nullptr;
     RefPtr<Builder> box_builder = Assets::buildGtkFromResource(new_glade);
     box_builder->get_widget("box1",tmp);
     this->_notebook->append_page(*tmp,*tmp);
-
   }
+
 
 
 }
