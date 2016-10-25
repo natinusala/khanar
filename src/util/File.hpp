@@ -28,6 +28,18 @@ namespace khanar
     typedef bool (*FileSortStrategy)(File const& a, File const& b);  ///< Critère de tri pour les fichiers a et b
 
     /**
+    * \class FileObserver
+    *
+    * Interface du pattern Observer pour observer la mise à jour des fichiers
+    * Ici, le sujet est File
+    */
+    class FileObserver
+    {
+      public:
+        virtual void fileUpdated(File* file) = 0;
+    };
+
+    /**
     * \class FileType
     *
     * Classe servant à représenter un type de fichier : constitué d'un nom et d'un icône
@@ -147,6 +159,10 @@ namespace khanar
 
            void updateAttributes(string absolutepath);
 
+           vector<FileObserver*> _observers;
+
+           void notifyObservers();
+
         public:
            /**
            * \brief Constructeur prenant le fichier parent et le nom du fichier actuel
@@ -180,13 +196,13 @@ namespace khanar
            File copy(string newpath) const; ///< Copie le fichier dans newpath et renvoie son objet File
            void removeFile(); ///< Supprime le fichier/dossier (récursivement) (le nom remove n'a pas pu être utilisé à cause d'un conflit avec le rename de cstdio)
            void createNewFile(); ///< Si le fichier n'existe pas, le crée (fichier vide)
-           void setGID(gid_t gid); ///< Modifie le GID du fichier
-           void setUID(uid_t uid); ///< Modifie le UID du fichier
+           void setGID(gid_t const& gid); ///< Modifie le GID du fichier
+           void setUID(uid_t const& uid); ///< Modifie le UID du fichier
 
            void openXterm() const; ///< Si c'est un dossier, ouvre Xterm dans un nouveau processus
 
-           bool getPermission(enum Permission perm) const; ///< Renvoie si la permission demandée est accordée ou non (depuis l'enum Permission)
-           void setPermission(enum Permission perm, bool value); ///< Modifie la permission (depuis l'enum Permission)
+           bool getPermission(enum Permission const& perm) const; ///< Renvoie si la permission demandée est accordée ou non (depuis l'enum Permission)
+           void setPermission(enum Permission const& perm, bool const& value); ///< Modifie la permission (depuis l'enum Permission)
            bool isExecutable() const; ///< Renvoie si le fichier est exécutable (si il y a la permission X sur usr ou grp ou oth)
 
            long getSize() const; ///< Renvoie la taille du fichier en octets (ou -1 si c'est un dossier)
@@ -195,7 +211,10 @@ namespace khanar
            vector<File>* getSubFiles(); ///< Si le fichier est un dossier, renvoie la liste des sous dossiers, NULL sinon
            vector<File> search(string expression); ///< Si le fichier est un dossier, recherche (non récursivement) les fichiers correspondant à cette expression
 
-           void setSortStrategy(FileSortStrategy strategy, bool descending); ///< Change la stratégie de tri des fichiers du dossier ; une stratégie ici est un critère de tri et un ordre
+           void setSortStrategy(FileSortStrategy const& strategy, bool const& descending); ///< Change la stratégie de tri des fichiers du dossier ; une stratégie ici est un critère de tri et un ordre
+
+           void subscribeObserver(FileObserver* observer); ///< Abonne un Observer à ce fichier
+           void unsubscribeObserver(FileObserver* observer); ///< Désabonne un Observer à ce fichier
 
            //Stratégies de tri
            static bool NAME_FILESORTSTRATEGY(File const& a, File const& b)
@@ -213,8 +232,8 @@ namespace khanar
              return a.getLastAccessTime() < b.getLastAccessTime();
            }  ///< Tri alphabétique par date de modification
 
-           static string getUIDName(uid_t gid); ///< Renvoie le nom d'un UID donné
-           static string getGIDName(gid_t gid); ///< Renvoie le nom d'un GID donné
+           static string getUIDName(uid_t const& gid); ///< Renvoie le nom d'un UID donné
+           static string getGIDName(gid_t const& gid); ///< Renvoie le nom d'un GID donné
 
            static vector<File> getMountedVolumes(); ///< Renvoie la liste des volumes montés sur le système (volume monté dans la racine exclu)
     };

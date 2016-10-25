@@ -49,6 +49,24 @@ namespace khanar
         updateAttributes(absolutepath);
       }
 
+      void File::notifyObservers()
+      {
+        for (int i = 0; i < this->_observers.size(); i++)
+        {
+          this->_observers.at(i)->fileUpdated(this);
+        }
+      }
+
+      void File::subscribeObserver(FileObserver* observer)
+      {
+        this->_observers.push_back(observer);
+      }
+
+      void File::unsubscribeObserver(FileObserver* observer)
+      {
+        this->_observers.erase(std::remove(this->_observers.begin(), this->_observers.end(), observer), this->_observers.end());
+      }
+
       vector<File> File::getMountedVolumes()
       {
         FILE* mtab = setmntent("/etc/mtab", "r");
@@ -140,15 +158,16 @@ namespace khanar
       {
         this->_fileStat = (const struct stat) {0};
         this->_exists = stat(this->getAbsolutePath().c_str(), &this->_fileStat) == 0;
+        this->notifyObservers();
       }
 
-      void File::setUID(uid_t uid)
+      void File::setUID(uid_t const& uid)
       {
         chown(this->_absolutePath.c_str(), uid, -1);
         this->updateStat();
       }
 
-      void File::setGID(gid_t gid)
+      void File::setGID(gid_t const& gid)
       {
         chown(this->_absolutePath.c_str(), -1, gid);
         this->updateStat();
@@ -212,12 +231,12 @@ namespace khanar
         return this->_fileStat.st_gid;
       }
 
-      string File::getGIDName(gid_t gid)
+      string File::getGIDName(gid_t const& gid)
       {
         return string(getgrgid(gid)->gr_name);
       }
 
-      string File::getUIDName(uid_t uid)
+      string File::getUIDName(uid_t const& uid)
       {
         return string(getpwuid(uid)->pw_name);
       }
@@ -273,7 +292,7 @@ namespace khanar
         updateAttributes(newpath);
       }
 
-      void File::setPermission(enum Permission perm, bool value)
+      void File::setPermission(enum Permission const& perm, bool const& value)
       {
         int toSet = 0;
 
@@ -325,7 +344,7 @@ namespace khanar
         this->updateStat();
       }
 
-      bool File::getPermission(enum Permission perm) const
+      bool File::getPermission(enum Permission const& perm) const
       {
         switch (perm)
         {
@@ -413,7 +432,7 @@ namespace khanar
         return convertSize(this->_fileStat.st_size);
       }
 
-      void File::setSortStrategy(FileSortStrategy strategy, bool descending)
+      void File::setSortStrategy(FileSortStrategy const& strategy, bool const& descending)
       {
         this->_sortStrategy = strategy;
         this->_sortDescending = descending;
@@ -482,6 +501,8 @@ namespace khanar
         {
           sort(_subFiles.begin(), _subFiles.end(), this->_sortStrategy);
         }
+
+        this->notifyObservers();
       }
 
       string File::getExtension() const
