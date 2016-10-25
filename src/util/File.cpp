@@ -143,13 +143,13 @@ namespace khanar
         this->_exists = stat(this->getAbsolutePath().c_str(), &this->_fileStat) == 0;
       }
 
-      void File::setUID(uid_t uid)
+      void File::setUID(uid_t const& uid)
       {
         chown(this->_absolutePath.c_str(), uid, -1);
         this->updateStat();
       }
 
-      void File::setGID(gid_t gid)
+      void File::setGID(gid_t const& gid)
       {
         chown(this->_absolutePath.c_str(), -1, gid);
         this->updateStat();
@@ -213,12 +213,12 @@ namespace khanar
         return this->_fileStat.st_gid;
       }
 
-      string File::getGIDName(gid_t gid)
+      string File::getGIDName(gid_t const& gid)
       {
         return string(getgrgid(gid)->gr_name);
       }
 
-      string File::getUIDName(uid_t uid)
+      string File::getUIDName(uid_t const& uid)
       {
         return string(getpwuid(uid)->pw_name);
       }
@@ -274,7 +274,7 @@ namespace khanar
         updateAttributes(newpath);
       }
 
-      void File::setPermission(enum Permission perm, bool value)
+      void File::setPermission(enum Permission const& perm, bool const& value)
       {
         int toSet = 0;
 
@@ -326,7 +326,7 @@ namespace khanar
         this->updateStat();
       }
 
-      bool File::getPermission(enum Permission perm) const
+      bool File::getPermission(enum Permission const& perm) const
       {
         switch (perm)
         {
@@ -414,7 +414,7 @@ namespace khanar
         return convertSize(this->_fileStat.st_size);
       }
 
-      void File::setSortStrategy(FileSortStrategy strategy, bool descending)
+      void File::setSortStrategy(FileSortStrategy const& strategy, bool const& descending)
       {
         this->_sortStrategy = strategy;
         this->_sortDescending = descending;
