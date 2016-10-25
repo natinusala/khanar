@@ -28,6 +28,18 @@ namespace khanar
     typedef bool (*FileSortStrategy)(File const& a, File const& b);  ///< Critère de tri pour les fichiers a et b
 
     /**
+    * \class FileObserver
+    *
+    * Interface du pattern Observer pour observer la mise à jour des fichiers
+    * Ici, le sujet est File
+    */
+    class FileObserver
+    {
+      public:
+        virtual void fileUpdated(File* file) = 0;
+    };
+
+    /**
     * \class FileType
     *
     * Classe servant à représenter un type de fichier : constitué d'un nom et d'un icône
@@ -147,6 +159,10 @@ namespace khanar
 
            void updateAttributes(string absolutepath);
 
+           vector<FileObserver*> _observers;
+
+           void notifyObservers();
+
         public:
            /**
            * \brief Constructeur prenant le fichier parent et le nom du fichier actuel
@@ -196,6 +212,9 @@ namespace khanar
            vector<File> search(string expression); ///< Si le fichier est un dossier, recherche (non récursivement) les fichiers correspondant à cette expression
 
            void setSortStrategy(FileSortStrategy const& strategy, bool const& descending); ///< Change la stratégie de tri des fichiers du dossier ; une stratégie ici est un critère de tri et un ordre
+
+           void subscribeObserver(FileObserver* observer); ///< Abonne un Observer à ce fichier
+           void unsubscribeObserver(FileObserver* observer); ///< Désabonne un Observer à ce fichier
 
            //Stratégies de tri
            static bool NAME_FILESORTSTRATEGY(File const& a, File const& b)

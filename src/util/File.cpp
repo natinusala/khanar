@@ -49,6 +49,24 @@ namespace khanar
         updateAttributes(absolutepath);
       }
 
+      void File::notifyObservers()
+      {
+        for (int i = 0; i < this->_observers.size(); i++)
+        {
+          this->_observers.at(i)->fileUpdated(this);
+        }
+      }
+
+      void File::subscribeObserver(FileObserver* observer)
+      {
+        this->_observers.push_back(observer);
+      }
+
+      void File::unsubscribeObserver(FileObserver* observer)
+      {
+        this->_observers.erase(std::remove(this->_observers.begin(), this->_observers.end(), observer), this->_observers.end());
+      }
+
       vector<File> File::getMountedVolumes()
       {
         FILE* mtab = setmntent("/etc/mtab", "r");
@@ -141,6 +159,7 @@ namespace khanar
       {
         this->_fileStat = (const struct stat) {0};
         this->_exists = stat(this->getAbsolutePath().c_str(), &this->_fileStat) == 0;
+        this->notifyObservers();
       }
 
       void File::setUID(uid_t const& uid)
@@ -483,6 +502,8 @@ namespace khanar
         {
           sort(_subFiles.begin(), _subFiles.end(), this->_sortStrategy);
         }
+
+        this->notifyObservers();
       }
 
       string File::getExtension() const
