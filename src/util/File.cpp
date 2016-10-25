@@ -14,6 +14,14 @@
 #include <iostream>
 #include <cstdio>
 #include <fstream>
+#include <cstring>
+#include <grp.h>
+#include <unistd.h>
+#include <regex>
+#include <pwd.h>
+#include <mntent.h>
+#include <sys/vfs.h>
+#include <sys/types.h>
 
 namespace khanar
 {
@@ -41,6 +49,51 @@ namespace khanar
         updateAttributes(absolutepath);
       }
 
+      vector<File> File::getMountedVolumes()
+      {
+        FILE* mtab = setmntent("/etc/mtab", "r");
+        struct mntent* m;
+        struct mntent mnt;
+        char strings[4096];
+
+        vector<File> result;
+
+        while ((m = getmntent_r(mtab, &mnt, strings, sizeof(strings))))
+        {
+          struct statfs fs;
+          if (mnt.mnt_dir != NULL && statfs(mnt.mnt_dir, &fs) == 0)
+          {
+            string name = string(mnt.mnt_fsname); // /dev/machin (utilisé pour trier les volumes voulus)
+            string dir = string(mnt.mnt_dir);     // /media/machin/truc (chemin final du File retourné)
+            string prefix = "/dev/";
+
+            if (!name.compare(0, prefix.size(), prefix) && dir != "/")
+            {
+              result.push_back(File(dir));
+            }
+          }
+        }
+
+        endmntent(mtab);
+
+        return result;
+      }
+
+      void File::openXterm() const
+      {
+        if (!this->isDirectory())
+        {
+          throw FileException("Ce fichier n'est pas un dossier.");
+        }
+
+        if (fork() == 0)
+        {
+          string command = "cd \"" + this->_absolutePath + "\" && xterm";
+          system(command.c_str());
+          exit(0);
+        }
+      }
+
       void File::updateAttributes(string absolutepath)
       {
         if (absolutepath.empty())
@@ -49,15 +102,18 @@ namespace khanar
         }
 
         //Formattage du nom
-        if (absolutepath.back() == '/')
+        if (absolutepath.back() == '/' && absolutepath != "/")
         {
           absolutepath = absolutepath.substr(0, absolutepath.length()-1);
         }
 
         //Expansion du nom (par exemple transformer "~" en "/home/user")
         wordexp_t exp_result;
-        wordexp(absolutepath.c_str(), &exp_result, 0);
-        absolutepath = string(exp_result.we_wordv[0]);
+        if (wordexp(absolutepath.c_str(), &exp_result, 0) == 0)
+        {
+          absolutepath = string(exp_result.we_wordv[0]);
+        }
+
 
         //Construction
         size_t pos = absolutepath.find_last_of("/");
@@ -86,9 +142,89 @@ namespace khanar
         this->_exists = stat(this->getAbsolutePath().c_str(), &this->_fileStat) == 0;
       }
 
+      void File::setUID(uid_t uid)
+      {
+        chown(this->_absolutePath.c_str(), uid, -1);
+        this->updateStat();
+      }
+
+      void File::setGID(gid_t gid)
+      {
+        chown(this->_absolutePath.c_str(), -1, gid);
+        this->updateStat();
+      }
+
+      vector<File> File::search(string expression)
+      {
+        if (!this->isDirectory())
+        {
+          throw FileException("Le fichier n'est pas un dossier");
+        }
+        this->updateSubFiles();
+
+        vector<File> result;
+        regex r = regex(expression);
+
+        for (int i = 0; i < this->_subFiles.size(); i++)
+        {
+          File f = this->_subFiles.at(i);
+
+          if (regex_match(f.getName(), r))
+          {
+            result.push_back(f);
+          }
+        }
+
+        return result;
+      }
+
       string File::getName() const
       {
         return this->_name;
+      }
+
+      long File::getLastAccessTime() const
+      {
+        return this->_fileStat.st_atime;
+      }
+
+      void File::createNewFile()
+      {
+        if (this->_exists)
+        {
+          throw FileException("Le fichier existe déjà");
+        }
+
+        fstream fs;
+        fs.open(this->_absolutePath, ios::out);
+        fs.close();
+
+        this->updateStat();
+      }
+
+      unsigned File::getUID() const
+      {
+        return this->_fileStat.st_uid;
+      }
+
+      unsigned File::getGID() const
+      {
+        return this->_fileStat.st_gid;
+      }
+
+      string File::getGIDName(gid_t gid)
+      {
+        return string(getgrgid(gid)->gr_name);
+      }
+
+      string File::getUIDName(uid_t uid)
+      {
+        return string(getpwuid(uid)->pw_name);
+      }
+
+      long File::getLastModificationTime() const
+      {
+        return this->_fileStat.st_mtime;
       }
 
       string File::getAbsolutePath() const
@@ -106,7 +242,22 @@ namespace khanar
         move(this->_parentFolderAbsolutePath + '/' + newname);
       }
 
-      File File::copy(string newpath)
+      void File::removeFile()
+      {
+        if (this->isDirectory())
+        {
+          this->updateSubFiles();
+          for (int i = 0; i < this->_subFiles.size(); i++)
+          {
+            this->_subFiles.at(i).removeFile();
+          }
+        }
+
+        remove(this->_absolutePath.c_str());
+        this->updateStat();
+      }
+
+      File File::copy(string newpath) const
       {
         ifstream src = ifstream(this->_absolutePath, ios::binary);
         ofstream dst = ofstream(newpath, ios::binary);
@@ -300,7 +451,10 @@ namespace khanar
 
         while (fichier != NULL)
         {
-          list.push_back(File(this->_absolutePath + "/" + string(fichier->d_name)));
+          if (strcmp(fichier->d_name, ".") != 0 && strcmp(fichier->d_name, ".."))
+          {
+            list.push_back(File(this->_absolutePath + "/" + string(fichier->d_name)));
+          }
           fichier = readdir(dir);
         }
 

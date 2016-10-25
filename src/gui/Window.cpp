@@ -45,6 +45,8 @@ namespace khanar
     this->_notebook->append_page(*add,*tmp);
     labelOngletPlus();
 
+    onglet.setPropBar(File("/home/killy/Téléchargements/cunei.ttf"));
+
   }
   void Window::addOnglet(string filepath, string title){
       //TODO Récupérer la liste des fichier du répèrtoire à afficher
@@ -64,7 +66,7 @@ namespace khanar
 
 
       this->_notebook->remove_page(-1);
-      //this->_notebook->append_page(*add,*tmp);
+      this->_notebook->append_page(*add,*tmp);
       labelOngletPlus();
 
   }

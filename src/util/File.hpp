@@ -124,7 +124,6 @@ namespace khanar
     class File
     {
         //TODO Patron Observateur pour notifier des changements du fichier à l'interface
-        //TODO Vérifier que le fichier existe un peu partout
 
         private:
            string _name;
@@ -167,6 +166,10 @@ namespace khanar
            string getAbsolutePath() const; ///< Récupère le chemin absolu vers le fichier (parentAbsolutePath + name)
            string getExtension() const; ///< Récupère l'extension du fichier
            FileType getFileType() const; ///< Récupère le type du fichier (type de données + icône)
+           long getLastAccessTime() const; ///< Récupère la date du dernier accès
+           long getLastModificationTime() const; ///< Récupère la date de la dernière modification
+           uid_t getUID() const; ///< Récupère l'utilisateur du fichier
+           gid_t getGID() const; ///< Récupère le groupe du fichier
 
            bool isDirectory() const; ///< Indique si le fichier est un dossier
            bool exists() const; ///< Renvoie si le fichier existe ou non
@@ -174,7 +177,13 @@ namespace khanar
 
            void setName(string newname); ///< Renomme le fichier (le nom rename n'a pas pu être utilisé à cause d'un conflit avec le rename de cstdio)
            void move(string newpath); ///< Déplace/renomme le fichier
-           File copy(string newpath); ///< Copie le fichier dans newpath et renvoie son objet File
+           File copy(string newpath) const; ///< Copie le fichier dans newpath et renvoie son objet File
+           void removeFile(); ///< Supprime le fichier/dossier (récursivement) (le nom remove n'a pas pu être utilisé à cause d'un conflit avec le rename de cstdio)
+           void createNewFile(); ///< Si le fichier n'existe pas, le crée (fichier vide)
+           void setGID(gid_t gid); ///< Modifie le GID du fichier
+           void setUID(uid_t uid); ///< Modifie le UID du fichier
+
+           void openXterm() const; ///< Si c'est un dossier, ouvre Xterm dans un nouveau processus
 
            bool getPermission(enum Permission perm) const; ///< Renvoie si la permission demandée est accordée ou non (depuis l'enum Permission)
            void setPermission(enum Permission perm, bool value); ///< Modifie la permission (depuis l'enum Permission)
@@ -184,6 +193,7 @@ namespace khanar
            string getFormattedSize() const; ///< Renvoie la taille du fichier formattée dans un String
 
            vector<File>* getSubFiles(); ///< Si le fichier est un dossier, renvoie la liste des sous dossiers, NULL sinon
+           vector<File> search(string expression); ///< Si le fichier est un dossier, recherche (non récursivement) les fichiers correspondant à cette expression
 
            void setSortStrategy(FileSortStrategy strategy, bool descending); ///< Change la stratégie de tri des fichiers du dossier ; une stratégie ici est un critère de tri et un ordre
 
@@ -197,6 +207,16 @@ namespace khanar
            {
              return a.getName() < b.getName();
            }  ///< Tri alphabétique par taille
+
+           static bool ACCESSTIME_FILESORTSTRATEGY(File const& a, File const& b)
+           {
+             return a.getLastAccessTime() < b.getLastAccessTime();
+           }  ///< Tri alphabétique par date de modification
+
+           static string getUIDName(uid_t gid); ///< Renvoie le nom d'un UID donné
+           static string getGIDName(gid_t gid); ///< Renvoie le nom d'un GID donné
+
+           static vector<File> getMountedVolumes(); ///< Renvoie la liste des volumes montés sur le système (volume monté dans la racine exclu)
     };
 
     /**

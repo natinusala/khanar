@@ -7,6 +7,7 @@
 
 #include <gtkmm.h>
 #include "../util/Assets.hpp"
+#include "../util/File.hpp"
 #include <cstdint>
 #include <iostream>
 
@@ -34,6 +35,7 @@ namespace khanar
       TabContent();
       TabContent(Gtk::Widget *widget);
       Gtk::Box* getContent(Gtk::Widget *widget);
+      void setPropBar(File f);
 
 
 
