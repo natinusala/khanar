@@ -132,7 +132,6 @@ namespace khanar
           absolutepath = string(exp_result.we_wordv[0]);
         }
 
-        cout << absolutepath << endl;
 
         //Construction
         size_t pos = absolutepath.find_last_of("/");
