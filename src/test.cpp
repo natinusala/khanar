@@ -8,7 +8,7 @@ using namespace std;
 #include <stdio.h>
 #include <unistd.h>
 
-int main()
+int main_khanar()
 {
   try
   {
