@@ -22,10 +22,13 @@
 #include <mntent.h>
 #include <sys/vfs.h>
 #include <sys/types.h>
+#include "../libs/json/json.h"
 
 namespace khanar
 {
       // File
+      string File::FAVORITES_DIRECTORY = "~/.config/khanar/favorites.json";
+
       File::File(File* parent, string name)
       {
         if (parent == NULL || !parent->exists() || !parent->isDirectory())
@@ -65,6 +68,76 @@ namespace khanar
       void File::unsubscribeObserver(FileObserver* observer)
       {
         this->_observers.erase(std::remove(this->_observers.begin(), this->_observers.end(), observer), this->_observers.end());
+      }
+
+      vector<File> File::getFavorites()
+      {
+        vector<File> v;
+
+        File favorites = File(File::FAVORITES_DIRECTORY);
+
+        if (!favorites.exists())
+          favorites.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+
+        Json::Value root;
+        Json::Reader().parse(favorites.read(), root);
+
+        if (root.type() == Json::arrayValue)
+        {
+          for (int i = 0; i < root.size(); i++)
+          {
+            v.push_back(File(root[i].asString()));
+          }
+        }
+
+        return v;
+      }
+
+      void File::addToFavorites()
+      {
+        vector<File> v = File::getFavorites();
+        v.push_back(*this);
+
+        File::updateFavorites(v);
+      }
+
+      void File::removeFromFavorites()
+      {
+        vector<File> v = File::getFavorites();
+        v.erase(std::remove(v.begin(), v.end(), *this), v.end());
+
+        File::updateFavorites(v);
+      }
+
+      bool File::isInFavorites()
+      {
+        vector<File> v = File::getFavorites();
+
+        for (int i = 0; i < v.size(); i++)
+        {
+          if (v.at(i) == *this)
+            return true;
+        }
+
+        return false;
+      }
+
+      void File::updateFavorites(vector<File> newFavorites)
+      {
+        File favorites = File(File::FAVORITES_DIRECTORY);
+
+        if (!favorites.exists())
+          favorites.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+
+        Json::Value root = Json::Value(Json::arrayValue);
+
+        for (int i = 0; i < newFavorites.size(); i++)
+        {
+          root.append(newFavorites.at(i).getAbsolutePath());
+        }
+
+        string json = Json::FastWriter().write(root);
+        favorites.write(json);
       }
 
       vector<File> File::getMountedVolumes()
@@ -230,11 +303,25 @@ namespace khanar
         return this->_fileStat.st_atime;
       }
 
-      void File::createNewFile()
+      void File::createNewFile(mode_t mode)
       {
         if (this->_exists)
         {
           throw FileException("Le fichier existe déjà");
+        }
+
+        File parent = File(this->_parentFolderAbsolutePath);
+        vector<File> toCreate;
+
+        while (!parent.exists())
+        {
+          toCreate.push_back(parent);
+          parent = File(parent.getParentFolderAbsolutePath());
+        }
+
+        for (int i = toCreate.size()-1; i >= 0; i--)
+        {
+          mkdir(toCreate.at(i).getAbsolutePath().c_str(), mode);
         }
 
         fstream fs;

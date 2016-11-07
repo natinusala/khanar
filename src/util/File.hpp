@@ -163,6 +163,8 @@ namespace khanar
 
            void notifyObservers();
 
+           static void updateFavorites(vector<File> newFavorites);
+
         public:
            /**
            * \brief Constructeur prenant le fichier parent et le nom du fichier actuel
@@ -176,6 +178,11 @@ namespace khanar
            * \param[in] string le chemin absolu du fichier
            */
            File(string absolutepath);
+
+           inline bool operator==(const File& other)
+           {
+             return getAbsolutePath() == other.getAbsolutePath();
+           };
 
            string getName() const;  ///< Récupère le nom du fichier
            string getParentFolderAbsolutePath() const; ///< Récupère le chemin absolu vers le dossier parent
@@ -195,7 +202,7 @@ namespace khanar
            void move(string newpath); ///< Déplace/renomme le fichier
            File copy(string newpath) const; ///< Copie le fichier dans newpath et renvoie son objet File
            void removeFile(); ///< Supprime le fichier/dossier (récursivement) (le nom remove n'a pas pu être utilisé à cause d'un conflit avec le rename de cstdio)
-           void createNewFile(); ///< Si le fichier n'existe pas, le crée (fichier vide)
+           void createNewFile(mode_t mode); ///< Si le fichier n'existe pas, le crée (fichier vide) ainsi que son chemin
            void setGID(gid_t const& gid); ///< Modifie le GID du fichier
            void setUID(uid_t const& uid); ///< Modifie le UID du fichier
 
@@ -218,6 +225,13 @@ namespace khanar
 
            void write(string data); ///< Ecrit dans le fichier (remplace le contenu déjà existant)
            string read(); ///< Lit le contenu du fichier
+
+           bool isInFavorites(); ///< Indique si le fichier est dans les favoris
+           void addToFavorites(); ///< Ajoute le fichier aux favoris
+           void removeFromFavorites(); ///< Retire le fichier des favoris
+
+           static string FAVORITES_DIRECTORY;
+           static vector<File> getFavorites(); ///< Renvoie les dossiers favoris (~/.config/khanar/favorites.json)
 
            //Stratégies de tri
            static bool NAME_FILESORTSTRATEGY(File const& a, File const& b)

@@ -14,8 +14,11 @@ int main()
 {
   try
   {
-    File file = File("/home/natinusala/Bureau/ilebomonfichier");
-    cout << file.read() << endl;
+
+    File f = File("/home/natinusala/Bureau/ilebomonfichier");
+    cout << f.isInFavorites() << endl;
+
+
     /*Json::Value root;
 
     root["prout"] = "lel";
