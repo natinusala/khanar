@@ -8,14 +8,23 @@ using namespace std;
 #include <stdio.h>
 #include <unistd.h>
 
-int main_khanar()
+#include "libs/json/json.h"
+
+int main()
 {
   try
   {
+    File file = File("/home/natinusala/Bureau/ilebomonfichier");
+    cout << file.read() << endl;
+    /*Json::Value root;
 
-    File file = File("/");
+    root["prout"] = "lel";
+
+    cout << root << endl;*/
+
+    /*File file = File("/");
     cout << file.exists() << endl;
-    file.openXterm();
+    file.openXterm();*/
 
     /**File file = File("/home/natinusala/Bureau");
 

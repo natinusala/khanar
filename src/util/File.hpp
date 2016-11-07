@@ -216,6 +216,9 @@ namespace khanar
            void subscribeObserver(FileObserver* observer); ///< Abonne un Observer à ce fichier
            void unsubscribeObserver(FileObserver* observer); ///< Désabonne un Observer à ce fichier
 
+           void write(string data); ///< Ecrit dans le fichier (remplace le contenu déjà existant)
+           string read(); ///< Lit le contenu du fichier
+
            //Stratégies de tri
            static bool NAME_FILESORTSTRATEGY(File const& a, File const& b)
            {

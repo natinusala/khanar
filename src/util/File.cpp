@@ -112,6 +112,29 @@ namespace khanar
         }
       }
 
+      void File::write(string data)
+      {
+        ofstream file = ofstream(this->_absolutePath);
+        if (file.is_open())
+        {
+          file << data;
+          file.close();
+          this->updateStat();
+        }
+      }
+
+      string File::read()
+      {
+        std::ostringstream os;
+        ifstream file = ifstream(this->_absolutePath);
+        if (file.is_open())
+        {
+          os << file.rdbuf();
+          file.close();
+        }
+        return os.str();
+      }
+
       void File::updateAttributes(string absolutepath)
       {
         if (absolutepath.empty())
