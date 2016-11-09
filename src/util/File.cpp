@@ -99,6 +99,8 @@ namespace khanar
         v.push_back(*this);
 
         File::updateFavorites(v);
+
+        this->notifyObservers();
       }
 
       void File::removeFromFavorites()
@@ -107,6 +109,8 @@ namespace khanar
         v.erase(std::remove(v.begin(), v.end(), *this), v.end());
 
         File::updateFavorites(v);
+
+        this->notifyObservers();
       }
 
       bool File::isInFavorites()
