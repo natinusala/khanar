@@ -55,7 +55,13 @@ namespace khanar
 
         string getName();
         string getIcon();
+
     };
+
+    static FileType FILETYPE_DIRECTORY = FileType("Dossier", "folder");
+    static FileType FILETYPE_EXECUTABLE = FileType("Fichier exécutable", "application-x-executable");
+    static FileType FILETYPE_GENERIC_FILE = FileType("Fichier", "text-x-generic");
+
 
     #define FILETYPE_IMAGE(E) FileType(string("Image ") + string(E), "image-x-generic")
     #define FILETYPE_FONT(E) FileType(string("Police ") + string(E), "font-x-generic")

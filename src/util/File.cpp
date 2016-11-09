@@ -503,20 +503,23 @@ namespace khanar
         string extension = this->_extension;
         STR_TOLOWER(extension);
 
-        if (FILETYPE_EXTENSIONS_MAP.find(this->_extension) != FILETYPE_EXTENSIONS_MAP.end())
+        if (this->isDirectory())
+        {
+          return FILETYPE_DIRECTORY;
+        }
+        else if (this->isExecutable())
+        {
+          return FILETYPE_EXECUTABLE;
+        }
+        else if (FILETYPE_EXTENSIONS_MAP.find(this->_extension) != FILETYPE_EXTENSIONS_MAP.end())
         {
           return FILETYPE_EXTENSIONS_MAP.at(this->_extension);
         }
         else
         {
-          if (this->isExecutable())
-          {
-            return FileType("Fichier exécutable", "application-x-executable");
-          }
-
           if (extension.empty())
           {
-            return FileType("Fichier", "text-x-generic");
+            return FILETYPE_GENERIC_FILE;
           }
           else
           {
