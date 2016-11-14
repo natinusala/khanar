@@ -22,10 +22,13 @@
 #include <mntent.h>
 #include <sys/vfs.h>
 #include <sys/types.h>
+#include "../libs/json/json.h"
 
 namespace khanar
 {
       // File
+      string File::FAVORITES_DIRECTORY = "~/.config/khanar/favorites.json";
+
       File::File(File* parent, string name)
       {
         if (parent == NULL || !parent->exists() || !parent->isDirectory())
@@ -65,6 +68,80 @@ namespace khanar
       void File::unsubscribeObserver(FileObserver* observer)
       {
         this->_observers.erase(std::remove(this->_observers.begin(), this->_observers.end(), observer), this->_observers.end());
+      }
+
+      vector<File> File::getFavorites()
+      {
+        vector<File> v;
+
+        File favorites = File(File::FAVORITES_DIRECTORY);
+
+        if (!favorites.exists())
+          favorites.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+
+        Json::Value root;
+        Json::Reader().parse(favorites.read(), root);
+
+        if (root.type() == Json::arrayValue)
+        {
+          for (int i = 0; i < root.size(); i++)
+          {
+            v.push_back(File(root[i].asString()));
+          }
+        }
+
+        return v;
+      }
+
+      void File::addToFavorites()
+      {
+        vector<File> v = File::getFavorites();
+        v.push_back(*this);
+
+        File::updateFavorites(v);
+
+        this->notifyObservers();
+      }
+
+      void File::removeFromFavorites()
+      {
+        vector<File> v = File::getFavorites();
+        v.erase(std::remove(v.begin(), v.end(), *this), v.end());
+
+        File::updateFavorites(v);
+
+        this->notifyObservers();
+      }
+
+      bool File::isInFavorites()
+      {
+        vector<File> v = File::getFavorites();
+
+        for (int i = 0; i < v.size(); i++)
+        {
+          if (v.at(i) == *this)
+            return true;
+        }
+
+        return false;
+      }
+
+      void File::updateFavorites(vector<File> newFavorites)
+      {
+        File favorites = File(File::FAVORITES_DIRECTORY);
+
+        if (!favorites.exists())
+          favorites.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+
+        Json::Value root = Json::Value(Json::arrayValue);
+
+        for (int i = 0; i < newFavorites.size(); i++)
+        {
+          root.append(newFavorites.at(i).getAbsolutePath());
+        }
+
+        string json = Json::FastWriter().write(root);
+        favorites.write(json);
       }
 
       vector<File> File::getMountedVolumes()
@@ -110,6 +187,29 @@ namespace khanar
           system(command.c_str());
           exit(0);
         }
+      }
+
+      void File::write(string data)
+      {
+        ofstream file = ofstream(this->_absolutePath);
+        if (file.is_open())
+        {
+          file << data;
+          file.close();
+          this->updateStat();
+        }
+      }
+
+      string File::read()
+      {
+        std::ostringstream os;
+        ifstream file = ifstream(this->_absolutePath);
+        if (file.is_open())
+        {
+          os << file.rdbuf();
+          file.close();
+        }
+        return os.str();
       }
 
       void File::updateAttributes(string absolutepath)
@@ -207,11 +307,25 @@ namespace khanar
         return this->_fileStat.st_atime;
       }
 
-      void File::createNewFile()
+      void File::createNewFile(mode_t mode)
       {
         if (this->_exists)
         {
           throw FileException("Le fichier existe déjà");
+        }
+
+        File parent = File(this->_parentFolderAbsolutePath);
+        vector<File> toCreate;
+
+        while (!parent.exists())
+        {
+          toCreate.push_back(parent);
+          parent = File(parent.getParentFolderAbsolutePath());
+        }
+
+        for (int i = toCreate.size()-1; i >= 0; i--)
+        {
+          mkdir(toCreate.at(i).getAbsolutePath().c_str(), mode);
         }
 
         fstream fs;
@@ -389,20 +503,23 @@ namespace khanar
         string extension = this->_extension;
         STR_TOLOWER(extension);
 
-        if (FILETYPE_EXTENSIONS_MAP.find(this->_extension) != FILETYPE_EXTENSIONS_MAP.end())
+        if (this->isDirectory())
+        {
+          return FILETYPE_DIRECTORY;
+        }
+        else if (this->isExecutable())
+        {
+          return FILETYPE_EXECUTABLE;
+        }
+        else if (FILETYPE_EXTENSIONS_MAP.find(this->_extension) != FILETYPE_EXTENSIONS_MAP.end())
         {
           return FILETYPE_EXTENSIONS_MAP.at(this->_extension);
         }
         else
         {
-          if (this->isExecutable())
-          {
-            return FileType("Fichier exécutable", "application-x-executable");
-          }
-
           if (extension.empty())
           {
-            return FileType("Fichier", "text-x-generic");
+            return FILETYPE_GENERIC_FILE;
           }
           else
           {
