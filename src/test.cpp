@@ -10,7 +10,7 @@ using namespace std;
 
 #include "libs/json/json.h"
 
-int main()
+int main_khanar()
 {
   try
   {

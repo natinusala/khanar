@@ -35,15 +35,15 @@ ExampleWindow::ExampleWindow(Glib::ustring path)
   }
 
   auto cell = Gtk::manage(new Gtk::CellRendererPixbuf);
-  m_TreeView.append_column("Ico", *cell);
+  m_TreeView.append_column("   ", *cell);
   auto pColumn = m_TreeView.get_column(0);
   if(pColumn)
   {
     Glib::ustring str = "icon_name";
     pColumn->add_attribute(*cell,str,m_Columns.m_col_ico);
   }
-  m_TreeView.append_column("Name", m_Columns.m_col_name);
-  m_TreeView.append_column_numeric("Size", m_Columns.m_col_number,"%010d");
+  m_TreeView.append_column("Nom", m_Columns.m_col_name);
+  m_TreeView.append_column_numeric("Taille", m_Columns.m_col_number,"%010d");
   //Make all the columns reorderable:
   //This is not necessary, but it's nice to show the feature.
   //You can use TreeView::set_column_drag_function() to more
