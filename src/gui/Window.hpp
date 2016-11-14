@@ -8,6 +8,7 @@
 #include <gtkmm.h>
 #include "../util/Assets.hpp"
 #include "TreeViewLib.hpp"
+#include "Examplewindow.hpp"
 #include <cstdint>
 #include <iostream>
 

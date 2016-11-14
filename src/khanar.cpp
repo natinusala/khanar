@@ -8,13 +8,10 @@
 #include <iostream>
 // #include "util/Assets.hpp"
 #include "gui/Window.hpp"
+#include "gui/TreeViewLib.hpp"
+#include "gui/Examplewindow.hpp"
 
-
-/*#include "compiled_assets/window.glade.hex"
-#include "compiled_assets/topbar.glade.hex"/*
-#include "compiled_assets/boxlayout.glade.hex"*/
-#include "compiled_assets/recents.glade.hex"/*
-#include "compiled_assets/panelsidebar.glade.hex"*/
+#include "compiled_assets/recents.glade.hex"
 
 
 
@@ -26,35 +23,29 @@ using namespace Gtk;
 
 int main(int argc, char* argv[])
 {
-  //Ouverture de la fenêtre principale
+
   Main app(argc, argv);
 
   try
 	{
-    //Création des constructeurs glade
-      /*RefPtr<Builder> win_builder = Assets::buildGtkFromResource(window_glade);
-        RefPtr<Builder> topbar_builder = Assets::buildGtkFromResource(topbar_glade);
-        RefPtr<Builder> topbar_builder2 = Assets::buildGtkFromResource(topbar_glade);
-      /*  RefPtr<Builder> box_builder = Assets::buildGtkFromResource(boxlayout_glade);
-        RefPtr<Builder> sidebar_builder = Assets::buildGtkFromResource(panelsidebar_glade);*/
-        RefPtr<Builder> recent_builder = Assets::buildGtkFromResource(recents_glade);
+
+      RefPtr<Builder> recent_builder = Assets::buildGtkFromResource(recents_glade);
         RefPtr<Builder> recent_builder2 = Assets::buildGtkFromResource(recents_glade);
 
         Gtk::Window* win = nullptr;
         khanar::Window win_builder = khanar::Window();
         win = win_builder.getWindow();
 
+        ExampleWindow exa("/home/killy");
         Gtk::Widget* chooser1 = nullptr;
         Gtk::Widget* chooser2 = nullptr;
         recent_builder->get_widget("rec", chooser1);
         recent_builder2->get_widget("rec", chooser2);
 
-        win_builder.addOnglet(chooser1, "Test");
-
-        win_builder.addOnglet(chooser2, "Test 2");
-
-        win_builder.addOnglet("/home/killy/" ,"Test 3");
-
+        win_builder.addOnglet(&exa ,"Test");
+        win_builder.addOnglet("Tamere" ,"Test");
+        win_builder.addOnglet(chooser1 ,"Test 2");
+        win_builder.addOnglet(chooser2 ,"Test 3");
 
         Main::run(*win);
 

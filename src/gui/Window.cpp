@@ -50,12 +50,10 @@ namespace khanar
   }
   void Window::addOnglet(string filepath, string title){
       //TODO Récupérer la liste des fichier du répèrtoire à afficher
-
-      TreeViewLib tvl(filepath);
-
       TabContent onglet = TabContent();
+      ExampleWindow exa("/home/killy/Documents");
 
-      Gtk::Box *add = onglet.getContent(tvl.getVBox());
+      Gtk::Box *add = onglet.getContent(&exa);
       this->_onglets.push_back(onglet);
       Gtk::Box* tmp = nullptr;
       Gtk::Label* label = nullptr;

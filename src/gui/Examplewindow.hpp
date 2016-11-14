@@ -1,21 +1,14 @@
-#ifndef TREEVIEWLIB_HPP
-#define TREEVIEWLIB_HPP
+#ifndef GTKMM_EXAMPLEWINDOW_H
+#define GTKMM_EXAMPLEWINDOW_H
 
 #include <gtkmm.h>
-#include <string>
 
-using namespace std;
-
-namespace khanar{
-
-class TreeViewLib : public Gtk::Window
+class ExampleWindow : public Gtk::Box
 {
 public:
-  TreeViewLib(Glib::ustring path);
-
+  ExampleWindow(Glib::ustring path);
 protected:
-  //Signal handlers:
-  void on_button_quit();
+
 
   //Tree model columns:
   class ModelColumns : public Gtk::TreeModel::ColumnRecord
@@ -33,12 +26,11 @@ protected:
   ModelColumns m_Columns;
 
   //Child widgets:
-  Gtk::VBox m_VBox;
+  Gtk::Box m_VBox;
+
   Gtk::ScrolledWindow m_ScrolledWindow;
   Gtk::TreeView m_TreeView;
   Glib::RefPtr<Gtk::ListStore> m_refTreeModel;
 };
 
-}
-
-#endif
+#endif //GTKMM_EXAMPLEWINDOW_H
