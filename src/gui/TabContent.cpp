@@ -74,7 +74,6 @@ namespace khanar{
     box->append("lol");
     box->append("Mdr");
 
-  //  string name = getpwuid(f.getUID());
 
   }
 }

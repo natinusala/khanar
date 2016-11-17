@@ -2,6 +2,9 @@
 #include "Examplewindow.hpp"
 #include "../util/File.hpp"
 
+
+//TODO: Ajouter un attribut vector pour retenir les fichiers contenu dans l'interface.
+
 ExampleWindow::ExampleWindow(){
   m_ScrolledWindow.add(m_TreeView);
 
