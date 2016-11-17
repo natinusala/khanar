@@ -41,12 +41,14 @@ namespace khanar{
     Gtk::Label* acces = nullptr;
     Gtk::Label* modifie = nullptr;
     Gtk::Label* nomProprio = nullptr;
+    Gtk::ComboBoxText* box = nullptr;
     this->_builder->get_widget("nom",nom);
     this->_builder->get_widget("type",type);
     this->_builder->get_widget("taill",taill);
     this->_builder->get_widget("acces",acces);
     this->_builder->get_widget("modifie",modifie);
     this->_builder->get_widget("nomProprietaire",nomProprio);
+    this->_builder->get_widget("groupecombo",box);
     nom->set_text(f.getName());
     type->set_text(f.getFileType().getName());
     taill->set_text(to_string(f.getSize()/1000)+"ko");
@@ -69,6 +71,8 @@ namespace khanar{
     strcpy(result,acc2);
     strcat(result,buffer);
     modifie->set_text(result);
+    box->append("lol");
+    box->append("Mdr");
 
   //  string name = getpwuid(f.getUID());
 
