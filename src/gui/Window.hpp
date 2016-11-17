@@ -13,6 +13,7 @@
 #include <iostream>
 
 
+
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
@@ -40,7 +41,6 @@ namespace khanar
           Window();
           Gtk::Window* getWindow();
           void addOnglet(Gtk::Widget* widget ,string str );
-          void addOnglet();
           void delOnglet(int idOnglet);
           void setPropInfo(string nom, string type, string icon, string Dateacces, string Datemodif, string proprietaire,string DroitProprietaire, string Groupe, string DroitGroupe, string DroitAutre ); //TO DO -> Ajouter les arguments correspondant au changement d'informations d'une barre de propriétés
           void addOnglet(string folder ,string title);

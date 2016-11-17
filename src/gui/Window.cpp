@@ -11,6 +11,7 @@
 #include "../compiled_assets/close.glade.hex"
 #include "../compiled_assets/new.glade.hex"
 
+
 namespace khanar
 {
   Window::Window()
@@ -50,10 +51,10 @@ namespace khanar
   }
   void Window::addOnglet(string filepath, string title){
       //TODO Récupérer la liste des fichier du répèrtoire à afficher
+      ExampleWindow *widget = new ExampleWindow(filepath);
       TabContent onglet = TabContent();
-      ExampleWindow exa("/home/killy/Documents");
 
-      Gtk::Box *add = onglet.getContent(&exa);
+      Gtk::Box *add = onglet.getContent(widget->getVbox());
       this->_onglets.push_back(onglet);
       Gtk::Box* tmp = nullptr;
       Gtk::Label* label = nullptr;
@@ -66,6 +67,8 @@ namespace khanar
       this->_notebook->remove_page(-1);
       this->_notebook->append_page(*add,*tmp);
       labelOngletPlus();
+
+      onglet.setPropBar(File("/home/killy/Téléchargements/cunei.ttf"));
 
   }
 

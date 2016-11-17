@@ -3,10 +3,12 @@
 
 #include <gtkmm.h>
 
-class ExampleWindow : public Gtk::Box
+class ExampleWindow
 {
 public:
+  ExampleWindow();
   ExampleWindow(Glib::ustring path);
+  Gtk::Box* getVbox();
 protected:
 
 
@@ -20,7 +22,7 @@ protected:
 
     Gtk::TreeModelColumn<Glib::ustring> m_col_ico;
     Gtk::TreeModelColumn<Glib::ustring> m_col_name;
-    Gtk::TreeModelColumn<short> m_col_number;
+    Gtk::TreeModelColumn<Glib::ustring> m_col_number;
   };
 
   ModelColumns m_Columns;
