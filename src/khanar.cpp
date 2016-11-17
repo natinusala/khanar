@@ -21,7 +21,7 @@ using namespace khanar;
 using namespace Glib;
 using namespace Gtk;
 
-int main_khanar(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 
   Main app(argc, argv);
@@ -41,10 +41,7 @@ int main_khanar(int argc, char* argv[])
         recent_builder->get_widget("rec", chooser1);
         recent_builder2->get_widget("rec", chooser2);
 
-        win_builder.addOnglet("/home/killy" ,"Test");
-        win_builder.addOnglet("/home/killy/Documents/" ,"Test 2");
-        win_builder.addOnglet("/home/killy/Téléchargements/" ,"Test 3");
-        win_builder.addOnglet("/home/killy" ,"Autrement");
+        win_builder.addOnglet("~/" ,"Test");
         win_builder.addOnglet(chooser1 ,"Test 2");
         win_builder.addOnglet(chooser2 ,"Test 3");
 

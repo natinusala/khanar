@@ -11,7 +11,7 @@ using namespace std;
 
 #include "libs/json/json.h"
 
-int main(int argc, char* argv[])
+int main_khanar(int argc, char* argv[])
 {
   try
   {
