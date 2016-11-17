@@ -211,6 +211,7 @@ namespace khanar
            void createNewFile(mode_t mode); ///< Si le fichier n'existe pas, le crée (fichier vide) ainsi que son chemin
            void setGID(gid_t const& gid); ///< Modifie le GID du fichier
            void setUID(uid_t const& uid); ///< Modifie le UID du fichier
+           vector<gid_t> getGroupList(); ///< Renvoie la liste des groupes de l'utilisateur du fichier
 
            void openXterm() const; ///< Si c'est un dossier, ouvre Xterm dans un nouveau processus
 
@@ -259,6 +260,8 @@ namespace khanar
            static string getGIDName(gid_t const& gid); ///< Renvoie le nom d'un GID donné
 
            static vector<File> getMountedVolumes(); ///< Renvoie la liste des volumes montés sur le système (volume monté dans la racine exclu)
+
+           static vector<File> getRecentFiles(); ///< Renvoie la liste des fichiers récemment ouverts
     };
 
     /**
