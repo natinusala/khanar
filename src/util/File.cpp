@@ -20,8 +20,11 @@
 #include <regex>
 #include <pwd.h>
 #include <mntent.h>
+#include <gtkmm.h>
 #include <sys/vfs.h>
 #include <sys/types.h>
+#include <grp.h>
+
 #include "../libs/json/json.h"
 
 namespace khanar
@@ -60,6 +63,25 @@ namespace khanar
         }
       }
 
+      vector<gid_t> File::getGroupList()
+      {
+        int ngroups = 50;
+        vector<gid_t> v = vector<gid_t>();
+        gid_t groups[ngroups] = {0};
+
+        if (getgrouplist(this->getUIDName(this->getUID()).c_str(), this->getGID(), groups, &ngroups) == -1)
+        {
+          throw new FileException("L'utilisateur est dans trop de groupes.");
+        }
+
+        for (int i = 0; i < ngroups; i++)
+        {
+          v.push_back(groups[i]);
+        }
+
+        return v;
+      }
+
       void File::subscribeObserver(FileObserver* observer)
       {
         this->_observers.push_back(observer);
@@ -68,6 +90,27 @@ namespace khanar
       void File::unsubscribeObserver(FileObserver* observer)
       {
         this->_observers.erase(std::remove(this->_observers.begin(), this->_observers.end(), observer), this->_observers.end());
+      }
+
+      vector<File> File::getRecentFiles()
+      {
+        vector<File> v = vector<File>();
+
+        Glib::RefPtr<Gtk::RecentManager> recentManager = Gtk::RecentManager::get_default();
+
+        vector<Glib::RefPtr<Gtk::RecentInfo>> list = recentManager->get_items();
+
+        for (int i = 0; i < list.size(); i++)
+        {
+          Glib::RefPtr<Gtk::RecentInfo> recentInfo = list.at(i);
+          if (STR_STARTSWITH(recentInfo->get_uri(), string("file://")))
+          {
+            string path = recentInfo->get_uri().substr(7);
+            v.push_back(File(path));
+          }
+        }
+
+        return v;
       }
 
       vector<File> File::getFavorites()

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <regex>
 #include "util/File.hpp"
+#include <gtkmm.h>
 
 using namespace khanar;
 using namespace std;
@@ -10,13 +11,18 @@ using namespace std;
 
 #include "libs/json/json.h"
 
-int main_khanar()
+int main(int argc, char* argv[])
 {
   try
   {
+    Gtk::Main app(argc, argv);
 
-    File f = File("/home/natinusala/Bureau/ilebomonfichier");
-    cout << f.isInFavorites() << endl;
+    vector<gid_t> recentFiles = File("/home/natinusala/Bureau/15134771_1188114111280865_9218025161381243426_n.jpg").getGroupList();
+    for (int i = 0; i < recentFiles.size(); i++)
+    {
+      cout << File::getGIDName(recentFiles.at(i)) << endl;
+    }
+    //cout << f.isInFavorites() << endl;
 
 
     /*Json::Value root;
