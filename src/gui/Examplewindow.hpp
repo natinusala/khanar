@@ -2,14 +2,26 @@
 #define GTKMM_EXAMPLEWINDOW_H
 
 #include <gtkmm.h>
+#include "../util/File.hpp"
+
+using namespace khanar;
 
 class ExampleWindow
 {
 public:
   ExampleWindow();
-  ExampleWindow(Glib::ustring path);
+  ExampleWindow(string path);
+  ~ExampleWindow();
   Gtk::Box* getVbox();
 protected:
+  void on_button_quit();
+  bool on_button_press(GdkEventButton* button_event);
+
+  void on_popup_terminal();
+
+  Gtk::Menu _menuPopup;
+
+  File* f;
 
 
   //Tree model columns:

@@ -14,6 +14,8 @@
 
 namespace khanar
 {
+  
+
   Window::Window()
   {
     this->_win_builder = Assets::buildGtkFromResource(window_glade);

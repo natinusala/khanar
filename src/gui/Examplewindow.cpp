@@ -2,13 +2,24 @@
 #include "Examplewindow.hpp"
 #include "../util/File.hpp"
 
+using namespace khanar;
+
 
 //TODO: Ajouter un attribut vector pour retenir les fichiers contenu dans l'interface.
 
-ExampleWindow::ExampleWindow(Glib::ustring path)
+bool ExampleWindow::on_button_press(GdkEventButton* button_event)
 {
+  if((button_event->type == 5) && (button_event->button == 3))
+  {
+    _menuPopup.popup(button_event->button, button_event->time);
+    return true;
+  }
+  return false;
+}
 
 
+ExampleWindow::ExampleWindow(string path)
+{
   //Add the TreeView, inside a ScrolledWindow, with the button underneath:
   m_ScrolledWindow.add(m_TreeView);
 
@@ -22,13 +33,13 @@ ExampleWindow::ExampleWindow(Glib::ustring path)
   m_refTreeModel = Gtk::ListStore::create(m_Columns);
   m_TreeView.set_model(m_refTreeModel);
 
-  khanar::File f = khanar::File(path);
-  vector<khanar::File> *subFiles = f.getSubFiles();
+  this->f = new File(path);
+  vector<File> *subFiles = this->f->getSubFiles();
 
   Gtk::TreeModel::Row row;
   for (int i = 0; i < subFiles->size(); i++)
   {
-    khanar::File f = (*subFiles)[i];
+    File f = (*subFiles)[i];
     if(!f.isHidden()){
     row = *(m_refTreeModel->append());
     row[m_Columns.m_col_ico]= f.getFileType().getIcon();
@@ -62,7 +73,51 @@ ExampleWindow::ExampleWindow(Glib::ustring path)
     column->set_reorderable();
   }
 
+
+  auto item = Gtk::manage(new Gtk::MenuItem("Créer un nouveau fichier", true));
+  _menuPopup.append(*item);
+
+  item = Gtk::manage(new Gtk::MenuItem("Créer un nouveau dossier", true));
+  _menuPopup.append(*item);
+
+  //Menu Pop up
+ item = Gtk::manage(new Gtk::MenuItem("Couper", true));
+ _menuPopup.append(*item);
+
+ item = Gtk::manage(new Gtk::MenuItem("Copier", true));
+ _menuPopup.append(*item);
+
+ item = Gtk::manage(new Gtk::MenuItem("Coller", true));
+ _menuPopup.append(*item);
+
+ item = Gtk::manage(new Gtk::MenuItem("Renommer", true));
+ _menuPopup.append(*item);
+
+ item = Gtk::manage(new Gtk::MenuItem("Supprimer", true));
+ _menuPopup.append(*item);
+
+ item = Gtk::manage(new Gtk::MenuItem("Ouvrir un terminal ici", true));
+ item->signal_activate().connect_notify(
+    sigc::mem_fun(*this, &ExampleWindow::on_popup_terminal) );
+ _menuPopup.append(*item);
+
+ item = Gtk::manage(new Gtk::MenuItem("Ajouter/supprimer des favoris", true));
+ _menuPopup.append(*item);
+
+ //_menuPopup.accelerate(*this);
+ _menuPopup.show_all();
+  m_TreeView.signal_button_press_event().connect(sigc::mem_fun(*this, &ExampleWindow::on_button_press));
   this->m_VBox.show_all_children();
+}
+
+void ExampleWindow::on_popup_terminal()
+{
+  this->f->openXterm();
+}
+
+ExampleWindow::~ExampleWindow()
+{
+  delete this->f;
 }
 
 Gtk::Box* ExampleWindow::getVbox(){

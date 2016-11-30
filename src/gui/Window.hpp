@@ -7,7 +7,6 @@
 #include "TabContent.hpp"
 #include <gtkmm.h>
 #include "../util/Assets.hpp"
-#include "TreeViewLib.hpp"
 #include "Examplewindow.hpp"
 #include <cstdint>
 #include <iostream>
@@ -35,7 +34,8 @@ namespace khanar
           Gtk::Window* _win;
           Gtk::Notebook* _notebook;
           vector<TabContent> _onglets;
-
+          //Signal handlers:
+          
 
         public:
           Window();
