@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
   try
 	{
 
-      RefPtr<Builder> recent_builder = Assets::buildGtkFromResource(recents_glade);
+        RefPtr<Builder> recent_builder = Assets::buildGtkFromResource(recents_glade);
         RefPtr<Builder> recent_builder2 = Assets::buildGtkFromResource(recents_glade);
 
         Gtk::Window* win = nullptr;

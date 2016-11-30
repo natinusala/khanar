@@ -10,6 +10,16 @@ using namespace Glib;
 using namespace std;
 
 namespace khanar{
+
+bool TreeViewLib::on_button_press(GdkEventButton* button_event)
+{
+  if((button_event->type == GDK_BUTTON_PRESS) && (button_event->button == 3))
+  {
+    _menuPopup.popup(button_event->button, button_event->time);
+  }
+  return true;
+}
+
 TreeViewLib::TreeViewLib(Glib::ustring path)
 {
  add(m_VBox);
@@ -59,6 +69,24 @@ TreeViewLib::TreeViewLib(Glib::ustring path)
    auto column = m_TreeView.get_column(i);
    column->set_reorderable();
  }
+
+ //Context menu
+
+ //Fill popup menu:
+ auto item = Gtk::manage(new Gtk::MenuItem("_Edit", true));
+ _menuPopup.append(*item);
+
+ item = Gtk::manage(new Gtk::MenuItem("_Process", true));
+ _menuPopup.append(*item);
+
+ item = Gtk::manage(new Gtk::MenuItem("_Remove", true));
+ _menuPopup.append(*item);
+
+ _menuPopup.accelerate(*this);
+ _menuPopup.show_all(); //Show all menu items when the menu pops up
+
+ m_TreeView.signal_button_press_event().connect(sigc::mem_fun(*this, &TreeViewLib::on_button_press));
+
 }
 
 }

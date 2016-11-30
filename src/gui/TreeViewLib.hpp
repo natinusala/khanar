@@ -16,6 +16,9 @@ public:
 protected:
   //Signal handlers:
   void on_button_quit();
+  bool on_button_press(GdkEventButton* button_event);
+
+  Gtk::Menu _menuPopup;
 
   //Tree model columns:
   class ModelColumns : public Gtk::TreeModel::ColumnRecord
