@@ -35,7 +35,7 @@ namespace khanar
           Gtk::Notebook* _notebook;
           vector<TabContent> _onglets;
           //Signal handlers:
-          
+
 
         public:
           Window();
@@ -46,6 +46,7 @@ namespace khanar
           void addOnglet(string folder ,string title);
           void resetPropInfo();
           void labelOngletPlus();
+          void actualiser();
 
 
     };
