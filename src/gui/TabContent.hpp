@@ -29,13 +29,17 @@ namespace khanar
 
     private:
       RefPtr<Builder> _builder;
+      string path;
+      string name;
 
 
     public:
-      TabContent();
-      TabContent(Gtk::Widget *widget);
+      TabContent(string path, string name);
       Gtk::Box* getContent(Gtk::Widget *widget);
       void setPropBar(File f);
+      string getPath();
+      string getName();
+
 
 
 

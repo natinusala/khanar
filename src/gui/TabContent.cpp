@@ -6,13 +6,10 @@
 #include "../compiled_assets/propertiesbar.glade.hex"
 
 namespace khanar{
-    TabContent::TabContent(){
+    TabContent::TabContent(string path, string name){
         this->_builder = Assets::buildGtkFromResource(topbar_glade);
     }
 
-    TabContent::TabContent(Gtk::Widget *widget){
-        this->_builder = Assets::buildGtkFromResource(topbar_glade);
-    }
 
     Gtk::Box* TabContent::getContent(Gtk::Widget *widget){
 
@@ -71,9 +68,17 @@ namespace khanar{
     strcpy(result,acc2);
     strcat(result,buffer);
     modifie->set_text(result);
-    box->append("lol");
-    box->append("Mdr");
 
+
+  }
+
+  string TabContent::getPath(){
+      return this->path;
+
+  }
+
+  string TabContent::getName(){
+      return this->name;
 
   }
 }
