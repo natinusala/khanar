@@ -6,15 +6,14 @@ using namespace khanar;
 
 
 //TODO: Ajouter un attribut vector pour retenir les fichiers contenu dans l'interface.
+//TODO Couper/copier avec this->clipboard et this->shouldDeleteClipboard
 
-bool ExampleWindow::on_button_press(GdkEventButton* button_event)
+void ExampleWindow::on_button_press(GdkEventButton* button_event)
 {
-  if((button_event->type == 5) && (button_event->button == 3))
+  if((button_event->type == 4) && (button_event->button == 3))
   {
     _menuPopup.popup(button_event->button, button_event->time);
-    return true;
   }
-  return false;
 }
 
 
@@ -34,7 +33,7 @@ ExampleWindow::ExampleWindow(string path)
   m_TreeView.set_model(m_refTreeModel);
 
   this->f = new File(path);
-  vector<File> *subFiles = this->f->getSubFiles();
+  subFiles = this->f->getSubFiles();
 
   Gtk::TreeModel::Row row;
   for (int i = 0; i < subFiles->size(); i++)
@@ -105,8 +104,8 @@ ExampleWindow::ExampleWindow(string path)
  _menuPopup.append(*item);
 
  //_menuPopup.accelerate(*this);
- _menuPopup.show_all();
-  m_TreeView.signal_button_press_event().connect(sigc::mem_fun(*this, &ExampleWindow::on_button_press));
+  _menuPopup.show_all();
+  m_TreeView.signal_button_press_event().connect_notify(sigc::mem_fun(*this, &ExampleWindow::on_button_press), false);
   this->m_VBox.show_all_children();
 }
 

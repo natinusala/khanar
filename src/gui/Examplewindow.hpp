@@ -15,13 +15,18 @@ public:
   Gtk::Box* getVbox();
 protected:
   void on_button_quit();
-  bool on_button_press(GdkEventButton* button_event);
+  void on_button_press(GdkEventButton* button_event);
 
   void on_popup_terminal();
 
   Gtk::Menu _menuPopup;
 
   File* f;
+  vector<File>* subFiles;
+
+  File* clipboard;
+  File* clipboardParent;
+  bool shouldDeleteClipboard;
 
 
   //Tree model columns:
