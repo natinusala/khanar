@@ -3,23 +3,27 @@
 
 #include <gtkmm.h>
 #include "../util/File.hpp"
+#include "Window.hpp"
 
 using namespace khanar;
 
 class ExampleWindow
 {
 public:
-  ExampleWindow();
-  ExampleWindow(string path);
+  ExampleWindow(Gtk::Window* win, string path);
   ~ExampleWindow();
   Gtk::Box* getVbox();
 protected:
   void on_button_quit();
   void on_button_press(GdkEventButton* button_event);
 
-  void on_popup_terminal();
+  void on_terminal();
+  void on_create_file();
+  void on_delete_file();
 
-  Gtk::Menu _menuPopup;
+  Gtk::Window* parentWindow;
+
+  Gtk::Menu menuPopup;
 
   File* f;
   vector<File>* subFiles;

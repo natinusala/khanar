@@ -46,7 +46,7 @@ namespace khanar
             name = name.substr(0, name.length()-1);
           }
 
-          File(parent->getAbsolutePath() + "/" + name);
+          updateAttributes(parent->getAbsolutePath() + "/" + name);
         }
       }
 
@@ -275,7 +275,6 @@ namespace khanar
           absolutepath = string(exp_result.we_wordv[0]);
         }
 
-
         //Construction
         size_t pos = absolutepath.find_last_of("/");
         this->_name = absolutepath.substr(pos+1);
@@ -293,7 +292,7 @@ namespace khanar
           this->_extension = "";
         }
 
-        this->_absolutePath = absolutepath;
+        this->_absolutePath = string(absolutepath);
         this->updateStat();
       }
 
@@ -679,12 +678,17 @@ namespace khanar
 
       vector<File>* File::getSubFiles()
       {
+        return this->getSubFiles(false);
+      }
+
+      vector<File>* File::getSubFiles(bool force)
+      {
         if (!this->isDirectory())
         {
           return NULL;
         }
 
-        if (!this->_subFilesCreated)
+        if (!this->_subFilesCreated || force)
           updateSubFiles();
 
         return (&this->_subFiles);

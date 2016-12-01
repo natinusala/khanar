@@ -14,7 +14,7 @@
 
 namespace khanar
 {
-  
+
 
   Window::Window()
   {
@@ -53,7 +53,7 @@ namespace khanar
   }
   void Window::addOnglet(string filepath, string title){
       //TODO Récupérer la liste des fichier du répèrtoire à afficher
-      ExampleWindow *widget = new ExampleWindow(filepath);
+      ExampleWindow *widget = new ExampleWindow(this->_win, filepath);
       TabContent onglet = TabContent();
 
       Gtk::Box *add = onglet.getContent(widget->getVbox());

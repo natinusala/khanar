@@ -5,20 +5,76 @@
 using namespace khanar;
 
 
-//TODO: Ajouter un attribut vector pour retenir les fichiers contenu dans l'interface.
 //TODO Couper/copier avec this->clipboard et this->shouldDeleteClipboard
 
 void ExampleWindow::on_button_press(GdkEventButton* button_event)
 {
   if((button_event->type == 4) && (button_event->button == 3))
   {
-    _menuPopup.popup(button_event->button, button_event->time);
+    menuPopup.popup(button_event->button, button_event->time);
+  }
+}
+
+void ExampleWindow::on_delete_file()
+{
+  //TODO Trouver comment avoir l'indice
+  Gtk::TreeModel::iterator toDelete = m_TreeView.get_selection()->get_selected();
+
+  int toDeleteIndex = toDelete->get_path()->get_indices()[0];
+
+  Gtk::MessageDialog dialog = MessageDialog(*this->parentWindow, "Etes-vous sûr ?");
+  dialog.set_secondary_text("Etes-vous sûr de vouloir supprimer ce fichier ? \ndouze");
+  dialog.add_button("Non", RESPONSE_NO);
+  int result = dialog.run();
+
+  if (result == RESPONSE_OK)
+  {
+    //TODO
+  }
+}
+
+void ExampleWindow::on_create_file()
+{
+  Gtk::Dialog dialog = Dialog("Créer un fichier", *this->parentWindow, true);
+
+  dialog.add_button("Créer", RESPONSE_OK);
+  dialog.add_button("Annuler", RESPONSE_CANCEL);
+
+  Gtk::Label label = Label("Entrez le nom du nouveau fichier :");
+  dialog.get_content_area()->pack_start(label);
+
+  Gtk::TextView text = TextView();
+  dialog.get_content_area()->pack_start(text);
+
+  dialog.show_all_children();
+
+  int result = dialog.run();
+
+  if (result == RESPONSE_OK)
+  {
+    //Création du nouveau fichier
+    string newFileName = text.get_buffer()->get_text();
+    File newFile = File(this->f, newFileName);
+    cout << "Création de : " << newFile.getAbsolutePath() << endl;
+    if (!newFile.exists())
+    {
+      newFile.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+      //TODO Mettre à jour
+    }
+    else
+    {
+      Gtk::MessageDialog dialog = MessageDialog(*this->parentWindow, "Erreur");
+      dialog.set_secondary_text("Le fichier existe déjà.");
+      dialog.run();
+    }
   }
 }
 
 
-ExampleWindow::ExampleWindow(string path)
+ExampleWindow::ExampleWindow(Gtk::Window* win, string path)
 {
+  this->parentWindow = win;
+
   //Add the TreeView, inside a ScrolledWindow, with the button underneath:
   m_ScrolledWindow.add(m_TreeView);
 
@@ -74,42 +130,46 @@ ExampleWindow::ExampleWindow(string path)
 
 
   auto item = Gtk::manage(new Gtk::MenuItem("Créer un nouveau fichier", true));
-  _menuPopup.append(*item);
+  item->signal_activate().connect_notify(
+     sigc::mem_fun(*this, &ExampleWindow::on_create_file) );
+  menuPopup.append(*item);
 
   item = Gtk::manage(new Gtk::MenuItem("Créer un nouveau dossier", true));
-  _menuPopup.append(*item);
+  menuPopup.append(*item);
 
   //Menu Pop up
  item = Gtk::manage(new Gtk::MenuItem("Couper", true));
- _menuPopup.append(*item);
+ menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Copier", true));
- _menuPopup.append(*item);
+ menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Coller", true));
- _menuPopup.append(*item);
+ menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Renommer", true));
- _menuPopup.append(*item);
+ menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Supprimer", true));
- _menuPopup.append(*item);
+ item->signal_activate().connect_notify(
+    sigc::mem_fun(*this, &ExampleWindow::on_delete_file) );
+ menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Ouvrir un terminal ici", true));
  item->signal_activate().connect_notify(
-    sigc::mem_fun(*this, &ExampleWindow::on_popup_terminal) );
- _menuPopup.append(*item);
+    sigc::mem_fun(*this, &ExampleWindow::on_terminal) );
+ menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Ajouter/supprimer des favoris", true));
- _menuPopup.append(*item);
+ menuPopup.append(*item);
 
- //_menuPopup.accelerate(*this);
-  _menuPopup.show_all();
+ //menuPopup.accelerate(*this);
+  menuPopup.show_all();
   m_TreeView.signal_button_press_event().connect_notify(sigc::mem_fun(*this, &ExampleWindow::on_button_press), false);
   this->m_VBox.show_all_children();
 }
 
-void ExampleWindow::on_popup_terminal()
+void ExampleWindow::on_terminal()
 {
   this->f->openXterm();
 }
