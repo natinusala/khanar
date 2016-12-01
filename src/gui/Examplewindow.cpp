@@ -18,9 +18,9 @@ void ExampleWindow::on_button_press(GdkEventButton* button_event)
 void ExampleWindow::on_delete_file()
 {
   //TODO Trouver comment avoir l'indice
-  Gtk::TreeModel::iterator toDelete = m_TreeView.get_selection()->get_selected();
+  /*Gtk::TreeModel::iterator toDelete = m_TreeView.get_selection()->get_selected();
 
-  int toDeleteIndex = toDelete->get_path()->get_indices()[0];
+  int toDeleteIndex = toDelete->get_path()->get_indices()[0];*/
 
   Gtk::MessageDialog dialog = MessageDialog(*this->parentWindow, "Etes-vous sûr ?");
   dialog.set_secondary_text("Etes-vous sûr de vouloir supprimer ce fichier ? \ndouze");
