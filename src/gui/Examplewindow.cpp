@@ -15,6 +15,47 @@ void ExampleWindow::on_button_press(GdkEventButton* button_event)
   }
 }
 
+void ExampleWindow::on_create_directory()
+{
+  Gtk::Dialog dialog = Dialog("Créer un dossier", *this->parentWindow, true);
+
+  dialog.add_button("Créer", RESPONSE_OK);
+  dialog.add_button("Annuler", RESPONSE_CANCEL);
+
+  Gtk::Label label = Label("Entrez le nom du nouveau dossier :");
+  dialog.get_content_area()->pack_start(label);
+
+  Gtk::TextView text = TextView();
+  dialog.get_content_area()->pack_start(text);
+
+  dialog.show_all_children();
+
+  int result = dialog.run();
+
+  if (result == RESPONSE_OK)
+  {
+    //Création du nouveau fichier
+    string newFileName = text.get_buffer()->get_text();
+    File newFile = File(this->f, newFileName);
+    if (!newFile.exists() || (newFile.exists() && !newFile.isDirectory()))
+    {
+      newFile.createNewDirectory(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+      //TODO Mettre à jour
+    }
+    else
+    {
+      Gtk::MessageDialog dialog = MessageDialog(*this->parentWindow, "Erreur");
+      dialog.set_secondary_text("Le dossier existe déjà.");
+      dialog.run();
+    }
+  }
+}
+
+void ExampleWindow::on_terminal()
+{
+  this->f->openXterm();
+}
+
 void ExampleWindow::on_delete_file()
 {
   //TODO Trouver comment avoir l'indice
@@ -55,7 +96,6 @@ void ExampleWindow::on_create_file()
     //Création du nouveau fichier
     string newFileName = text.get_buffer()->get_text();
     File newFile = File(this->f, newFileName);
-    cout << "Création de : " << newFile.getAbsolutePath() << endl;
     if (!newFile.exists())
     {
       newFile.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
@@ -135,6 +175,8 @@ ExampleWindow::ExampleWindow(Gtk::Window* win, string path)
   menuPopup.append(*item);
 
   item = Gtk::manage(new Gtk::MenuItem("Créer un nouveau dossier", true));
+  item->signal_activate().connect_notify(
+     sigc::mem_fun(*this, &ExampleWindow::on_create_directory) );
   menuPopup.append(*item);
 
   //Menu Pop up
@@ -167,11 +209,6 @@ ExampleWindow::ExampleWindow(Gtk::Window* win, string path)
   menuPopup.show_all();
   m_TreeView.signal_button_press_event().connect_notify(sigc::mem_fun(*this, &ExampleWindow::on_button_press), false);
   this->m_VBox.show_all_children();
-}
-
-void ExampleWindow::on_terminal()
-{
-  this->f->openXterm();
 }
 
 ExampleWindow::~ExampleWindow()

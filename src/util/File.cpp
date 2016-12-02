@@ -349,13 +349,8 @@ namespace khanar
         return this->_fileStat.st_atime;
       }
 
-      void File::createNewFile(mode_t mode)
+      void File::createDirectories(mode_t mode)
       {
-        if (this->_exists)
-        {
-          throw FileException("Le fichier existe déjà");
-        }
-
         File parent = File(this->_parentFolderAbsolutePath);
         vector<File> toCreate;
 
@@ -369,10 +364,34 @@ namespace khanar
         {
           mkdir(toCreate.at(i).getAbsolutePath().c_str(), mode);
         }
+      }
+
+      void File::createNewFile(mode_t mode)
+      {
+        if (this->_exists)
+        {
+          throw FileException("Le fichier existe déjà");
+        }
+
+        this->createDirectories(mode);
 
         fstream fs;
         fs.open(this->_absolutePath, ios::out);
         fs.close();
+
+        this->updateStat();
+      }
+
+      void File::createNewDirectory(mode_t mode)
+      {
+        if (this->_exists)
+        {
+          throw FileException("Le dossier existe déjà");
+        }
+
+        this->createDirectories(mode);
+
+        mkdir(this->getAbsolutePath().c_str(), mode);
 
         this->updateStat();
       }

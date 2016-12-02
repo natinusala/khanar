@@ -20,6 +20,7 @@ protected:
   void on_terminal();
   void on_create_file();
   void on_delete_file();
+  void on_create_directory();
 
   Gtk::Window* parentWindow;
 
