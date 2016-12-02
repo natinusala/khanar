@@ -58,10 +58,8 @@ void ExampleWindow::on_terminal()
 
 void ExampleWindow::on_delete_file()
 {
-  //TODO Trouver comment avoir l'indice
-  /*Gtk::TreeModel::iterator toDelete = m_TreeView.get_selection()->get_selected();
-
-  int toDeleteIndex = toDelete->get_path()->get_indices()[0];*/
+  Gtk::TreeModel::iterator iter = m_TreeView.get_selection()->get_selected();
+  int id = (*iter)[m_Columns.m_col_id];
 
   Gtk::MessageDialog dialog = MessageDialog(*this->parentWindow, "Etes-vous sûr ?");
   dialog.set_secondary_text("Etes-vous sûr de vouloir supprimer ce fichier ? \ndouze");
@@ -114,7 +112,6 @@ void ExampleWindow::on_create_file()
 ExampleWindow::ExampleWindow(Gtk::Window* win, string path)
 {
   this->parentWindow = win;
-
   //Add the TreeView, inside a ScrolledWindow, with the button underneath:
   m_ScrolledWindow.add(m_TreeView);
 
@@ -136,16 +133,17 @@ ExampleWindow::ExampleWindow(Gtk::Window* win, string path)
   {
     File f = (*subFiles)[i];
     if(!f.isHidden()){
-    row = *(m_refTreeModel->append());
-    row[m_Columns.m_col_ico]= f.getFileType().getIcon();
-    row[m_Columns.m_col_name] = f.getName();
-    string size =f.getFormattedSize();
-    if (size =="n/a"){
-      row[m_Columns.m_col_number] = " ";
-    }else{
-      row[m_Columns.m_col_number] = size;
-  }
-  }
+      row = *(m_refTreeModel->append());
+      row[m_Columns.m_col_id]=i;
+      row[m_Columns.m_col_ico]= f.getFileType().getIcon();
+      row[m_Columns.m_col_name] = f.getName();
+      string size =f.getFormattedSize();
+      if (size =="n/a"){
+        row[m_Columns.m_col_number] = " ";
+      }else{
+        row[m_Columns.m_col_number] = size;
+      }
+    }
   }
 
   auto cell = Gtk::manage(new Gtk::CellRendererPixbuf);
