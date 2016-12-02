@@ -20,7 +20,12 @@ void ExampleWindow::on_button_press(GdkEventButton* button_event)
   {
     Gtk::TreeModel::iterator iter = m_TreeView.get_selection()->get_selected();
     int id = (*iter)[m_Columns.m_col_id];
-    subFiles->at(id).openFile();
+    if (subFiles->at(id).isDirectory()){
+        this->wind->actualiser(subFiles->at(id).getAbsolutePath());
+    }else{
+      subFiles->at(id).openFile();
+
+    }
 
   }
 }
@@ -119,9 +124,10 @@ void ExampleWindow::on_create_file()
 }
 
 
-ExampleWindow::ExampleWindow(Gtk::Window* win, string path)
+ExampleWindow::ExampleWindow(Gtk::Window*& win,khanar::Window* wind, string path)
 {
   this->parentWindow = win;
+  this->wind = wind;
   //Add the TreeView, inside a ScrolledWindow, with the button underneath:
   m_ScrolledWindow.add(m_TreeView);
 

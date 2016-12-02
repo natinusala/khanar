@@ -47,6 +47,7 @@ namespace khanar
           void resetPropInfo();
           void labelOngletPlus();
           void actualiser();
+          void actualiser(string filepath);
 
 
     };

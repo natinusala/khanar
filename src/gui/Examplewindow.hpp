@@ -10,7 +10,7 @@ using namespace khanar;
 class ExampleWindow
 {
 public:
-  ExampleWindow(Gtk::Window* win, string path);
+  ExampleWindow(Gtk::Window*& win,khanar::Window* wind, string path);
   ~ExampleWindow();
   Gtk::Box* getVbox();
 protected:
@@ -23,6 +23,7 @@ protected:
   void on_create_directory();
 
   Gtk::Window* parentWindow;
+  khanar::Window* wind;
 
   Gtk::Menu menuPopup;
 

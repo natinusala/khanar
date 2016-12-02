@@ -8,6 +8,8 @@
 namespace khanar{
     TabContent::TabContent(string path, string name){
         this->_builder = Assets::buildGtkFromResource(topbar_glade);
+        this->path = path;
+        this->name = name;
     }
 
 
