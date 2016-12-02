@@ -9,9 +9,20 @@ using namespace khanar;
 
 void ExampleWindow::on_button_press(GdkEventButton* button_event)
 {
+
+
   if((button_event->type == 4) && (button_event->button == 3))
   {
     menuPopup.popup(button_event->button, button_event->time);
+  }
+  else if
+  ((button_event->type == 5) && (button_event->button == 1))
+  {
+    Gtk::TreeModel::iterator iter = m_TreeView.get_selection()->get_selected();
+    int id = (*iter)[m_Columns.m_col_id];
+    cout << subFiles->at(id).getAbsolutePath() <<endl;
+
+
   }
 }
 
