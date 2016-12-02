@@ -156,6 +156,20 @@ namespace khanar
         this->notifyObservers();
       }
 
+      void File::openFile() const{
+        if (this->isDirectory())
+        {
+          throw FileException("Ceci est un dossier. Il ne peut pas être éxécuté.");
+        }
+          if (fork() == 0)
+          {
+            string command = "xdg-open \"" + this->getAbsolutePath() + "\" 2>/dev/null ";
+            system(command.c_str());
+            exit(0);
+          }
+
+      }
+
       bool File::isInFavorites()
       {
         vector<File> v = File::getFavorites();

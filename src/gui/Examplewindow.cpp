@@ -20,8 +20,7 @@ void ExampleWindow::on_button_press(GdkEventButton* button_event)
   {
     Gtk::TreeModel::iterator iter = m_TreeView.get_selection()->get_selected();
     int id = (*iter)[m_Columns.m_col_id];
-    cout << subFiles->at(id).getAbsolutePath() <<endl;
-
+    subFiles->at(id).openFile();
 
   }
 }
