@@ -14,6 +14,7 @@
 #ifndef TABCONTENT_HPP
 #define TABCONTENT_HPP
 
+
 using namespace Gtk;
 using namespace Glib;
 using namespace std;
@@ -25,16 +26,18 @@ using namespace std;
  */
 namespace khanar
 {
+    class Window;
     class TabContent{
 
     private:
       RefPtr<Builder> _builder;
       string path;
       string name;
+      khanar::Window* wind;
 
 
     public:
-      TabContent(string path, string name);
+      TabContent(string path, string name, khanar::Window* wind);
       Gtk::Box* getContent(Gtk::Widget *widget);
       void setPropBar(File f);
       string getPath();

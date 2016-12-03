@@ -6,10 +6,11 @@
 #include "../compiled_assets/propertiesbar.glade.hex"
 
 namespace khanar{
-    TabContent::TabContent(string path, string name){
+    TabContent::TabContent(string path, string name, khanar::Window* wind){
         this->_builder = Assets::buildGtkFromResource(topbar_glade);
         this->path = path;
         this->name = name;
+        this->wind = wind;
     }
 
 

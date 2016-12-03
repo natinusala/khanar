@@ -32,7 +32,7 @@ namespace khanar
 
 
   void Window::addOnglet(Gtk::Widget* widget, string str){
-    TabContent onglet = TabContent("~", str);
+    TabContent onglet = TabContent("~", str, this);
 
     Gtk::Box *add = onglet.getContent(widget);
     this->_onglets.push_back(onglet);
@@ -53,7 +53,7 @@ namespace khanar
   void Window::addOnglet(string filepath, string title){
       //TODO Récupérer la liste des fichier du répèrtoire à afficher
       ExampleWindow *widget = new ExampleWindow(this->_win,this, filepath);
-      TabContent onglet = TabContent(filepath, title);
+      TabContent onglet = TabContent(filepath, title, this);
 
       Gtk::Box *add = onglet.getContent(widget->getVbox());
       this->_onglets.push_back(onglet);
@@ -92,7 +92,7 @@ namespace khanar
     int page =  this->_notebook->get_current_page();
     string path = this->_onglets.at(page).getPath();
     ExampleWindow *widget = new ExampleWindow(this->_win,this, path);
-    TabContent onglet = TabContent(path, this->_onglets.at(page).getName());
+    TabContent onglet = TabContent(path, this->_onglets.at(page).getName(), this);
     _onglets.insert(_onglets.begin() + page, onglet);
     Gtk::Box *add = this->_onglets.at(page).getContent(widget->getVbox());
     Gtk::Box* tmp = nullptr;
@@ -114,7 +114,7 @@ namespace khanar
     int page =  this->_notebook->get_current_page();
     string path = filepath;
     ExampleWindow *widget = new ExampleWindow(this->_win,this, path);
-    TabContent onglet = TabContent(path, this->_onglets.at(page).getName());
+    TabContent onglet = TabContent(path, this->_onglets.at(page).getName(), this);
     _onglets.insert(_onglets.begin() + page, onglet);
     Gtk::Box *add = this->_onglets.at(page).getContent(widget->getVbox());
     Gtk::Box* tmp = nullptr;
