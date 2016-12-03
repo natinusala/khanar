@@ -11,8 +11,8 @@
 #include <cstdint>
 #include <iostream>
 
-#ifndef TABCONTENT_HPP
-#define TABCONTENT_HPP
+#ifndef ONGLET_HPP
+#define ONGLET_HPP
 
 
 using namespace Gtk;
@@ -27,7 +27,7 @@ using namespace std;
 namespace khanar
 {
     class Window;
-    class TabContent{
+    class Onglet{
 
     private:
       RefPtr<Builder> _builder;
@@ -37,7 +37,7 @@ namespace khanar
 
 
     public:
-      TabContent(string path, string name, khanar::Window* wind);
+      Onglet(string path, string name, khanar::Window* wind);
       Gtk::Box* getContent(Gtk::Widget *widget);
       void setPropBar(File f);
       string getPath();

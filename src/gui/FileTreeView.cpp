@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Examplewindow.hpp"
+#include "FileTreeView.hpp"
 #include "../util/File.hpp"
 
 using namespace khanar;
@@ -7,7 +7,7 @@ using namespace khanar;
 
 //TODO Couper/copier avec this->clipboard et this->shouldDeleteClipboard
 
-void ExampleWindow::on_button_press(GdkEventButton* button_event)
+void FileTreeView::on_button_press(GdkEventButton* button_event)
 {
 
 
@@ -30,7 +30,7 @@ void ExampleWindow::on_button_press(GdkEventButton* button_event)
   }
 }
 
-void ExampleWindow::on_create_directory()
+void FileTreeView::on_create_directory()
 {
   Gtk::Dialog dialog = Dialog("Créer un dossier", *this->parentWindow, true);
 
@@ -66,12 +66,12 @@ void ExampleWindow::on_create_directory()
   }
 }
 
-void ExampleWindow::on_terminal()
+void FileTreeView::on_terminal()
 {
   this->f->openXterm();
 }
 
-void ExampleWindow::on_delete_file()
+void FileTreeView::on_delete_file()
 {
   Gtk::TreeModel::iterator iter = m_TreeView.get_selection()->get_selected();
   int id = (*iter)[m_Columns.m_col_id];
@@ -91,7 +91,7 @@ void ExampleWindow::on_delete_file()
   }
 }
 
-void ExampleWindow::on_rename()
+void FileTreeView::on_rename()
 {
   Gtk::TreeModel::iterator iter = m_TreeView.get_selection()->get_selected();
   int id = (*iter)[m_Columns.m_col_id];
@@ -133,7 +133,7 @@ void ExampleWindow::on_rename()
   }
 }
 
-void ExampleWindow::on_create_file()
+void FileTreeView::on_create_file()
 {
   Gtk::Dialog dialog = Dialog("Créer un fichier", *this->parentWindow, true);
 
@@ -170,7 +170,7 @@ void ExampleWindow::on_create_file()
 }
 
 
-ExampleWindow::ExampleWindow(Gtk::Window*& win,khanar::Window* wind, string path)
+FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
 {
   this->parentWindow = win;
   this->wind = wind;
@@ -231,12 +231,12 @@ ExampleWindow::ExampleWindow(Gtk::Window*& win,khanar::Window* wind, string path
 
   auto item = Gtk::manage(new Gtk::MenuItem("Créer un nouveau fichier", true));
   item->signal_activate().connect_notify(
-     sigc::mem_fun(*this, &ExampleWindow::on_create_file) );
+     sigc::mem_fun(*this, &FileTreeView::on_create_file) );
   menuPopup.append(*item);
 
   item = Gtk::manage(new Gtk::MenuItem("Créer un nouveau dossier", true));
   item->signal_activate().connect_notify(
-     sigc::mem_fun(*this, &ExampleWindow::on_create_directory) );
+     sigc::mem_fun(*this, &FileTreeView::on_create_directory) );
   menuPopup.append(*item);
 
   //Menu Pop up
@@ -251,17 +251,17 @@ ExampleWindow::ExampleWindow(Gtk::Window*& win,khanar::Window* wind, string path
 
  item = Gtk::manage(new Gtk::MenuItem("Renommer", true));
  item->signal_activate().connect_notify(
-    sigc::mem_fun(*this, &ExampleWindow::on_rename) );
+    sigc::mem_fun(*this, &FileTreeView::on_rename) );
  menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Supprimer", true));
  item->signal_activate().connect_notify(
-    sigc::mem_fun(*this, &ExampleWindow::on_delete_file) );
+    sigc::mem_fun(*this, &FileTreeView::on_delete_file) );
  menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Ouvrir un terminal ici", true));
  item->signal_activate().connect_notify(
-    sigc::mem_fun(*this, &ExampleWindow::on_terminal) );
+    sigc::mem_fun(*this, &FileTreeView::on_terminal) );
  menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Ajouter/supprimer des favoris", true));
@@ -269,16 +269,16 @@ ExampleWindow::ExampleWindow(Gtk::Window*& win,khanar::Window* wind, string path
 
  //menuPopup.accelerate(*this);
   menuPopup.show_all();
-  m_TreeView.signal_button_press_event().connect_notify(sigc::mem_fun(*this, &ExampleWindow::on_button_press), false);
+  m_TreeView.signal_button_press_event().connect_notify(sigc::mem_fun(*this, &FileTreeView::on_button_press), false);
   this->m_VBox.show_all_children();
 }
 
-ExampleWindow::~ExampleWindow()
+FileTreeView::~FileTreeView()
 {
   delete this->f;
 }
 
-Gtk::Box* ExampleWindow::getVbox(){
+Gtk::Box* FileTreeView::getVbox(){
 
   return &this->m_VBox;
 }

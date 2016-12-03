@@ -1,5 +1,5 @@
-#ifndef GTKMM_EXAMPLEWINDOW_H
-#define GTKMM_EXAMPLEWINDOW_H
+#ifndef FILETREEVIEW_HPP
+#define FILETREEVIEW_HPP
 
 #include <gtkmm.h>
 #include "../util/File.hpp"
@@ -7,11 +7,11 @@
 
 using namespace khanar;
 
-class ExampleWindow
+class FileTreeView
 {
 public:
-  ExampleWindow(Gtk::Window*& win,khanar::Window* wind, string path);
-  ~ExampleWindow();
+  FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path);
+  ~FileTreeView();
   Gtk::Box* getVbox();
 protected:
   void on_button_quit();
@@ -60,4 +60,4 @@ protected:
   Glib::RefPtr<Gtk::ListStore> m_refTreeModel;
 };
 
-#endif //GTKMM_EXAMPLEWINDOW_H
+#endif //GTKMM_FileTreeView_H

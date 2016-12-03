@@ -4,10 +4,10 @@
  * Header des suites de classes pour abstraire la création de la fenêtre
  */
 
-#include "TabContent.hpp"
+#include "Onglet.hpp"
 #include <gtkmm.h>
 #include "../util/Assets.hpp"
-#include "Examplewindow.hpp"
+#include "FileTreeView.hpp"
 #include <cstdint>
 #include <iostream>
 
@@ -33,7 +33,7 @@ namespace khanar
           RefPtr<Builder> _win_builder;
           Gtk::Window* _win;
           Gtk::Notebook* _notebook;
-          vector<TabContent> _onglets;
+          vector<Onglet> _onglets;
           //Signal handlers:
 
 

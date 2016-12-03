@@ -1,12 +1,12 @@
 
-#include "TabContent.hpp"
+#include "Onglet.hpp"
 
 
 #include "../compiled_assets/topbar.glade.hex"
 #include "../compiled_assets/propertiesbar.glade.hex"
 
 namespace khanar{
-    TabContent::TabContent(string path, string name, khanar::Window* wind){
+    Onglet::Onglet(string path, string name, khanar::Window* wind){
         this->_builder = Assets::buildGtkFromResource(topbar_glade);
         this->path = path;
         this->name = name;
@@ -14,7 +14,7 @@ namespace khanar{
     }
 
 
-    Gtk::Box* TabContent::getContent(Gtk::Widget *widget){
+    Gtk::Box* Onglet::getContent(Gtk::Widget *widget){
 
         Gtk::Box* add = nullptr;
         Gtk::Box* container = nullptr;
@@ -33,7 +33,7 @@ namespace khanar{
 
 
 
-  void TabContent::setPropBar(File f){
+  void Onglet::setPropBar(File f){
 
     Gtk::Label* nom = nullptr;
     Gtk::Label* type = nullptr;
@@ -75,12 +75,12 @@ namespace khanar{
 
   }
 
-  string TabContent::getPath(){
+  string Onglet::getPath(){
       return this->path;
 
   }
 
-  string TabContent::getName(){
+  string Onglet::getName(){
       return this->name;
 
   }
