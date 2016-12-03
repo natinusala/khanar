@@ -21,6 +21,7 @@ protected:
   void on_create_file();
   void on_delete_file();
   void on_create_directory();
+  void on_rename();
 
   Gtk::Window* parentWindow;
   khanar::Window* wind;

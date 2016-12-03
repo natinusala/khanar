@@ -91,6 +91,48 @@ void ExampleWindow::on_delete_file()
   }
 }
 
+void ExampleWindow::on_rename()
+{
+  Gtk::TreeModel::iterator iter = m_TreeView.get_selection()->get_selected();
+  int id = (*iter)[m_Columns.m_col_id];
+
+  File toRename = this->subFiles->at(id);
+
+  Gtk::Dialog dialog = Dialog("Renommer", *this->parentWindow, true);
+
+  dialog.add_button("Renommer", RESPONSE_OK);
+  dialog.add_button("Annuler", RESPONSE_CANCEL);
+
+  Gtk::Label label = Label("Entrez le nouveau nom du fichier :");
+  dialog.get_content_area()->pack_start(label);
+
+  Gtk::TextView text = TextView();
+  dialog.get_content_area()->pack_start(text);
+  text.get_buffer()->set_text(toRename.getName());
+
+  dialog.show_all_children();
+
+  int result = dialog.run();
+
+  if (result == RESPONSE_OK)
+  {
+    //Vérification que le nouveau fichier n'existe pas déjà
+    string newFileName = text.get_buffer()->get_text();
+    File newFile = File(this->f, newFileName);
+    if (!newFile.exists())
+    {
+      toRename.setName(newFileName);
+      //TODO Mettre à jour (l'observateur le fait normalement)
+    }
+    else
+    {
+      Gtk::MessageDialog dialog = MessageDialog(*this->parentWindow, "Erreur");
+      dialog.set_secondary_text("Le fichier existe déjà.");
+      dialog.run();
+    }
+  }
+}
+
 void ExampleWindow::on_create_file()
 {
   Gtk::Dialog dialog = Dialog("Créer un fichier", *this->parentWindow, true);
@@ -208,6 +250,8 @@ ExampleWindow::ExampleWindow(Gtk::Window*& win,khanar::Window* wind, string path
  menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Renommer", true));
+ item->signal_activate().connect_notify(
+    sigc::mem_fun(*this, &ExampleWindow::on_rename) );
  menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Supprimer", true));
