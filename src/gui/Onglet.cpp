@@ -1,5 +1,6 @@
 
 #include "Onglet.hpp"
+#include "Window.hpp"
 
 
 #include "../compiled_assets/topbar.glade.hex"
@@ -8,29 +9,35 @@
 namespace khanar{
     Onglet::Onglet(string path, string name, khanar::Window* wind){
         this->_builder = Assets::buildGtkFromResource(topbar_glade);
-        this->path = path;
-        this->name = name;
-        this->wind = wind;
+        this->_path = path;
+        this->_name = name;
+        this->_wind = wind;
     }
 
+    void Onglet::on_button_clicked()
+      {
+        this->_wind->actualiser();
+      }
 
     Gtk::Box* Onglet::getContent(Gtk::Widget *widget){
 
         Gtk::Box* add = nullptr;
         Gtk::Box* container = nullptr;
+        Gtk::Button* actualiser = nullptr;
 
         this->_builder->get_widget("box3",container);
 
         this->_builder->get_widget("box1",add);
 
+        this->_builder->get_widget("actualiser", actualiser);
+
+        //actualiser->signal_clicked().connect(sigc::mem_fun(this, &khanar::Onglet::on_button_clicked));
         widget->show_all();
 
         container->pack_start(*widget);
         container->reorder_child(*widget,0);
         return add;
   }
-
-
 
 
   void Onglet::setPropBar(File f){
@@ -76,12 +83,12 @@ namespace khanar{
   }
 
   string Onglet::getPath(){
-      return this->path;
+      return this->_path;
 
   }
 
   string Onglet::getName(){
-      return this->name;
+      return this->_name;
 
   }
 }

@@ -18,8 +18,8 @@ void FileTreeView::on_button_press(GdkEventButton* button_event)
   else if
   ((button_event->type == 5) && (button_event->button == 1))
   {
-    Gtk::TreeModel::iterator iter = m_TreeView.get_selection()->get_selected();
-    int id = (*iter)[m_Columns.m_col_id];
+    Gtk::TreeModel::iterator iter = TreeView.get_selection()->get_selected();
+    int id = (*iter)[Columns.col_id];
     if (subFiles->at(id).isDirectory()){
         this->wind->actualiser(subFiles->at(id).getAbsolutePath());
     }else{
@@ -73,8 +73,8 @@ void FileTreeView::on_terminal()
 
 void FileTreeView::on_delete_file()
 {
-  Gtk::TreeModel::iterator iter = m_TreeView.get_selection()->get_selected();
-  int id = (*iter)[m_Columns.m_col_id];
+  Gtk::TreeModel::iterator iter = TreeView.get_selection()->get_selected();
+  int id = (*iter)[Columns.col_id];
 
   File toDelete = this->subFiles->at(id);
 
@@ -93,8 +93,8 @@ void FileTreeView::on_delete_file()
 
 void FileTreeView::on_rename()
 {
-  Gtk::TreeModel::iterator iter = m_TreeView.get_selection()->get_selected();
-  int id = (*iter)[m_Columns.m_col_id];
+  Gtk::TreeModel::iterator iter = TreeView.get_selection()->get_selected();
+  int id = (*iter)[Columns.col_id];
 
   File toRename = this->subFiles->at(id);
 
@@ -175,17 +175,17 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
   this->parentWindow = win;
   this->wind = wind;
   //Add the TreeView, inside a ScrolledWindow, with the button underneath:
-  m_ScrolledWindow.add(m_TreeView);
+  ScrolledWindow.add(TreeView);
 
   //Only show the scrollbars when they are necessary:
-  m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-  this->m_VBox.set_size_request(250,250);
-  this->m_VBox.set_hexpand(true);
-  this->m_VBox.set_vexpand(true);
-  this->m_VBox.pack_start(m_ScrolledWindow);
-  //Create the Tree model:
-  m_refTreeModel = Gtk::ListStore::create(m_Columns);
-  m_TreeView.set_model(m_refTreeModel);
+  ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  this->VBox.set_size_request(250,250);
+  this->VBox.set_hexpand(true);
+  this->VBox.set_vexpand(true);
+  this->VBox.pack_start(ScrolledWindow);
+
+  refTreeModel = Gtk::ListStore::create(Columns);
+  TreeView.set_model(refTreeModel);
 
   this->f = new File(path);
   subFiles = this->f->getSubFiles();
@@ -195,36 +195,33 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
   {
     File f = (*subFiles)[i];
     if(!f.isHidden()){
-      row = *(m_refTreeModel->append());
-      row[m_Columns.m_col_id]=i;
-      row[m_Columns.m_col_ico]= f.getFileType().getIcon();
-      row[m_Columns.m_col_name] = f.getName();
+      row = *(refTreeModel->append());
+      row[Columns.col_id]=i;
+      row[Columns.col_ico]= f.getFileType().getIcon();
+      row[Columns.col_name] = f.getName();
       string size =f.getFormattedSize();
       if (size =="n/a"){
-        row[m_Columns.m_col_number] = " ";
+        row[Columns.col_number] = " ";
       }else{
-        row[m_Columns.m_col_number] = size;
+        row[Columns.col_number] = size;
       }
     }
   }
 
   auto cell = Gtk::manage(new Gtk::CellRendererPixbuf);
-  m_TreeView.append_column("   ", *cell);
-  auto pColumn = m_TreeView.get_column(0);
+  TreeView.append_column("   ", *cell);
+  auto pColumn = TreeView.get_column(0);
   if(pColumn)
   {
     Glib::ustring str = "icon_name";
-    pColumn->add_attribute(*cell,str,m_Columns.m_col_ico);
+    pColumn->add_attribute(*cell,str,Columns.col_ico);
   }
-  m_TreeView.append_column("Nom", m_Columns.m_col_name);
-  m_TreeView.append_column("Taille", m_Columns.m_col_number);
-  //Make all the columns reorderable:
-  //This is not necessary, but it's nice to show the feature.
-  //You can use TreeView::set_column_drag_function() to more
-  //finely control column drag and drop.
+  TreeView.append_column("Nom", Columns.col_name);
+  TreeView.append_column("Taille", Columns.col_number);
+
   for(guint i = 0; i < 2; i++)
   {
-    auto column = m_TreeView.get_column(i);
+    auto column = TreeView.get_column(i);
     column->set_reorderable();
   }
 
@@ -267,10 +264,9 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
  item = Gtk::manage(new Gtk::MenuItem("Ajouter/supprimer des favoris", true));
  menuPopup.append(*item);
 
- //menuPopup.accelerate(*this);
   menuPopup.show_all();
-  m_TreeView.signal_button_press_event().connect_notify(sigc::mem_fun(*this, &FileTreeView::on_button_press), false);
-  this->m_VBox.show_all_children();
+  TreeView.signal_button_press_event().connect_notify(sigc::mem_fun(*this, &FileTreeView::on_button_press), false);
+  this->VBox.show_all_children();
 }
 
 FileTreeView::~FileTreeView()
@@ -280,5 +276,5 @@ FileTreeView::~FileTreeView()
 
 Gtk::Box* FileTreeView::getVbox(){
 
-  return &this->m_VBox;
+  return &this->VBox;
 }

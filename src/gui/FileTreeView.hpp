@@ -16,21 +16,16 @@ public:
 protected:
   void on_button_quit();
   void on_button_press(GdkEventButton* button_event);
-
   void on_terminal();
   void on_create_file();
   void on_delete_file();
   void on_create_directory();
   void on_rename();
-
   Gtk::Window* parentWindow;
   khanar::Window* wind;
-
   Gtk::Menu menuPopup;
-
   File* f;
   vector<File>* subFiles;
-
   File* clipboard;
   File* clipboardParent;
   bool shouldDeleteClipboard;
@@ -42,22 +37,22 @@ protected:
   public:
 
     ModelColumns()
-    { add(m_col_id);add(m_col_ico); add(m_col_name); add(m_col_number); }
+    {add(col_id); add(col_ico); add(col_name); add(col_number); }
 
-    Gtk::TreeModelColumn<int> m_col_id;
-    Gtk::TreeModelColumn<Glib::ustring> m_col_ico;
-    Gtk::TreeModelColumn<Glib::ustring> m_col_name;
-    Gtk::TreeModelColumn<Glib::ustring> m_col_number;
+    Gtk::TreeModelColumn<int> col_id;
+    Gtk::TreeModelColumn<Glib::ustring> col_ico;
+    Gtk::TreeModelColumn<Glib::ustring> col_name;
+    Gtk::TreeModelColumn<Glib::ustring> col_number;
   };
 
-  ModelColumns m_Columns;
+  ModelColumns Columns;
 
   //Child widgets:
-  Gtk::Box m_VBox;
+  Gtk::Box VBox;
 
-  Gtk::ScrolledWindow m_ScrolledWindow;
-  Gtk::TreeView m_TreeView;
-  Glib::RefPtr<Gtk::ListStore> m_refTreeModel;
+  Gtk::ScrolledWindow ScrolledWindow;
+  Gtk::TreeView TreeView;
+  Glib::RefPtr<Gtk::ListStore> refTreeModel;
 };
 
 #endif //GTKMM_FileTreeView_H

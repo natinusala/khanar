@@ -31,9 +31,10 @@ namespace khanar
 
     private:
       RefPtr<Builder> _builder;
-      string path;
-      string name;
-      khanar::Window* wind;
+      string _path;
+      string _name;
+      khanar::Window* _wind;
+      void on_button_clicked();
 
 
     public:
