@@ -156,17 +156,19 @@ namespace khanar
         this->notifyObservers();
       }
 
-      void File::openFile() const{
+      void File::openFile()
+      {
         if (this->isDirectory())
         {
           throw FileException("Ceci est un dossier. Il ne peut pas être éxécuté.");
         }
-          if (fork() == 0)
-          {
-            string command = "xdg-open \"" + this->getAbsolutePath() + "\" 2>/dev/null ";
-            system(command.c_str());
-            exit(0);
-          }
+
+        if (fork() == 0)
+        {
+          string command = "xdg-open \"" + this->getAbsolutePath() + "\" 2>/dev/null ";
+          system(command.c_str());
+          exit(0);
+        }
 
       }
 
@@ -240,7 +242,7 @@ namespace khanar
 
         if (fork() == 0)
         {
-          string command = "cd \"" + this->_absolutePath + "\" && xterm";
+          string command = "cd \"" + this->_absolutePath + "\" && xterm 2>/dev/null";
           system(command.c_str());
           exit(0);
         }

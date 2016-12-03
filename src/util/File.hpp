@@ -239,7 +239,7 @@ namespace khanar
            bool isInFavorites(); ///< Indique si le fichier est dans les favoris
            void addToFavorites(); ///< Ajoute le fichier aux favoris
            void removeFromFavorites(); ///< Retire le fichier des favoris
-           void openFile() const; ///<Ouvre le fichier courant avec le programme par défaut si ce n'est pas un répertoire. Si il n'y a pas de programme par défaut, en détermine un.
+           void openFile(); ///< Ouvre le fichier courant avec le programme par défaut si ce n'est pas un répertoire. Si il n'y a pas de programme par défaut, en détermine un.
 
            static string FAVORITES_DIRECTORY;
            static vector<File> getFavorites(); ///< Renvoie les dossiers favoris (~/.config/khanar/favorites.json)

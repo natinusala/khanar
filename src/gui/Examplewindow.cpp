@@ -55,7 +55,7 @@ void ExampleWindow::on_create_directory()
     if (!newFile.exists() || (newFile.exists() && !newFile.isDirectory()))
     {
       newFile.createNewDirectory(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-      //TODO Mettre à jour
+      //TODO Mettre à jour (ici l'observateur ne marchera pas)
     }
     else
     {
@@ -76,14 +76,18 @@ void ExampleWindow::on_delete_file()
   Gtk::TreeModel::iterator iter = m_TreeView.get_selection()->get_selected();
   int id = (*iter)[m_Columns.m_col_id];
 
+  File toDelete = this->subFiles->at(id);
+
   Gtk::MessageDialog dialog = MessageDialog(*this->parentWindow, "Etes-vous sûr ?");
-  dialog.set_secondary_text("Etes-vous sûr de vouloir supprimer ce fichier ? \ndouze");
+  dialog.set_secondary_text("Etes-vous sûr de vouloir supprimer " + toDelete.getName() + (toDelete.isDirectory() ? " et tout ce qu'il contient" : "") + " ?");
+
   dialog.add_button("Non", RESPONSE_NO);
   int result = dialog.run();
 
   if (result == RESPONSE_OK)
   {
-    //TODO
+    toDelete.removeFile();
+    //TODO Mettre à jour (l'observateur s'en charge normalement)
   }
 }
 
@@ -112,7 +116,7 @@ void ExampleWindow::on_create_file()
     if (!newFile.exists())
     {
       newFile.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-      //TODO Mettre à jour
+      //TODO Mettre à jour (ici l'observateur ne marchera pas)
     }
     else
     {
