@@ -28,14 +28,60 @@ void FileTreeView::on_button_press(GdkEventButton* button_event)
   }
 }
 
+void FileTreeView::on_paste()
+{
+  File toPaste = this->wind->getClipboard();
+  File toPasteParent = this->wind->getClipboardParent();
+  bool shouldDeleteClipboard = this->wind->getShouldDeleteClipboard();
+
+  if (shouldDeleteClipboard)
+  {
+    if (this->f->getAbsolutePath() == toPasteParent.getAbsolutePath())
+    {
+      Gtk::MessageDialog dialog = MessageDialog(*this->parentWindow, "Erreur");
+      dialog.set_secondary_text("Dossier source et de destination identiques");
+      dialog.run();
+    }
+    else
+    {
+      toPaste.move(this->f->getAbsolutePath() + "/" + toPaste.getName());
+    }
+  }
+  else
+  {
+    if (this->f->getAbsolutePath() == toPasteParent.getAbsolutePath())
+    {
+      toPaste.copy(this->f->getAbsolutePath() + "/" + toPaste.getName() + " (copie)");
+    }
+    else
+    {
+      toPaste.copy(this->f->getAbsolutePath() + "/" + toPaste.getName());
+    }
+
+    //TODO Mettre à jour (l'observateur le fait)
+
+    this->wind->updateClipboard(File(), File(), false);
+  }
+}
+
 void FileTreeView::on_copy()
 {
+  Gtk::TreeModel::iterator iter = treeView.get_selection()->get_selected();
+  int id = (*iter)[Columns.col_id];
 
+  File toCopy = this->subFiles->at(id);
+
+  this->wind->updateClipboard(toCopy, *this->f, false);
 }
 
 void FileTreeView::on_cut()
 {
+  Gtk::TreeModel::iterator iter = treeView.get_selection()->get_selected();
+  int id = (*iter)[Columns.col_id];
 
+  File toCut = this->subFiles->at(id);
+
+  this->wind->updateClipboard(toCut, *this->f, true);
 }
 
 void FileTreeView::on_create_directory()
@@ -254,7 +300,9 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
     sigc::mem_fun(*this, &FileTreeView::on_copy) );
  menuPopup.append(*item);
 
- item = Gtk::manage(new Gtk::MenuItem("Coller", true));
+ item = Gtk::manage(new Gtk::MenuItem("Coller ici", true));
+ item->signal_activate().connect_notify(
+    sigc::mem_fun(*this, &FileTreeView::on_paste) );
  menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Renommer", true));

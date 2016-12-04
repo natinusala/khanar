@@ -30,19 +30,19 @@ namespace khanar
       return this->_win;
   }
 
-  void Window::updateClipboard(khanar::File *file, khanar::File *parent, bool shouldDeleteClipboard)
+  void Window::updateClipboard(khanar::File file, khanar::File parent, bool shouldDeleteClipboard)
   {
     this->_clipboard = file;
     this->_clipboardParent = parent;
     this->_shouldDeleteClipboard = shouldDeleteClipboard;
   }
 
-  File* Window::getClipboard()
+  File Window::getClipboard()
   {
     return this->_clipboard;
   }
 
-  File* Window::getClipboardParent()
+  File Window::getClipboardParent()
   {
     return this->_clipboardParent;
   }

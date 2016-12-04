@@ -23,6 +23,8 @@ protected:
   void on_rename();
   void on_cut();
   void on_copy();
+  void on_paste();
+  
   Gtk::Window* parentWindow;
   khanar::Window* wind;
   Gtk::Menu menuPopup;
