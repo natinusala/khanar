@@ -9,8 +9,6 @@ using namespace khanar;
 
 void FileTreeView::on_button_press(GdkEventButton* button_event)
 {
-
-
   if((button_event->type == 4) && (button_event->button == 3))
   {
     menuPopup.popup(button_event->button, button_event->time);
@@ -28,6 +26,16 @@ void FileTreeView::on_button_press(GdkEventButton* button_event)
     }
 
   }
+}
+
+void FileTreeView::on_copy()
+{
+
+}
+
+void FileTreeView::on_cut()
+{
+
 }
 
 void FileTreeView::on_create_directory()
@@ -237,9 +245,13 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
 
   //Menu Pop up
  item = Gtk::manage(new Gtk::MenuItem("Couper", true));
+ item->signal_activate().connect_notify(
+    sigc::mem_fun(*this, &FileTreeView::on_cut) );
  menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Copier", true));
+ item->signal_activate().connect_notify(
+    sigc::mem_fun(*this, &FileTreeView::on_copy) );
  menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Coller", true));

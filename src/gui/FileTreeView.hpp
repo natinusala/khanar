@@ -21,14 +21,13 @@ protected:
   void on_delete_file();
   void on_create_directory();
   void on_rename();
+  void on_cut();
+  void on_copy();
   Gtk::Window* parentWindow;
   khanar::Window* wind;
   Gtk::Menu menuPopup;
   File* f;
   vector<File>* subFiles;
-  File* clipboard;
-  File* clipboardParent;
-  bool shouldDeleteClipboard;
 
 
   //Tree model columns:
