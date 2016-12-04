@@ -50,8 +50,8 @@ protected:
   //Child widgets:
   Gtk::Box VBox;
 
-  Gtk::ScrolledWindow ScrolledWindow;
-  Gtk::TreeView TreeView;
+  Gtk::ScrolledWindow scrolledWindow;
+  Gtk::TreeView treeView;
   Glib::RefPtr<Gtk::ListStore> refTreeModel;
 };
 
