@@ -55,6 +55,11 @@ namespace khanar
         updateAttributes(absolutepath);
       }
 
+      File::File()
+      {
+        
+      }
+
       void File::notifyObservers()
       {
         for (int i = 0; i < this->_observers.size(); i++)

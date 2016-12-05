@@ -9,8 +9,6 @@ using namespace khanar;
 
 void FileTreeView::on_button_press(GdkEventButton* button_event)
 {
-
-
   if((button_event->type == 4) && (button_event->button == 3))
   {
     menuPopup.popup(button_event->button, button_event->time);
@@ -18,7 +16,7 @@ void FileTreeView::on_button_press(GdkEventButton* button_event)
   else if
   ((button_event->type == 5) && (button_event->button == 1))
   {
-    Gtk::TreeModel::iterator iter = TreeView.get_selection()->get_selected();
+    Gtk::TreeModel::iterator iter = treeView.get_selection()->get_selected();
     int id = (*iter)[Columns.col_id];
     if (subFiles->at(id).isDirectory()){
         this->wind->actualiser(subFiles->at(id).getAbsolutePath());
@@ -28,6 +26,62 @@ void FileTreeView::on_button_press(GdkEventButton* button_event)
     }
 
   }
+}
+
+void FileTreeView::on_paste()
+{
+  File toPaste = this->wind->getClipboard();
+  File toPasteParent = this->wind->getClipboardParent();
+  bool shouldDeleteClipboard = this->wind->getShouldDeleteClipboard();
+
+  if (shouldDeleteClipboard)
+  {
+    if (this->f->getAbsolutePath() == toPasteParent.getAbsolutePath())
+    {
+      Gtk::MessageDialog dialog = MessageDialog(*this->parentWindow, "Erreur");
+      dialog.set_secondary_text("Dossier source et de destination identiques");
+      dialog.run();
+    }
+    else
+    {
+      toPaste.move(this->f->getAbsolutePath() + "/" + toPaste.getName());
+    }
+  }
+  else
+  {
+    if (this->f->getAbsolutePath() == toPasteParent.getAbsolutePath())
+    {
+      toPaste.copy(this->f->getAbsolutePath() + "/" + toPaste.getName() + " (copie)");
+    }
+    else
+    {
+      toPaste.copy(this->f->getAbsolutePath() + "/" + toPaste.getName());
+    }
+
+    //TODO Mettre à jour (l'observateur le fait)
+
+    this->wind->updateClipboard(File(), File(), false);
+  }
+}
+
+void FileTreeView::on_copy()
+{
+  Gtk::TreeModel::iterator iter = treeView.get_selection()->get_selected();
+  int id = (*iter)[Columns.col_id];
+
+  File toCopy = this->subFiles->at(id);
+
+  this->wind->updateClipboard(toCopy, *this->f, false);
+}
+
+void FileTreeView::on_cut()
+{
+  Gtk::TreeModel::iterator iter = treeView.get_selection()->get_selected();
+  int id = (*iter)[Columns.col_id];
+
+  File toCut = this->subFiles->at(id);
+
+  this->wind->updateClipboard(toCut, *this->f, true);
 }
 
 void FileTreeView::on_create_directory()
@@ -73,7 +127,7 @@ void FileTreeView::on_terminal()
 
 void FileTreeView::on_delete_file()
 {
-  Gtk::TreeModel::iterator iter = TreeView.get_selection()->get_selected();
+  Gtk::TreeModel::iterator iter = treeView.get_selection()->get_selected();
   int id = (*iter)[Columns.col_id];
 
   File toDelete = this->subFiles->at(id);
@@ -94,7 +148,7 @@ void FileTreeView::on_delete_file()
 
 void FileTreeView::on_rename()
 {
-  Gtk::TreeModel::iterator iter = TreeView.get_selection()->get_selected();
+  Gtk::TreeModel::iterator iter = treeView.get_selection()->get_selected();
   int id = (*iter)[Columns.col_id];
 
   File toRename = this->subFiles->at(id);
@@ -179,18 +233,17 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
 
   this->parentWindow = win;
   this->wind = wind;
-  //Add the TreeView, inside a ScrolledWindow, with the button underneath:
-  ScrolledWindow.add(TreeView);
 
-  //Only show the scrollbars when they are necessary:
-  ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  scrolledWindow.add(treeView);
+
+  scrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   this->VBox.set_size_request(250,250);
   this->VBox.set_hexpand(true);
   this->VBox.set_vexpand(true);
-  this->VBox.pack_start(ScrolledWindow);
+  this->VBox.pack_start(scrolledWindow);
 
   refTreeModel = Gtk::ListStore::create(Columns);
-  TreeView.set_model(refTreeModel);
+  treeView.set_model(refTreeModel);
 
   this->f = new File(path);
 
@@ -221,19 +274,19 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
   }
 
   auto cell = Gtk::manage(new Gtk::CellRendererPixbuf);
-  TreeView.append_column("   ", *cell);
-  auto pColumn = TreeView.get_column(0);
+  treeView.append_column("   ", *cell);
+  auto pColumn = treeView.get_column(0);
   if(pColumn)
   {
     Glib::ustring str = "icon_name";
     pColumn->add_attribute(*cell,str,Columns.col_ico);
   }
-  TreeView.append_column("Nom", Columns.col_name);
-  TreeView.append_column("Taille", Columns.col_number);
+  treeView.append_column("Nom", Columns.col_name);
+  treeView.append_column("Taille", Columns.col_number);
 
   for(guint i = 0; i < 2; i++)
   {
-    auto column = TreeView.get_column(i);
+    auto column = treeView.get_column(i);
     column->set_reorderable();
   }
 
@@ -250,12 +303,18 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
 
   //Menu Pop up
  item = Gtk::manage(new Gtk::MenuItem("Couper", true));
+ item->signal_activate().connect_notify(
+    sigc::mem_fun(*this, &FileTreeView::on_cut) );
  menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Copier", true));
+ item->signal_activate().connect_notify(
+    sigc::mem_fun(*this, &FileTreeView::on_copy) );
  menuPopup.append(*item);
 
- item = Gtk::manage(new Gtk::MenuItem("Coller", true));
+ item = Gtk::manage(new Gtk::MenuItem("Coller ici", true));
+ item->signal_activate().connect_notify(
+    sigc::mem_fun(*this, &FileTreeView::on_paste) );
  menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Renommer", true));
@@ -277,7 +336,7 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
  menuPopup.append(*item);
 
   menuPopup.show_all();
-  TreeView.signal_button_press_event().connect_notify(sigc::mem_fun(*this, &FileTreeView::on_button_press), false);
+  treeView.signal_button_press_event().connect_notify(sigc::mem_fun(*this, &FileTreeView::on_button_press), false);
   this->VBox.show_all_children();
 }
 

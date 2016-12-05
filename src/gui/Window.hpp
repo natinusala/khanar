@@ -36,6 +36,9 @@ namespace khanar
           vector<Onglet> _onglets;
           //Signal handlers:
 
+          File _clipboard;
+          File _clipboardParent;
+          bool _shouldDeleteClipboard;
 
         public:
           Window();
@@ -50,6 +53,10 @@ namespace khanar
           void actualiser(string filepath);
           string getCurrentFile();
 
+          void updateClipboard(File file, File parent, bool shouldDeleteClipboard); ///< Mets à jour les infos du presse papiers
+          File getClipboard(); ///< Récupère le fichier actuellement dans le presse papiers
+          File getClipboardParent(); ///< Récupère le fichier parent du fichier actuellement dans le presse papiers
+          bool getShouldDeleteClipboard(); ///< Est-ce que le fichier doit être supprimé après avoir été collé ?
 
     };
 }

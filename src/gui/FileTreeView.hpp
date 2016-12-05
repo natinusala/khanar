@@ -21,14 +21,15 @@ protected:
   void on_delete_file();
   void on_create_directory();
   void on_rename();
+  void on_cut();
+  void on_copy();
+  void on_paste();
+  
   Gtk::Window* parentWindow;
   khanar::Window* wind;
   Gtk::Menu menuPopup;
   File* f;
   vector<File>* subFiles;
-  File* clipboard;
-  File* clipboardParent;
-  bool shouldDeleteClipboard;
 
 
   //Tree model columns:
@@ -50,8 +51,8 @@ protected:
   //Child widgets:
   Gtk::Box VBox;
 
-  Gtk::ScrolledWindow ScrolledWindow;
-  Gtk::TreeView TreeView;
+  Gtk::ScrolledWindow scrolledWindow;
+  Gtk::TreeView treeView;
   Glib::RefPtr<Gtk::ListStore> refTreeModel;
 };
 

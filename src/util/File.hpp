@@ -185,6 +185,11 @@ namespace khanar
            */
            File(string absolutepath);
 
+           /**
+           * \brief Constructeur vide
+           */
+           File();
+
            inline bool operator==(const File& other)
            {
              return getAbsolutePath() == other.getAbsolutePath();
