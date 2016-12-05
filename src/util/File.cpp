@@ -92,9 +92,9 @@ namespace khanar
         this->_observers.erase(std::remove(this->_observers.begin(), this->_observers.end(), observer), this->_observers.end());
       }
 
-      vector<File> File::getRecentFiles()
+      vector<File>* File::getRecentFiles()
       {
-        vector<File> v = vector<File>();
+        vector<File>* v = new vector<File>();
 
         Glib::RefPtr<Gtk::RecentManager> recentManager = Gtk::RecentManager::get_default();
 
@@ -106,7 +106,7 @@ namespace khanar
           if (STR_STARTSWITH(recentInfo->get_uri(), string("file://")))
           {
             string path = recentInfo->get_uri().substr(7);
-            v.push_back(File(path));
+            v->push_back(File(path));
           }
         }
 
@@ -567,7 +567,10 @@ namespace khanar
 
       string File::getParentFolderAbsolutePath() const
       {
-        return this->_parentFolderAbsolutePath;
+        if (this->_absolutePath!=""){
+            return this->_parentFolderAbsolutePath;
+        }
+            return "";
       }
 
       bool File::exists() const

@@ -265,7 +265,7 @@ namespace khanar
 
            static vector<File> getMountedVolumes(); ///< Renvoie la liste des volumes montés sur le système (volume monté dans la racine exclu)
 
-           static vector<File> getRecentFiles(); ///< Renvoie la liste des fichiers récemment ouverts
+           static vector<File>* getRecentFiles(); ///< Renvoie la liste des fichiers récemment ouverts
     };
 
     /**

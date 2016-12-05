@@ -40,7 +40,7 @@ namespace khanar
         public:
           Window();
           Gtk::Window* getWindow();
-          void addOnglet(Gtk::Widget* widget ,string str );
+          void addOnglet(string str );
           void delOnglet(int idOnglet);
           void setPropInfo(string nom, string type, string icon, string Dateacces, string Datemodif, string proprietaire,string DroitProprietaire, string Groupe, string DroitGroupe, string DroitAutre ); //TO DO -> Ajouter les arguments correspondant au changement d'informations d'une barre de propriétés
           void addOnglet(string folder ,string title);
@@ -48,6 +48,7 @@ namespace khanar
           void labelOngletPlus();
           void actualiser();
           void actualiser(string filepath);
+          string getCurrentFile();
 
 
     };

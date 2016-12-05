@@ -14,16 +14,27 @@ namespace khanar{
         this->_wind = wind;
     }
 
-    void Onglet::on_button_clicked()
+    void Onglet::on_button_clicked_refresh()
       {
         this->_wind->actualiser();
       }
+
+    void Onglet::on_button_clicked_return()
+        {
+          File f = File(this->_wind->getCurrentFile());
+          string path = f.getParentFolderAbsolutePath();
+          if( path != ""){
+            this->_wind->actualiser(f.getParentFolderAbsolutePath());
+          }
+
+        }
 
     Gtk::Box* Onglet::getContent(Gtk::Widget *widget){
 
         Gtk::Box* add = nullptr;
         Gtk::Box* container = nullptr;
         Gtk::Button* actualiser = nullptr;
+        Gtk::Button* retour = nullptr;
 
         this->_builder->get_widget("box3",container);
 
@@ -31,7 +42,10 @@ namespace khanar{
 
         this->_builder->get_widget("actualiser", actualiser);
 
-        //actualiser->signal_clicked().connect(sigc::mem_fun(this, &khanar::Onglet::on_button_clicked));
+        this->_builder->get_widget("precedent", retour);
+
+        actualiser->signal_clicked().connect_notify(sigc::mem_fun(*this, &Onglet::on_button_clicked_refresh));
+        retour->signal_clicked().connect_notify(sigc::mem_fun(*this, &Onglet::on_button_clicked_return));
         widget->show_all();
 
         container->pack_start(*widget);

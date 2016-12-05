@@ -31,10 +31,11 @@ namespace khanar
   }
 
 
-  void Window::addOnglet(Gtk::Widget* widget, string str){
-    Onglet onglet = Onglet("~", str, this);
+  void Window::addOnglet(string str){
+    Onglet onglet = Onglet("", str, this);
+    FileTreeView *widget = new FileTreeView(this->_win,this, "");
 
-    Gtk::Box *add = onglet.getContent(widget);
+    Gtk::Box *add = onglet.getContent(widget->getVbox());
     this->_onglets.push_back(onglet);
     Gtk::Box* tmp = nullptr;
     Gtk::Label* label = nullptr;
@@ -47,7 +48,8 @@ namespace khanar
     this->_notebook->remove_page(-1);
     this->_notebook->append_page(*add,*tmp);
     labelOngletPlus();
-
+    this->_notebook->set_current_page(this->_onglets.size()-1);
+    actualiser();
 
   }
   void Window::addOnglet(string filepath, string title){
@@ -68,8 +70,9 @@ namespace khanar
       this->_notebook->remove_page(-1);
       this->_notebook->append_page(*add,*tmp);
       labelOngletPlus();
-
-      onglet.setPropBar(File("/home/killy/Téléchargements/cunei.ttf"));
+      this->_notebook->set_current_page(this->_onglets.size()-1);
+      actualiser();
+      //onglet.setPropBar(File("/home/killy/Téléchargements/cunei.ttf"));
 
   }
 
@@ -93,6 +96,7 @@ namespace khanar
     string path = this->_onglets.at(page).getPath();
     FileTreeView *widget = new FileTreeView(this->_win,this, path);
     Onglet onglet = Onglet(path, this->_onglets.at(page).getName(), this);
+    _onglets.erase(_onglets.begin() + page);
     _onglets.insert(_onglets.begin() + page, onglet);
     Gtk::Box *add = this->_onglets.at(page).getContent(widget->getVbox());
     Gtk::Box* tmp = nullptr;
@@ -105,6 +109,7 @@ namespace khanar
 
     this->_notebook->remove_page(page);
     this->_notebook->insert_page(*add ,*tmp, page);
+
     this->_notebook->set_current_page(page);
 
 
@@ -115,6 +120,7 @@ namespace khanar
     string path = filepath;
     FileTreeView *widget = new FileTreeView(this->_win,this, path);
     Onglet onglet = Onglet(path, this->_onglets.at(page).getName(), this);
+    _onglets.erase(_onglets.begin() + page);
     _onglets.insert(_onglets.begin() + page, onglet);
     Gtk::Box *add = this->_onglets.at(page).getContent(widget->getVbox());
     Gtk::Box* tmp = nullptr;
@@ -132,4 +138,10 @@ namespace khanar
 
   }
 
+
+string Window::getCurrentFile(){
+    int page =  this->_notebook->get_current_page();
+    string path = this->_onglets.at(page).getPath();
+    return path;
+  }
 }

@@ -34,15 +34,8 @@ int main(int argc, char* argv[])
         khanar::Window win_builder = khanar::Window();
         win = win_builder.getWindow();
 
-        Gtk::Widget* chooser1 = nullptr;
-        Gtk::Widget* chooser2 = nullptr;
-        recent_builder->get_widget("rec", chooser1);
-        recent_builder2->get_widget("rec", chooser2);
-
         win_builder.addOnglet("~/" ,"Test");
-        //win_builder.addOnglet(chooser1 ,"Test 2");
-        //win_builder.addOnglet(chooser2 ,"Test 3");
-
+        win_builder.addOnglet("Récents");
         Main::run(*win);
 
     return 0;

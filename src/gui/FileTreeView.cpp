@@ -55,7 +55,7 @@ void FileTreeView::on_create_directory()
     if (!newFile.exists() || (newFile.exists() && !newFile.isDirectory()))
     {
       newFile.createNewDirectory(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-      //TODO Mettre à jour (ici l'observateur ne marchera pas)
+      this->wind->actualiser();
     }
     else
     {
@@ -87,6 +87,7 @@ void FileTreeView::on_delete_file()
   if (result == RESPONSE_OK)
   {
     toDelete.removeFile();
+    this->wind->actualiser(); // Test : Dégage si observeur fonctionne
     //TODO Mettre à jour (l'observateur s'en charge normalement)
   }
 }
@@ -122,6 +123,7 @@ void FileTreeView::on_rename()
     if (!newFile.exists())
     {
       toRename.setName(newFileName);
+      this->wind->actualiser();//test: degage si onbserveur fonctionne
       //TODO Mettre à jour (l'observateur le fait normalement)
     }
     else
@@ -158,6 +160,7 @@ void FileTreeView::on_create_file()
     if (!newFile.exists())
     {
       newFile.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+      this->wind->actualiser();//test : degage si observeur fonctionne
       //TODO Mettre à jour (ici l'observateur ne marchera pas)
     }
     else
@@ -172,6 +175,8 @@ void FileTreeView::on_create_file()
 
 FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
 {
+
+
   this->parentWindow = win;
   this->wind = wind;
   //Add the TreeView, inside a ScrolledWindow, with the button underneath:
@@ -188,7 +193,14 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
   TreeView.set_model(refTreeModel);
 
   this->f = new File(path);
-  subFiles = this->f->getSubFiles();
+
+  if (path ==""){
+    subFiles = this->f->getRecentFiles();
+  }
+  else {
+    subFiles = this->f->getSubFiles();
+  }
+
 
   Gtk::TreeModel::Row row;
   for (int i = 0; i < subFiles->size(); i++)

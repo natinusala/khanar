@@ -34,7 +34,8 @@ namespace khanar
       string _path;
       string _name;
       khanar::Window* _wind;
-      void on_button_clicked();
+      void on_button_clicked_refresh();
+      void on_button_clicked_return();
 
 
     public:
@@ -43,10 +44,6 @@ namespace khanar
       void setPropBar(File f);
       string getPath();
       string getName();
-
-
-
-
 
     };
 
