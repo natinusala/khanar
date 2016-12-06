@@ -223,7 +223,7 @@ namespace khanar
            void openXterm() const; ///< Si c'est un dossier, ouvre Xterm dans un nouveau processus
 
            bool getPermission(enum Permission const& perm) const; ///< Renvoie si la permission demandée est accordée ou non (depuis l'enum Permission)
-           void setPermission(enum Permission const& perm, bool const& value); ///< Modifie la permission (depuis l'enum Permission)
+           void setPermission(enum Permission const& perm, bool value); ///< Modifie la permission (depuis l'enum Permission)
            bool isExecutable() const; ///< Renvoie si le fichier est exécutable (si il y a la permission X sur usr ou grp ou oth)
 
            long getSize() const; ///< Renvoie la taille du fichier en octets (ou -1 si c'est un dossier)
@@ -233,7 +233,9 @@ namespace khanar
            vector<File>* getSubFiles(bool force); ///< Si le fichier est un dossier, renvoie la liste des sous dossiers, NULL sinon (force la mise à jour du cache)
            vector<File> search(string expression); ///< Si le fichier est un dossier, recherche (non récursivement) les fichiers correspondant à cette expression
 
-           void setSortStrategy(FileSortStrategy const& strategy, bool const& descending); ///< Change la stratégie de tri des fichiers du dossier ; une stratégie ici est un critère de tri et un ordre
+           void setSortStrategy(FileSortStrategy const& strategy, bool descending); ///< Change la stratégie de tri des fichiers du dossier ; une stratégie ici est un critère de tri et un ordre
+           FileSortStrategy getSortStrategy();
+           bool isSortStrategyDescending();
 
            void subscribeObserver(FileObserver* observer); ///< Abonne un Observer à ce fichier
            void unsubscribeObserver(FileObserver* observer); ///< Désabonne un Observer à ce fichier

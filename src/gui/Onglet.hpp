@@ -1,9 +1,3 @@
-/**
- * \file Window.hpp
- *
- * Header des suites de classes pour abstraire la création de la fenêtre
- */
-
 
 #include <gtkmm.h>
 #include "../util/Assets.hpp"
@@ -13,7 +7,6 @@
 
 #ifndef ONGLET_HPP
 #define ONGLET_HPP
-
 
 using namespace Gtk;
 using namespace Glib;

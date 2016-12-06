@@ -57,7 +57,7 @@ namespace khanar
 
       File::File()
       {
-        
+
       }
 
       void File::notifyObservers()
@@ -470,15 +470,12 @@ namespace khanar
 
         remove(this->_absolutePath.c_str());
         this->updateStat();
+        this->notifyObservers();
       }
 
       File File::copy(string newpath) const
       {
-        ifstream src = ifstream(this->_absolutePath, ios::binary);
-        ofstream dst = ofstream(newpath, ios::binary);
-
-        dst << src.rdbuf();
-
+        system(string("cp -R \"" + this->_absolutePath + "\" \"" + newpath + "\"").c_str());
         return File(newpath);
       }
 
@@ -488,7 +485,7 @@ namespace khanar
         updateAttributes(newpath);
       }
 
-      void File::setPermission(enum Permission const& perm, bool const& value)
+      void File::setPermission(enum Permission const& perm, bool value)
       {
         int toSet = 0;
 
@@ -634,7 +631,17 @@ namespace khanar
         return convertSize(this->_fileStat.st_size);
       }
 
-      void File::setSortStrategy(FileSortStrategy const& strategy, bool const& descending)
+      FileSortStrategy File::getSortStrategy()
+      {
+        return this->_sortStrategy;
+      }
+
+      bool File::isSortStrategyDescending()
+      {
+        return this->_sortDescending;
+      }
+
+      void File::setSortStrategy(FileSortStrategy const& strategy, bool descending)
       {
         this->_sortStrategy = strategy;
         this->_sortDescending = descending;
