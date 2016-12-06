@@ -475,11 +475,7 @@ namespace khanar
 
       File File::copy(string newpath) const
       {
-        ifstream src = ifstream(this->_absolutePath, ios::binary);
-        ofstream dst = ofstream(newpath, ios::binary);
-
-        dst << src.rdbuf();
-
+        system(string("cp -R \"" + this->_absolutePath + "\" \"" + newpath + "\"").c_str());
         return File(newpath);
       }
 
