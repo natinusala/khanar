@@ -28,6 +28,18 @@ void FileTreeView::on_button_press(GdkEventButton* button_event)
   }
 }
 
+void FileTreeView::on_sort_ascending()
+{
+  this->f->setSortStrategy(this->f->getSortStrategy(), false);
+  //TODO Mise à jour (l'observateur sur f s'en charge)
+}
+
+void FileTreeView::on_sort_descending()
+{
+  this->f->setSortStrategy(this->f->getSortStrategy(), true);
+  //TODO Mise à jour (l'observateur sur f s'en charge)
+}
+
 void FileTreeView::on_paste()
 {
   File toPaste = this->wind->getClipboard();
@@ -301,7 +313,9 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
      sigc::mem_fun(*this, &FileTreeView::on_create_directory) );
   menuPopup.append(*item);
 
-  //Menu Pop up
+  item = Gtk::manage(new Gtk::SeparatorMenuItem());
+  menuPopup.append(*item);
+
  item = Gtk::manage(new Gtk::MenuItem("Couper", true));
  item->signal_activate().connect_notify(
     sigc::mem_fun(*this, &FileTreeView::on_cut) );
@@ -317,6 +331,9 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
     sigc::mem_fun(*this, &FileTreeView::on_paste) );
  menuPopup.append(*item);
 
+ item = Gtk::manage(new Gtk::SeparatorMenuItem());
+ menuPopup.append(*item);
+
  item = Gtk::manage(new Gtk::MenuItem("Renommer", true));
  item->signal_activate().connect_notify(
     sigc::mem_fun(*this, &FileTreeView::on_rename) );
@@ -327,12 +344,49 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
     sigc::mem_fun(*this, &FileTreeView::on_delete_file) );
  menuPopup.append(*item);
 
+ item = Gtk::manage(new Gtk::SeparatorMenuItem());
+ menuPopup.append(*item);
+
  item = Gtk::manage(new Gtk::MenuItem("Ouvrir un terminal ici", true));
  item->signal_activate().connect_notify(
     sigc::mem_fun(*this, &FileTreeView::on_terminal) );
  menuPopup.append(*item);
 
+ item = Gtk::manage(new Gtk::SeparatorMenuItem());
+ menuPopup.append(*item);
+
  item = Gtk::manage(new Gtk::MenuItem("Ajouter/supprimer des favoris", true));
+ menuPopup.append(*item);
+
+ item = Gtk::manage(new Gtk::SeparatorMenuItem());
+ menuPopup.append(*item);
+
+ Gtk::Menu* sortMenu = Gtk::manage(new Gtk::Menu());
+
+ item = Gtk::manage(new Gtk::MenuItem("Par nom", true));
+ sortMenu->append(*item);
+
+ item = Gtk::manage(new Gtk::MenuItem("Par taille", true));
+ sortMenu->append(*item);
+
+ item = Gtk::manage(new Gtk::MenuItem("Par date de dernière modification", true));
+ sortMenu->append(*item);
+
+ item = Gtk::manage(new Gtk::SeparatorMenuItem());
+ sortMenu->append(*item);
+
+ item = Gtk::manage(new Gtk::MenuItem("Ascendant", true));
+ item->signal_activate().connect_notify(
+    sigc::mem_fun(*this, &FileTreeView::on_sort_ascending ));
+ sortMenu->append(*item);
+
+ item = Gtk::manage(new Gtk::MenuItem("Descendant", true));
+ item->signal_activate().connect_notify(
+    sigc::mem_fun(*this, &FileTreeView::on_sort_descending ));
+ sortMenu->append(*item);
+
+ item = Gtk::manage(new Gtk::MenuItem("Trier", true));
+ item->set_submenu(*sortMenu);
  menuPopup.append(*item);
 
   menuPopup.show_all();

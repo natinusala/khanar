@@ -24,7 +24,10 @@ protected:
   void on_cut();
   void on_copy();
   void on_paste();
-  
+
+  void on_sort_ascending();
+  void on_sort_descending();
+
   Gtk::Window* parentWindow;
   khanar::Window* wind;
   Gtk::Menu menuPopup;
@@ -56,4 +59,4 @@ protected:
   Glib::RefPtr<Gtk::ListStore> refTreeModel;
 };
 
-#endif //GTKMM_FileTreeView_H
+#endif
