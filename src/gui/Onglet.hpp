@@ -33,9 +33,11 @@ namespace khanar
       RefPtr<Builder> _builder;
       string _path;
       string _name;
+      Gtk::Entry* entry;
       khanar::Window* _wind;
       void on_button_clicked_refresh();
       void on_button_clicked_return();
+      void on_button_clicked_navig(GdkEventButton* button_event);
 
 
     public:

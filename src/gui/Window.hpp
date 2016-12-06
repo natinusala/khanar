@@ -53,6 +53,7 @@ namespace khanar
           void actualiser(string filepath);
           string getCurrentFile();
 
+          void updatePropBar(File file);
           void updateClipboard(File file, File parent, bool shouldDeleteClipboard); ///< Mets à jour les infos du presse papiers
           File getClipboard(); ///< Récupère le fichier actuellement dans le presse papiers
           File getClipboardParent(); ///< Récupère le fichier parent du fichier actuellement dans le presse papiers

@@ -16,6 +16,7 @@ public:
 protected:
   void on_button_quit();
   void on_button_press(GdkEventButton* button_event);
+  void on_button_press_actu(const Gtk::TreeModel::Path& path,Gtk::TreeViewColumn* c);
   void on_terminal();
   void on_create_file();
   void on_delete_file();
@@ -24,7 +25,7 @@ protected:
   void on_cut();
   void on_copy();
   void on_paste();
-  
+
   Gtk::Window* parentWindow;
   khanar::Window* wind;
   Gtk::Menu menuPopup;
