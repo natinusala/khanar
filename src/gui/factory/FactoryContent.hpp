@@ -24,7 +24,6 @@ namespace khanar
   public:
     FactoryContent(Gtk::Window*& win,khanar::Window* wind, string path, bool recents, Glib::RefPtr<Gtk::Builder> b) : Factory(b), gtkWin(win), khanarWind(wind), contentPath(path), contentRecents(recents) {}
 
-    WidgetPerso* getWidget() override;
     WidgetPerso* getWidget(string data) override;
   };
 }

@@ -16,7 +16,6 @@ namespace khanar
   public:
     FactoryGlade(Glib::RefPtr<Gtk::Builder> b) : Factory(b) {}
 
-    WidgetPerso* getWidget() override;
     WidgetPerso* getWidget(string data) override;
   };
 }

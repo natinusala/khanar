@@ -5,11 +5,6 @@
 
 using namespace khanar;
 
-WidgetPerso* FactoryGlade::getWidget()
-{
-  return nullptr;
-}
-
 WidgetPerso* FactoryGlade::getWidget(string data)
 {
   if (data == "PropertiesBar")

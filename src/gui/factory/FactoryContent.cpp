@@ -5,11 +5,6 @@
 
 using namespace khanar;
 
-WidgetPerso* FactoryContent::getWidget()
-{
-  return nullptr;
-}
-
 WidgetPerso* FactoryContent::getWidget(string data)
 {
   if (data == "FileTreeView")
