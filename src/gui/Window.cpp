@@ -18,11 +18,11 @@ namespace khanar
 
   Window::Window()
   {
-    this->_win_builder = Assets::buildGtkFromResource(window_glade);
+    this->_winBuilder = Assets::buildGtkFromResource(window_glade);
     this->_win = nullptr;
     this->_notebook=nullptr;
-    this->_win_builder->get_widget("window1", _win);
-    this->_win_builder->get_widget("notebook1", _notebook);
+    this->_winBuilder->get_widget("window1", _win);
+    this->_winBuilder->get_widget("notebook1", _notebook);
   }
   Gtk::Window* Window::getWindow(){
       this->_notebook->remove_page(0);

@@ -30,12 +30,12 @@ namespace khanar
     class Window
     {
         private:
-          RefPtr<Builder> _win_builder;
+          RefPtr<Builder> _winBuilder;
           Gtk::Window* _win;
           Gtk::Notebook* _notebook;
           vector<Onglet*> _onglets;
-          //Signal handlers:
 
+          //Signal handlers:
           File _clipboard;
           File _clipboardParent;
           bool _shouldDeleteClipboard;
