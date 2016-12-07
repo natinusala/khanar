@@ -170,7 +170,7 @@ namespace khanar
 
            void updateAttributes(string absolutepath);
 
-           vector<FileObserver*> _observers = vector<FileObserver*>();
+           vector<FileObserver*> _observers;
 
            static void updateFavorites(vector<File> newFavorites);
 

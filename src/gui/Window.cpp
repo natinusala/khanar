@@ -37,7 +37,7 @@ namespace khanar
     this->_shouldDeleteClipboard = shouldDeleteClipboard;
   }
 
-  void Window::updatePropBar(khanar::File file)
+  void Window::updatePropBar(khanar::File* file)
   {
     int page =  this->_notebook->get_current_page();
     this->_onglets.at(page)->setPropBar(file);

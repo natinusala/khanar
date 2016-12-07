@@ -11,6 +11,8 @@ namespace khanar{
     Onglet::Onglet(string path, string name, khanar::Window* wind, Gtk::Window*& _wind){
         this->_builder = Assets::buildGtkFromResource(topbar_glade);
         this->_builder->get_widget("searchentry1", this->search);
+        _propBar = new PropertiesBar(_builder);
+
         this->_path = path;
         this->_name = name;
         this->_wind = wind;
@@ -18,24 +20,24 @@ namespace khanar{
         this->treeview = new FileTreeView(_wind, wind , path, false);
 
 
-        Gtk::Box* prop = nullptr;
-        this->_builder->get_widget("proprietes", prop);
-
-        prop->hide();
+        _propBar->setVisible(false);
     }
 
     Onglet::Onglet(string name, khanar::Window* wind, Gtk::Window*& _wind){
         this->_builder = Assets::buildGtkFromResource(topbar_glade);
         this->_builder->get_widget("searchentry1", this->search);
+        _propBar = new PropertiesBar(_builder);
         this->_name = name;
         this->_wind = wind;
         this->treeview = new FileTreeView(_wind, wind , "", true);
+
 
         Gtk::Box* prop = nullptr;
         this->_builder->get_widget("proprietes", prop);
         recents = true;
         this->search->hide();
-        prop->hide();
+
+        _propBar->setVisible(false);
     }
 
     void Onglet::on_button_clicked_refresh()
@@ -146,62 +148,18 @@ namespace khanar{
       this->entry->set_text("Recherche de \"" + search+ "\"");
   }
 
-  void Onglet::setPropBar(File f){
-
-    Gtk::Label* nom = nullptr;
-    Gtk::Label* type = nullptr;
-    Gtk::Label* taill = nullptr;
-    Gtk::Label* acces = nullptr;
-    Gtk::Label* modifie = nullptr;
-    Gtk::Label* nomProprio = nullptr;
-    Gtk::ComboBoxText* box = nullptr;
-    Gtk::Image* icon = nullptr;
-
-
-    Gtk::Box* prop = nullptr;
-    this->_builder->get_widget("proprietes", prop);
-
-    prop->show();
-
-    this->_builder->get_widget("nom", nom);
-    this->_builder->get_widget("type", type);
-    this->_builder->get_widget("taill", taill);
-    this->_builder->get_widget("acces", acces);
-    this->_builder->get_widget("modifie", modifie);
-    this->_builder->get_widget("nomProprietaire", nomProprio);
-    this->_builder->get_widget("groupecombo", box);
-    this->_builder->get_widget("Icone", icon);
-
-    nom->set_text(f.getName());
-    type->set_text(f.getFileType().getName());
-    taill->set_text(f.getFormattedSize());
-    char buffer [50];
-    time_t rawtime = (time_t) f.getLastAccessTime();
-    struct tm * timeinfo;
-    timeinfo = localtime (&rawtime);
-    strftime (buffer,20,"%d/%m/%y",timeinfo);
-    char acc [50]= "Accédé : ";
-    char result[100];
-    strcpy(result,acc);
-    strcat(result,buffer);
-    acces->set_text(result);
-    buffer [50];
-    rawtime = (time_t) f.getLastModificationTime();
-    timeinfo = localtime (&rawtime);
-    strftime (buffer,20,"%d/%m/%y",timeinfo);
-    char acc2 [50]= "Modifié : ";
-    result[100];
-    strcpy(result,acc2);
-    strcat(result,buffer);
-    modifie->set_text(result);
-
-    icon->set_from_icon_name(f.getFileType().getIcon(), Gtk::BuiltinIconSize::ICON_SIZE_DIALOG);
-
-    nomProprio->set_text(File::getUIDName(f.getUID()));
+  void Onglet::setPropBar(File* f){
+    _propBar->updateProp(f);
   }
 
   string Onglet::getPath(){
       return this->treeview->getPath();
 
   }
+}
+
+Onglet::~Onglet()
+{
+
+  delete this->_propBar;
 }
