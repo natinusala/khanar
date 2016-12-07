@@ -260,7 +260,13 @@ void FileTreeView::reset(){
     }
   }
         refTreeModel->clear();
-        subFiles = this->f->getSubFiles(true);
+        if (recents){
+          subFiles = this->f->getRecentFiles();
+        } else
+        {
+          subFiles = this->f->getSubFiles(true);
+        }
+
 
 
         for (int i = 0; i < this->subFiles->size(); i++)
@@ -345,12 +351,13 @@ void FileTreeView::reset(string filepath){
 
 
 
-FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
+FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path, bool recents)
 {
 
 
   this->parentWindow = win;
   this->wind = wind;
+  this->recents = recents;
 
   scrolledWindow.add(treeView);
 
@@ -379,7 +386,7 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
   this->f = new File(path);
   f->subscribeObserver(&fileObs);
 
-  if (path ==""){
+  if (recents){
     subFiles = File::getRecentFiles();
   }
   else {
@@ -537,4 +544,8 @@ Gtk::Box* FileTreeView::getVbox(){
 void OngletFileObserver::fileUpdated(khanar::File *file)
 {
   _fileTreeView->reset();
+}
+
+string FileTreeView::getPath(){
+  return this->f->getAbsolutePath();
 }

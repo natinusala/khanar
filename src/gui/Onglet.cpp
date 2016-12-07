@@ -13,8 +13,21 @@ namespace khanar{
         this->_path = path;
         this->_name = name;
         this->_wind = wind;
-        this->treeview = new FileTreeView(_wind, wind , path);
 
+        this->treeview = new FileTreeView(_wind, wind , path, false);
+
+
+        Gtk::Box* prop = nullptr;
+        this->_builder->get_widget("proprietes", prop);
+
+        prop->hide();
+    }
+
+    Onglet::Onglet(string name, khanar::Window* wind, Gtk::Window*& _wind){
+        this->_builder = Assets::buildGtkFromResource(topbar_glade);
+        this->_name = name;
+        this->_wind = wind;
+        this->treeview = new FileTreeView(_wind, wind , "", true);
 
         Gtk::Box* prop = nullptr;
         this->_builder->get_widget("proprietes", prop);
@@ -145,7 +158,7 @@ namespace khanar{
   }
 
   string Onglet::getPath(){
-      return this->_path;
+      return this->treeview->getPath();
 
   }
 

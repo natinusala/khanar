@@ -60,7 +60,7 @@ namespace khanar
 
 
   void Window::addOnglet(string str){
-    Onglet* onglet = new Onglet("", str, this, _win);
+    Onglet* onglet = new Onglet(str, this, _win);
 
     Gtk::Box *add = onglet->getContent();
     this->_onglets.push_back(onglet);
