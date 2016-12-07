@@ -10,11 +10,12 @@
 class FileTreeView
 {
 public:
-  FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path);
+  FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path, bool recents);
   ~FileTreeView();
   Gtk::Box* getVbox();
   void reset();
   void reset(string filepath);
+  string getPath();
 protected:
   void on_button_quit();
   void on_button_press(GdkEventButton* button_event);
@@ -40,6 +41,7 @@ protected:
   Gtk::Menu menuPopup;
   File* f;
   vector<File>* subFiles;
+  bool recents;
 
 
   //Tree model columns:

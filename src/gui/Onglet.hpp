@@ -55,6 +55,7 @@ namespace khanar
       * \param[in] win la fenêtre parent Gtk
       */
       Onglet(string path, string name, khanar::Window* wind, Gtk::Window*& win);
+      Onglet( string name, khanar::Window* wind, Gtk::Window*& win);
       void actualiser();
       void actualiser(string filepath);
       Gtk::Box* getContent();
