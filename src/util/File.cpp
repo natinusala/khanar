@@ -125,7 +125,7 @@ namespace khanar
         File favorites = File(File::FAVORITES_DIRECTORY);
 
         if (!favorites.exists())
-          favorites.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+          favorites.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH, nullptr);
 
         Json::Value root;
         Json::Reader().parse(favorites.read(), root);
@@ -195,7 +195,7 @@ namespace khanar
         File favorites = File(File::FAVORITES_DIRECTORY);
 
         if (!favorites.exists())
-          favorites.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+          favorites.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH, nullptr);
 
         Json::Value root = Json::Value(Json::arrayValue);
 
@@ -296,6 +296,9 @@ namespace khanar
           absolutepath = string(exp_result.we_wordv[0]);
         }
 
+        //Résolution des URI
+        absolutepath = urlDecode(absolutepath);
+
         //Construction
         size_t pos = absolutepath.find_last_of("/");
         this->_name = absolutepath.substr(pos+1);
@@ -387,7 +390,7 @@ namespace khanar
         }
       }
 
-      void File::createNewFile(mode_t mode)
+      void File::createNewFile(mode_t mode, File* parent)
       {
         if (this->_exists)
         {
@@ -401,9 +404,14 @@ namespace khanar
         fs.close();
 
         this->updateStat();
+
+        if (parent != nullptr)
+        {
+          parent->notifyObservers();
+        }
       }
 
-      void File::createNewDirectory(mode_t mode)
+      void File::createNewDirectory(mode_t mode, File* parent)
       {
         if (this->_exists)
         {
@@ -415,6 +423,11 @@ namespace khanar
         mkdir(this->getAbsolutePath().c_str(), mode);
 
         this->updateStat();
+
+        if (parent != nullptr)
+        {
+          parent->notifyObservers();
+        }
       }
 
       unsigned File::getUID() const

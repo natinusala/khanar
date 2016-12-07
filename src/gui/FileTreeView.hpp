@@ -31,6 +31,9 @@ protected:
 
   void on_sort_ascending();
   void on_sort_descending();
+  void on_sort_name();
+  void on_sort_size();
+  void on_sort_date();
 
   Gtk::Window* parentWindow;
   khanar::Window* wind;

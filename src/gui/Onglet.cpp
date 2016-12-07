@@ -13,7 +13,15 @@ namespace khanar{
         this->_path = path;
         this->_name = name;
         this->_wind = wind;
+<<<<<<< HEAD
         this->treeview = new FileTreeView(_wind, wind , path);
+=======
+
+        Gtk::Box* prop = nullptr;
+        this->_builder->get_widget("proprietes", prop);
+
+        prop->hide();
+>>>>>>> ce0233133b00ea71490590f1547d8cca65d56931
     }
 
     void Onglet::on_button_clicked_refresh()
@@ -77,6 +85,7 @@ namespace khanar{
         return add;
   }
 
+
   void Onglet::actualiser(){
       this->treeview->reset();
   }
@@ -92,13 +101,23 @@ namespace khanar{
     Gtk::Label* modifie = nullptr;
     Gtk::Label* nomProprio = nullptr;
     Gtk::ComboBoxText* box = nullptr;
-    this->_builder->get_widget("nom",nom);
-    this->_builder->get_widget("type",type);
-    this->_builder->get_widget("taill",taill);
-    this->_builder->get_widget("acces",acces);
-    this->_builder->get_widget("modifie",modifie);
-    this->_builder->get_widget("nomProprietaire",nomProprio);
-    this->_builder->get_widget("groupecombo",box);
+    Gtk::Image* icon = nullptr;
+
+
+    Gtk::Box* prop = nullptr;
+    this->_builder->get_widget("proprietes", prop);
+
+    prop->show();
+
+    this->_builder->get_widget("nom", nom);
+    this->_builder->get_widget("type", type);
+    this->_builder->get_widget("taill", taill);
+    this->_builder->get_widget("acces", acces);
+    this->_builder->get_widget("modifie", modifie);
+    this->_builder->get_widget("nomProprietaire", nomProprio);
+    this->_builder->get_widget("groupecombo", box);
+    this->_builder->get_widget("Icone", icon);
+
     nom->set_text(f.getName());
     type->set_text(f.getFileType().getName());
     taill->set_text(f.getFormattedSize());
@@ -122,7 +141,9 @@ namespace khanar{
     strcat(result,buffer);
     modifie->set_text(result);
 
+    icon->set_from_icon_name(f.getFileType().getIcon(), Gtk::BuiltinIconSize::ICON_SIZE_DIALOG);
 
+    nomProprio->set_text(File::getUIDName(f.getUID()));
   }
 
   string Onglet::getPath(){

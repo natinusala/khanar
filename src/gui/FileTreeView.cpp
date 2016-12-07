@@ -12,10 +12,7 @@ void FileTreeView::on_button_press_actu(const Gtk::TreeModel::Path& path,Gtk::Tr
 {
       Gtk::TreeModel::iterator iter = treeView.get_selection()->get_selected();
       int id = (*iter)[Columns.col_id];
-      if (! subFiles->at(id).isDirectory()){
-          this->wind->updatePropBar(subFiles->at(id));
-      }
-
+      this->wind->updatePropBar(subFiles->at(id));
 }
 
 
@@ -51,6 +48,21 @@ void FileTreeView::on_sort_descending()
 {
   this->f->setSortStrategy(this->f->getSortStrategy(), true);
   //TODO Mise à jour (l'observateur sur f s'en charge)
+}
+
+void FileTreeView::on_sort_name()
+{
+  this->f->setSortStrategy(File::NAME_FILESORTSTRATEGY, this->f->isSortStrategyDescending());
+}
+
+void FileTreeView::on_sort_size()
+{
+  this->f->setSortStrategy(File::SIZE_FILESORTSTRATEGY, this->f->isSortStrategyDescending());
+}
+
+void FileTreeView::on_sort_date()
+{
+  this->f->setSortStrategy(File::ACCESSTIME_FILESORTSTRATEGY, this->f->isSortStrategyDescending());
 }
 
 void FileTreeView::on_paste()
@@ -133,8 +145,8 @@ void FileTreeView::on_create_directory()
     File newFile = File(this->f, newFileName);
     if (!newFile.exists() || (newFile.exists() && !newFile.isDirectory()))
     {
-      newFile.createNewDirectory(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-      this->wind->actualiser();
+      newFile.createNewDirectory(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH, this->f);
+      this->wind->actualiser(); //TODO Observateur
     }
     else
     {
@@ -238,9 +250,9 @@ void FileTreeView::on_create_file()
     File newFile = File(this->f, newFileName);
     if (!newFile.exists())
     {
-      newFile.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+      newFile.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH, this->f);
       this->wind->actualiser();//test : degage si observeur fonctionne
-      //TODO Mettre à jour (ici l'observateur ne marchera pas)
+      //TODO Mettre à jour (observateur)
     }
     else
     {
@@ -431,12 +443,18 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
  Gtk::Menu* sortMenu = Gtk::manage(new Gtk::Menu());
 
  item = Gtk::manage(new Gtk::MenuItem("Par nom", true));
+ item->signal_activate().connect_notify(
+    sigc::mem_fun(*this, &FileTreeView::on_sort_name) );
  sortMenu->append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Par taille", true));
+ item->signal_activate().connect_notify(
+    sigc::mem_fun(*this, &FileTreeView::on_sort_size) );
  sortMenu->append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Par date de dernière modification", true));
+ item->signal_activate().connect_notify(
+    sigc::mem_fun(*this, &FileTreeView::on_sort_date) );
  sortMenu->append(*item);
 
  item = Gtk::manage(new Gtk::SeparatorMenuItem());
