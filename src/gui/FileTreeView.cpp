@@ -53,6 +53,21 @@ void FileTreeView::on_sort_descending()
   //TODO Mise à jour (l'observateur sur f s'en charge)
 }
 
+void FileTreeView::on_sort_name()
+{
+  this->f->setSortStrategy(File::NAME_FILESORTSTRATEGY, this->f->isSortStrategyDescending());
+}
+
+void FileTreeView::on_sort_size()
+{
+  this->f->setSortStrategy(File::SIZE_FILESORTSTRATEGY, this->f->isSortStrategyDescending());
+}
+
+void FileTreeView::on_sort_date()
+{
+  this->f->setSortStrategy(File::ACCESSTIME_FILESORTSTRATEGY, this->f->isSortStrategyDescending());
+}
+
 void FileTreeView::on_paste()
 {
   File toPaste = this->wind->getClipboard();
@@ -377,12 +392,18 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
  Gtk::Menu* sortMenu = Gtk::manage(new Gtk::Menu());
 
  item = Gtk::manage(new Gtk::MenuItem("Par nom", true));
+ item->signal_activate().connect_notify(
+    sigc::mem_fun(*this, &FileTreeView::on_sort_name) );
  sortMenu->append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Par taille", true));
+ item->signal_activate().connect_notify(
+    sigc::mem_fun(*this, &FileTreeView::on_sort_size) );
  sortMenu->append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Par date de dernière modification", true));
+ item->signal_activate().connect_notify(
+    sigc::mem_fun(*this, &FileTreeView::on_sort_date) );
  sortMenu->append(*item);
 
  item = Gtk::manage(new Gtk::SeparatorMenuItem());
