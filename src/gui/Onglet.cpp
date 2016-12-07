@@ -1,17 +1,19 @@
 
-#include "Onglet.hpp"
 #include "Window.hpp"
+#include "Onglet.hpp"
+
 
 
 #include "../compiled_assets/topbar.glade.hex"
 #include "../compiled_assets/propertiesbar.glade.hex"
 
 namespace khanar{
-    Onglet::Onglet(string path, string name, khanar::Window* wind){
+    Onglet::Onglet(string path, string name, khanar::Window* wind, Gtk::Window*& _wind){
         this->_builder = Assets::buildGtkFromResource(topbar_glade);
         this->_path = path;
         this->_name = name;
         this->_wind = wind;
+        this->treeview = new FileTreeView(_wind, wind , path);
     }
 
     void Onglet::on_button_clicked_refresh()
@@ -40,13 +42,14 @@ namespace khanar{
 
             }
 
-    Gtk::Box* Onglet::getContent(Gtk::Widget *widget){
+    Gtk::Box* Onglet::getContent(){
 
         Gtk::Box* add = nullptr;
         Gtk::Box* container = nullptr;
         Gtk::Button* actualiser = nullptr;
         Gtk::Button* retour = nullptr;
         Gtk::Button* navig = nullptr;
+        Gtk::Widget* widget = this->treeview->getVbox();
         this->entry = nullptr;
 
         this->_builder->get_widget("box3",container);
@@ -74,7 +77,12 @@ namespace khanar{
         return add;
   }
 
-
+  void Onglet::actualiser(){
+      this->treeview->reset();
+  }
+  void Onglet::actualiser(string filepath){
+      this->treeview->reset(filepath);
+  }
   void Onglet::setPropBar(File f){
 
     Gtk::Label* nom = nullptr;

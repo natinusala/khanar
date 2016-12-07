@@ -33,7 +33,7 @@ namespace khanar
           RefPtr<Builder> _win_builder;
           Gtk::Window* _win;
           Gtk::Notebook* _notebook;
-          vector<Onglet> _onglets;
+          vector<Onglet*> _onglets;
           //Signal handlers:
 
           File _clipboard;
