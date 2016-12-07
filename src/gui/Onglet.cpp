@@ -10,7 +10,7 @@
 namespace khanar{
     Onglet::Onglet(string path, string name, khanar::Window* wind, Gtk::Window*& _wind){
         this->_builder = Assets::buildGtkFromResource(topbar_glade);
-        this->_builder->get_widget("searchentry1", this->search);
+        this->_builder->get_widget("searchentry1", this->_search);
         _factoryGlade = new FactoryGlade(_builder);
         _factoryContent = new FactoryContent(_wind, wind, path, false, _builder);
         _propBar = (PropertiesBar*)_factoryGlade->getWidget("PropertiesBar")->getContent();
@@ -19,7 +19,7 @@ namespace khanar{
         this->_name = name;
         this->_wind = wind;
 
-        this->treeview = (FileTreeView*) _factoryContent->getWidget("FileTreeView")->getContent();
+        this->_treeView = (FileTreeView*) _factoryContent->getWidget("FileTreeView")->getContent();
 
 
         _propBar->setVisible(false);
@@ -27,19 +27,19 @@ namespace khanar{
 
     Onglet::Onglet(string name, khanar::Window* wind, Gtk::Window*& _wind){
         this->_builder = Assets::buildGtkFromResource(topbar_glade);
-        this->_builder->get_widget("searchentry1", this->search);
+        this->_builder->get_widget("searchentry1", this->_search);
         _factoryGlade = new FactoryGlade(_builder);
         _factoryContent = new FactoryContent(_wind, wind, string(""), true, _builder);
         _propBar = (PropertiesBar*)_factoryGlade->getWidget("PropertiesBar")->getContent();
         this->_name = name;
         this->_wind = wind;
 
-        this->treeview = (FileTreeView*) _factoryContent->getWidget("FileTreeView")->getContent();
+        this->_treeView = (FileTreeView*) _factoryContent->getWidget("FileTreeView")->getContent();
 
         Gtk::Box* prop = nullptr;
         this->_builder->get_widget("proprietes", prop);
-        recents = true;
-        this->search->hide();
+        this->_recents = true;
+        this->_search->hide();
 
         _propBar->setVisible(false);
     }
@@ -55,8 +55,8 @@ namespace khanar{
           string path = f.getParentFolderAbsolutePath();
           if( path != ""){
             this->_wind->actualiser(f.getParentFolderAbsolutePath());
-            recents =false;
-            this->search->show();
+            this->_recents =false;
+            this->_search->show();
 
           }
 
@@ -66,27 +66,27 @@ namespace khanar{
         void Onglet::on_button_clicked_home()
           {
                 this->_wind->actualiser("~");
-                recents = false;
-                this->search->show();
+                this->_recents = false;
+                this->_search->show();
 
             }
 
         void Onglet::on_button_clicked_navig()
           {
-                  File f = File(this->entry->get_text());
+                  File f = File(this->_entry->get_text());
                   if(f.isDirectory()){
-                    this->_wind->actualiser(this->entry->get_text());
-                    recents = false;
-                    this->search->show();
+                    this->_wind->actualiser(this->_entry->get_text());
+                    this->_recents = false;
+                    this->_search->show();
                   }
 
           }
 
           void Onglet::on_button_clicked_search()
             {
-                    string tmp = this->search->get_text();
+                    string tmp = this->_search->get_text();
                     if(tmp!=""){
-                      this->_wind->search(this->search->get_text());
+                      this->_wind->search(this->_search->get_text());
                     }else{
                       this->_wind->actualiser();
                     }
@@ -102,7 +102,7 @@ namespace khanar{
         Gtk::Button* remonter = nullptr;
         Gtk::Button* home = nullptr;
         Gtk::Button* navig = nullptr;
-        Gtk::Widget* widget = this->treeview->getVbox();
+        Gtk::Widget* widget = this->_treeView->getVbox();
 
         this->_builder->get_widget("box3",container);
 
@@ -114,44 +114,44 @@ namespace khanar{
 
         this->_builder->get_widget("home", home);
 
-        this->_builder->get_widget("entry1", this->entry);
+        this->_builder->get_widget("entry1", this->_entry);
 
         actualiser->signal_clicked().connect_notify(sigc::mem_fun(*this, &Onglet::on_button_clicked_refresh));
         remonter->signal_clicked().connect_notify(sigc::mem_fun(*this, &Onglet::on_button_clicked_return));
         home->signal_clicked().connect_notify(sigc::mem_fun(*this, &Onglet::on_button_clicked_home));
-        this->entry->signal_activate().connect_notify(sigc::mem_fun(*this, &Onglet::on_button_clicked_navig));
-        this->search->signal_search_changed().connect_notify(sigc::mem_fun(*this, &Onglet::on_button_clicked_search));
+        this->_entry->signal_activate().connect_notify(sigc::mem_fun(*this, &Onglet::on_button_clicked_navig));
+        this->_search->signal_search_changed().connect_notify(sigc::mem_fun(*this, &Onglet::on_button_clicked_search));
         widget->show_all();
 
 
         container->pack_start(*widget);
         container->reorder_child(*widget,0);
 
-        this->child = add;
+        this->_child = add;
         return add;
   }
   Gtk::Widget* Onglet::getWidget(){
-    return this->child;
+    return this->_child;
   }
   string Onglet::getName(){
-    return this->treeview->getName();
+    return this->_treeView->getName();
   }
 
   void Onglet::actualiser(){
-      this->treeview->reset();
-      this->entry->set_text(this->treeview->getPath());
-      this->search->set_text("");
+      this->_treeView->reset();
+      this->_entry->set_text(this->_treeView->getPath());
+      this->_search->set_text("");
       _propBar->setVisible(false);
   }
   void Onglet::actualiser(string filepath){
-      this->treeview->reset(filepath);
-      this->entry->set_text(this->treeview->getPath());
-      this->search->set_text("");
+      this->_treeView->reset(filepath);
+      this->_entry->set_text(this->_treeView->getPath());
+      this->_search->set_text("");
       _propBar->setVisible(false);
   }
   void Onglet::searchFiles(string search){
-      this->treeview->search(search);
-      this->entry->set_text("Recherche de \"" + search+ "\"");
+      this->_treeView->search(search);
+      this->_entry->set_text("Recherche de \"" + search+ "\"");
   }
 
   void Onglet::setPropBar(File* f){
@@ -159,7 +159,7 @@ namespace khanar{
   }
 
   string Onglet::getPath(){
-      return this->treeview->getPath();
+      return this->_treeView->getPath();
 
   }
 }

@@ -42,11 +42,12 @@ namespace khanar
       RefPtr<Builder> _builder;
       string _path;
       string _name;
-      Gtk::Entry* entry;
-      Gtk::SearchEntry* search;
-      Gtk::Widget* child;
+      Gtk::Entry* _entry;
+      Gtk::SearchEntry* _search;
+      Gtk::Widget* _child;
       khanar::Window *_wind;
-      bool recents = false;
+      bool _recents = false;
+
       void on_button_clicked_refresh();
       void on_button_clicked_return();
       void on_button_clicked_home();
@@ -57,7 +58,7 @@ namespace khanar
       FactoryGlade* _factoryGlade;
       FactoryContent* _factoryContent;
       PropertiesBar* _propBar;
-      FileTreeView* treeview;
+      FileTreeView* _treeView;
 
 
     public:
