@@ -5,7 +5,11 @@
 #define STR_TOLOWER(str) std::transform(str.begin(), str.end(),str.begin(), ::tolower);
 #define STR_STARTSWITH(haystack, needle) (strncmp(haystack.c_str(), needle.c_str(), needle.size()) == 0)
 
-string urlDecode(string &SRC) { //http://stackoverflow.com/questions/154536/encode-decode-urls-in-c
+/**
+* Fonction pour décoder une URL (%20 -> ' ' ...)
+* http://stackoverflow.com/questions/154536/encode-decode-urls-in-c
+*/
+string urlDecode(string &SRC) {
     string ret;
     char ch;
     int i, ii;
