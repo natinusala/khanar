@@ -494,6 +494,7 @@ namespace khanar
 
       void File::removeFile()
       {
+        return; //Dangereux pour l'instant
         if (this->isDirectory())
         {
           this->updateSubFiles();

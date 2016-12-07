@@ -7,7 +7,7 @@
 #include "Onglet.hpp"
 #include <gtkmm.h>
 #include "../util/Assets.hpp"
-#include "FileTreeView.hpp"
+#include "widget/FileTreeView.hpp"
 #include <cstdint>
 #include <iostream>
 

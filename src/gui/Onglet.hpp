@@ -10,8 +10,10 @@
 #include "../util/File.hpp"
 #include <cstdint>
 #include <iostream>
-#include "PropertiesBar.hpp"
-#include "FileTreeView.hpp"
+#include "widget/PropertiesBar.hpp"
+#include "widget/FileTreeView.hpp"
+#include "factory/FactoryGlade.hpp"
+#include "factory/FactoryContent.hpp"
 
 
 
@@ -32,6 +34,7 @@ using namespace khanar;
 namespace khanar
 {
     class Window;
+    class FactoryContent;
     class FileTreeView;
     class Onglet{
 
@@ -42,7 +45,6 @@ namespace khanar
       Gtk::Entry* entry;
       Gtk::SearchEntry* search;
       Gtk::Widget* child;
-      FileTreeView* treeview;
       khanar::Window *_wind;
       bool recents = false;
       void on_button_clicked_refresh();
@@ -52,7 +54,10 @@ namespace khanar
       void on_button_clicked_search();
 
 
+      FactoryGlade* _factoryGlade;
+      FactoryContent* _factoryContent;
       PropertiesBar* _propBar;
+      FileTreeView* treeview;
 
 
     public:

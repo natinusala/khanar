@@ -11,13 +11,15 @@ namespace khanar{
     Onglet::Onglet(string path, string name, khanar::Window* wind, Gtk::Window*& _wind){
         this->_builder = Assets::buildGtkFromResource(topbar_glade);
         this->_builder->get_widget("searchentry1", this->search);
-        _propBar = new PropertiesBar(_builder);
+        _factoryGlade = new FactoryGlade(_builder);
+        _factoryContent = new FactoryContent(_wind, wind, path, false, _builder);
+        _propBar = (PropertiesBar*)_factoryGlade->getWidget("PropertiesBar")->getContent();
 
         this->_path = path;
         this->_name = name;
         this->_wind = wind;
 
-        this->treeview = new FileTreeView(_wind, wind , path, false);
+        this->treeview = (FileTreeView*) _factoryContent->getWidget("FileTreeView")->getContent();
 
 
         _propBar->setVisible(false);
@@ -26,11 +28,13 @@ namespace khanar{
     Onglet::Onglet(string name, khanar::Window* wind, Gtk::Window*& _wind){
         this->_builder = Assets::buildGtkFromResource(topbar_glade);
         this->_builder->get_widget("searchentry1", this->search);
-        _propBar = new PropertiesBar(_builder);
+        _factoryGlade = new FactoryGlade(_builder);
+        _factoryContent = new FactoryContent(_wind, wind, string(""), true, _builder);
+        _propBar = (PropertiesBar*)_factoryGlade->getWidget("PropertiesBar")->getContent();
         this->_name = name;
         this->_wind = wind;
-        this->treeview = new FileTreeView(_wind, wind , "", true);
 
+        this->treeview = (FileTreeView*) _factoryContent->getWidget("FileTreeView")->getContent();
 
         Gtk::Box* prop = nullptr;
         this->_builder->get_widget("proprietes", prop);
@@ -162,6 +166,7 @@ namespace khanar{
 
 Onglet::~Onglet()
 {
-
+  delete this->_factoryContent;
+  delete this->_factoryGlade;
   delete this->_propBar;
 }
