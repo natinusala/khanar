@@ -137,11 +137,13 @@ namespace khanar{
       this->treeview->reset();
       this->entry->set_text(this->treeview->getPath());
       this->search->set_text("");
+      _propBar->setVisible(false);
   }
   void Onglet::actualiser(string filepath){
       this->treeview->reset(filepath);
       this->entry->set_text(this->treeview->getPath());
       this->search->set_text("");
+      _propBar->setVisible(false);
   }
   void Onglet::searchFiles(string search){
       this->treeview->search(search);
