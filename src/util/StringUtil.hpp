@@ -24,6 +24,6 @@ string urlDecode(string &SRC) {
         }
     }
     return (ret);
-}
+} ///< Décode une URL
 
 #endif

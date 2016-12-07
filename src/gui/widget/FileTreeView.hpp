@@ -44,30 +44,30 @@ public:
   * \param[in] recents Booléen permettant de savoir si il faut afficher le dossier courant ou les fichiers récents
   */
   FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path, bool recents);
-  ~FileTreeView();///Destructeur de la classe
-  Gtk::Box* getVbox(); /// Méthode de récupération du widget Gtk principal du FileTreeView
-  void reset(); ///Mise à jour de la vue
-  void reset(string filepath); ///Mise à jour de la vue en changeant le sujet File
-  void search(string search); ///Mise à jour de la vue en fonction d'un critère de recherche
-  string getPath(); ///Retourne le chemin absolu du fichier courant
-  string getName(); /// Retourne le nom du fichier courant
+  ~FileTreeView();///< Destructeur de la classe
+  Gtk::Box* getVbox(); ///< Méthode de récupération du widget Gtk principal du FileTreeView
+  void reset(); ///< Mise à jour de la vue
+  void reset(string filepath); ///< Mise à jour de la vue en changeant le sujet File
+  void search(string search); ///< Mise à jour de la vue en fonction d'un critère de recherche
+  string getPath(); ///< Retourne le chemin absolu du fichier courant
+  string getName(); ///< Retourne le nom du fichier courant
 private:
-  void on_button_quit(); ///Handler du clic sur quitter
-  void on_button_press(GdkEventButton* button_event); /// Handler du clic sur le TreeView
-  void on_button_press_actu(const Gtk::TreeModel::Path& path,Gtk::TreeViewColumn* c); /// Handler du clic sur le bouton d'actualisation
-  void on_terminal(); ///Handler de l'ouverture d'un terminal
-  void on_create_file(); /// Handler de la création d'un fichier
-  void on_delete_file(); /// Handler de la supression d'un fichier
-  void on_create_directory(); /// Handler de la création d'un dossier
-  void on_rename(); /// Handler du changement de nom d'un fichier/dossier
-  void on_cut(); /// Handler de coupe
-  void on_copy(); /// Handler de copie
-  void on_paste(); /// Handler de collage
-  void on_sort_ascending(); /// Modifie le tri vers la manière ascendante
-  void on_sort_descending(); /// Modifie le tri vers la manière descendante
-  void on_sort_name(); /// Modifie le tri vers un tri nominal
-  void on_sort_size(); /// Modifie le tri vers un tri en fonction de la taille
-  void on_sort_date(); /// Modifie le tri vers un tri en fonction de la date
+  void on_button_quit(); //< /Handler du clic sur quitter
+  void on_button_press(GdkEventButton* button_event); ///< Handler du clic sur le TreeView
+  void on_button_press_actu(const Gtk::TreeModel::Path& path,Gtk::TreeViewColumn* c); ///< Handler du clic sur le bouton d'actualisation
+  void on_terminal(); ///H< andler de l'ouverture d'un terminal
+  void on_create_file(); ///< Handler de la création d'un fichier
+  void on_delete_file(); ///< Handler de la supression d'un fichier
+  void on_create_directory(); ///< Handler de la création d'un dossier
+  void on_rename(); ///< Handler du changement de nom d'un fichier/dossier
+  void on_cut(); ///< Handler de coupe
+  void on_copy(); ///< Handler de copie
+  void on_paste(); ///< Handler de collage
+  void on_sort_ascending(); ///< Modifie le tri vers la manière ascendante
+  void on_sort_descending(); ///< Modifie le tri vers la manière descendante
+  void on_sort_name(); ///< Modifie le tri vers un tri nominal
+  void on_sort_size(); ///< Modifie le tri vers un tri en fonction de la taille
+  void on_sort_date(); ///< Modifie le tri vers un tri en fonction de la date
 
   OngletFileObserver _fileObs = OngletFileObserver(this);
   Gtk::Window* _parentWindow;
