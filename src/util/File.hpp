@@ -19,7 +19,7 @@ using namespace std;
 /**
  * \namespace khanar
  *
- * Namespace du projet
+ * \brief Namespace du projet
  */
 namespace khanar
 {

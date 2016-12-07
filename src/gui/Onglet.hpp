@@ -29,13 +29,20 @@ using namespace khanar;
 /**
  * \namespace khanar
  *
- * Namespace du projet
+ * \brief Namespace du projet
  */
 namespace khanar
 {
     class Window;
     class FactoryContent;
     class FileTreeView;
+
+
+    /**
+    * \class Onglet
+    *
+    * Encapsulation des éléments d'interface d'un onglet
+    */
     class Onglet{
 
     private:

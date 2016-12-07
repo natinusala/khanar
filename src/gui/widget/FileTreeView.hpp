@@ -5,7 +5,11 @@
 #include "../../util/File.hpp"
 #include "../Window.hpp"
 #include "WidgetPerso.hpp"
-
+/**
+ * \namespace khanar
+ *
+ * \brief Namespace du projet
+ */
  namespace khanar{
 
    class FileTreeView;

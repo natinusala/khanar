@@ -3,6 +3,11 @@
 
 #include <gtkmm.h>
 
+/**
+ * \namespace khanar
+ *
+ * \brief Namespace du projet
+ */
 namespace khanar
 {
   /**

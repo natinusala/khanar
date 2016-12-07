@@ -6,13 +6,9 @@
 #include <gtkmm.h>
 #include <cstdint>
 #include <iostream>
-// #include "util/Assets.hpp"
 #include "gui/Window.hpp"
 
 #include "compiled_assets/recents.glade.hex"
-
-
-
 
 using namespace std;
 using namespace khanar;
@@ -26,7 +22,6 @@ int main(int argc, char* argv[])
 
   try
 	{
-
         RefPtr<Builder> recent_builder = Assets::buildGtkFromResource(recents_glade);
         RefPtr<Builder> recent_builder2 = Assets::buildGtkFromResource(recents_glade);
 
