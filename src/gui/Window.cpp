@@ -113,9 +113,12 @@ namespace khanar
 
   void Window::labelOngletPlus(){
     Gtk::Box* tmp = nullptr;
+    Gtk::Box* container = nullptr;
     RefPtr<Builder> box_builder = Assets::buildGtkFromResource(new_glade);
     box_builder->get_widget("box1",tmp);
-    this->_notebook->append_page(*tmp,*tmp);
+    box_builder->get_widget("box2",container);
+
+    this->_notebook->append_page(*container,*tmp);
   }
 
   void Window::actualiser(){
