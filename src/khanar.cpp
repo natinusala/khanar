@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
         khanar::Window win_builder = khanar::Window();
         win = win_builder.getWindow();
 
-        win_builder.addOnglet("~/" ,"Test");
+        win_builder.addOnglet("~/" ,"Home");
         win_builder.addOnglet("Récents");
         Main::run(*win);
 

@@ -351,7 +351,7 @@ namespace khanar
         this->updateStat(true);
       }
 
-      vector<File> File::search(string expression)
+      vector<File>* File::search(string expression)
       {
         if (!this->isDirectory())
         {
@@ -359,20 +359,28 @@ namespace khanar
         }
         this->updateSubFiles();
 
-        vector<File> result;
-        regex r = regex(expression);
-
-        for (int i = 0; i < this->_subFiles.size(); i++)
+        vector<File>* result = new vector<File>();
+        try
         {
-          File f = this->_subFiles.at(i);
+          regex r = regex(expression + "(.*?)");
 
-          if (regex_match(f.getName(), r))
+          for (int i = 0; i < this->_subFiles.size(); i++)
           {
-            result.push_back(f);
+            File f = this->_subFiles.at(i);
+
+            if (regex_match(f.getName(), r))
+            {
+              result->push_back(f);
+            }
           }
+        }
+        catch (std::exception)
+        {
+          //Rien (erreur de regex, on la laisse passer silencieusement)
         }
 
         return result;
+
       }
 
       string File::getName() const

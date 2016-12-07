@@ -51,6 +51,7 @@ namespace khanar
           void labelOngletPlus();
           void actualiser();
           void actualiser(string filepath);
+          void search(string search);
           string getCurrentFile();
 
           void updatePropBar(File file);

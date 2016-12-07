@@ -234,7 +234,7 @@ namespace khanar
 
            vector<File>* getSubFiles(); ///< Si le fichier est un dossier, renvoie la liste des sous dossiers, NULL sinon
            vector<File>* getSubFiles(bool force); ///< Si le fichier est un dossier, renvoie la liste des sous dossiers, NULL sinon (force la mise à jour du cache)
-           vector<File> search(string expression); ///< Si le fichier est un dossier, recherche (non récursivement) les fichiers correspondant à cette expression
+           vector<File>* search(string expression); ///< Si le fichier est un dossier, recherche (non récursivement) les fichiers correspondant à cette expression - à libérer par l'appelant
 
            void setSortStrategy(FileSortStrategy const& strategy, bool descending); ///< Change la stratégie de tri des fichiers du dossier ; une stratégie ici est un critère de tri et un ordre
            FileSortStrategy getSortStrategy();

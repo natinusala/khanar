@@ -314,6 +314,7 @@ void FileTreeView::reset(string filepath){
         bool oldOrder = this->f->isSortStrategyDescending();
 
         this->f = new File(filepath);
+        recents = false;
 
         this->f->subscribeObserver(&fileObs);
 
@@ -332,6 +333,49 @@ void FileTreeView::reset(string filepath){
       for (int i = 0; i < subFiles->size(); i++)
       {
         File f = (*subFiles)[i];
+        if(!f.isHidden()){
+          row = *(refTreeModel->append());
+          row[Columns.col_id]=i;
+          row[Columns.col_ico]= f.getFileType().getIcon();
+          row[Columns.col_name] = f.getName();
+          string size =f.getFormattedSize();
+          if (size =="n/a"){
+            row[Columns.col_number] = " ";
+          }else{
+            row[Columns.col_number] = size;
+          }
+        }
+      }
+
+
+}
+
+void FileTreeView::search(string search){
+        refTreeModel->clear();
+        /*FileSortStrategy oldStrategy = this->f->getSortStrategy();
+        bool oldOrder = this->f->isSortStrategyDescending();
+
+        recents = false;
+
+      //  this->f->subscribeObserver(&fileObs);
+
+        this->f->setSortStrategy(oldStrategy, oldOrder);*/
+        if (subFilesSearch != nullptr)
+        {
+          delete subFilesSearch;
+          subFilesSearch = nullptr;
+        }
+
+        subFilesSearch = this->f->search(search);
+
+        if (subFilesSearch == nullptr)
+          return;
+
+      Gtk::TreeModel::Row row;
+      for (int i = 0; i < subFilesSearch->size(); i++)
+      {
+        File f = subFilesSearch->at(i);
+        cout << f.getAbsolutePath() <<endl;
         if(!f.isHidden()){
           row = *(refTreeModel->append());
           row[Columns.col_id]=i;
@@ -547,5 +591,15 @@ void OngletFileObserver::fileUpdated(khanar::File *file)
 }
 
 string FileTreeView::getPath(){
-  return this->f->getAbsolutePath();
+  if(!recents){
+    return this->f->getAbsolutePath();
+  }
+  return ("Fichiers récents");
+}
+
+string FileTreeView::getName(){
+  if(!recents){
+    return this->f->getName();
+  }
+  return ("Fichiers récents");
 }

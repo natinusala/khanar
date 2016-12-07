@@ -121,11 +121,19 @@ namespace khanar
   void Window::actualiser(){
       int page = this->_notebook->get_current_page();
       this->_onglets.at(page)->actualiser();
+        this->_notebook->set_tab_label_text(*this->_onglets.at(page)->getWidget(),this->_onglets.at(page)->getName());
   }
 
   void Window::actualiser(string filepath){
     int page = this->_notebook->get_current_page();
     this->_onglets.at(page)->actualiser(filepath);
+      this->_notebook->set_tab_label_text(*this->_onglets.at(page)->getWidget(),this->_onglets.at(page)->getName());
+
+  }
+
+  void Window::search(string filepath){
+    int page = this->_notebook->get_current_page();
+    this->_onglets.at(page)->searchFiles(filepath);
 
   }
 

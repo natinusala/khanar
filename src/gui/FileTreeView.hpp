@@ -29,7 +29,9 @@ public:
   Gtk::Box* getVbox();
   void reset();
   void reset(string filepath);
+  void search(string search);
   string getPath();
+  string getName();
 protected:
   void on_button_quit();
   void on_button_press(GdkEventButton* button_event);
@@ -57,6 +59,7 @@ protected:
   Gtk::Menu menuPopup;
   File* f;
   vector<File>* subFiles;
+  vector<File>* subFilesSearch;
   bool recents;
 
 

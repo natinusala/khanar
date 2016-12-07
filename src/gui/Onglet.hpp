@@ -39,11 +39,17 @@ namespace khanar
       string _path;
       string _name;
       Gtk::Entry* entry;
+      Gtk::SearchEntry* search;
+      Gtk::Widget* child;
       FileTreeView* treeview;
       khanar::Window *_wind;
+      bool recents = false;
       void on_button_clicked_refresh();
       void on_button_clicked_return();
-      void on_button_clicked_navig(GdkEventButton* button_event);
+      void on_button_clicked_home();
+      void on_button_clicked_navig();
+      void on_button_clicked_search();
+
 
 
     public:
@@ -58,10 +64,13 @@ namespace khanar
       Onglet( string name, khanar::Window* wind, Gtk::Window*& win);
       void actualiser();
       void actualiser(string filepath);
+      void searchFiles(string search);
       Gtk::Box* getContent();
       void setPropBar(File f);
       string getPath();
       string getName();
+      Gtk::Widget* getWidget();
+      string getLabel();
 
     };
 
