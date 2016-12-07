@@ -10,6 +10,7 @@
 #include "../util/File.hpp"
 #include <cstdint>
 #include <iostream>
+#include "PropertiesBar.hpp"
 #include "FileTreeView.hpp"
 
 
@@ -45,6 +46,8 @@ namespace khanar
       void on_button_clicked_return();
       void on_button_clicked_navig(GdkEventButton* button_event);
 
+      PropertiesBar* _propBar;
+
 
     public:
       /**
@@ -56,10 +59,11 @@ namespace khanar
       */
       Onglet(string path, string name, khanar::Window* wind, Gtk::Window*& win);
       Onglet( string name, khanar::Window* wind, Gtk::Window*& win);
+      ~Onglet();
       void actualiser();
       void actualiser(string filepath);
       Gtk::Box* getContent();
-      void setPropBar(File f);
+      void setPropBar(File* f);
       string getPath();
       string getName();
 

@@ -9,7 +9,7 @@ void FileTreeView::on_button_press_actu(const Gtk::TreeModel::Path& path,Gtk::Tr
 {
       Gtk::TreeModel::iterator iter = treeView.get_selection()->get_selected();
       int id = (*iter)[Columns.col_id];
-      this->wind->updatePropBar(subFiles->at(id));
+      this->wind->updatePropBar(&subFiles->at(id));
 }
 
 
