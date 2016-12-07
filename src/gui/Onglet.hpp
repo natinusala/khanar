@@ -70,16 +70,22 @@ namespace khanar
       * \param[in] win la fenêtre parent Gtk
       */
       Onglet(string path, string name, khanar::Window* wind, Gtk::Window*& win);
+      /**
+      * \brief Constructeur
+      * \param[in] name le nom de l'onglet
+      * \param[in] wind la fenêtre parent de l'onglet
+      * \param[in] win la fenêtre parent Gtk
+      */
       Onglet( string name, khanar::Window* wind, Gtk::Window*& win);
-      ~Onglet();
-      void actualiser();
-      void actualiser(string filepath);
-      void searchFiles(string search);
-      Gtk::Box* getContent();
-      void setPropBar(File* f);
-      string getPath();
-      string getName();
-      Gtk::Widget* getWidget();
+      ~Onglet();///< Destructeur de la classe
+      void actualiser(); ///< Méthode de mise à jour de la vue avec les informations courantes
+      void actualiser(string filepath);///< Méthode de mise à jour de la vue en modifiant le dossier courant
+      void searchFiles(string search); ///< Méthode de mise a joure de la vue en fonction d'un critère de recherche
+      Gtk::Box* getContent(); ///< Méthode de récupération du contenu de l'onglet pour l'afficher dans la fenêtre
+      void setPropBar(File* f); ///< Méthode de mise à jour de l'affichage en détail d'un fichier
+      string getPath(); ///< Récupération du chemin absolu du fichier courant
+      string getName(); ///< Récupération du nom du fichier courant
+      Gtk::Widget* getWidget();///< Méthode Factory de récupération du widget
       string getLabel();
 
     };

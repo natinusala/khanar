@@ -41,20 +41,21 @@ namespace khanar
           bool _shouldDeleteClipboard;
 
         public:
+          /**
+          * \brief Constructeur
+          */
           Window();
-          Gtk::Window* getWindow();
-          void addOnglet(string str );
-          void delOnglet(int idOnglet);
-          void setPropInfo(string nom, string type, string icon, string Dateacces, string Datemodif, string proprietaire,string DroitProprietaire, string Groupe, string DroitGroupe, string DroitAutre ); //TO DO -> Ajouter les arguments correspondant au changement d'informations d'une barre de propriétés
-          void addOnglet(string folder ,string title);
-          void resetPropInfo();
-          void labelOngletPlus();
-          void actualiser();
-          void actualiser(string filepath);
-          void search(string search);
-          string getCurrentFile();
+          Gtk::Window* getWindow();///< Récupération de la window Gtk qui sera affichée par l'application Gtk
+          void addOnglet(string str);///< Ajoute un onglet "Fichiers Récents"
+          void delOnglet(int idOnglet);///< Supprime l'onglet à l'indice idOnglet
+          void addOnglet(string folder ,string title);///< Ajoute un onglet affichant le contenu de "folder"
+          void labelOngletPlus(); ///< Remise en place du label d'ajout d'onglet deprecated
+          void actualiser(); ///< Mise à jour de la vue avec sauvegarde des informations courantes
+          void actualiser(string filepath); ///< Mise à jour de la vue avec modification du dossier courant
+          void search(string search); ///< Mise à jour de la vue avec un critère de recherche
+          string getCurrentFile(); ///< Récupération du chemin du dossier actuellement affiché
 
-          void updatePropBar(File* file);
+          void updatePropBar(File* file);///< Mise a jour de la barre de propriétés
           void updateClipboard(File file, File parent, bool shouldDeleteClipboard); ///< Mets à jour les infos du presse papiers
           File getClipboard(); ///< Récupère le fichier actuellement dans le presse papiers
           File getClipboardParent(); ///< Récupère le fichier parent du fichier actuellement dans le presse papiers
