@@ -5,9 +5,6 @@
 using namespace khanar;
 
 
-//TODO Couper/copier avec this->clipboard et this->shouldDeleteClipboard
-
-
 void FileTreeView::on_button_press_actu(const Gtk::TreeModel::Path& path,Gtk::TreeViewColumn* c)
 {
       Gtk::TreeModel::iterator iter = treeView.get_selection()->get_selected();
@@ -93,8 +90,6 @@ void FileTreeView::on_paste()
       toPaste.copy(this->f->getAbsolutePath() + "/" + toPaste.getName(), this->f);
     }
 
-    //TODO Mettre à jour (l'observateur le fait)
-
     this->wind->updateClipboard(File(), File(), false);
   }
 }
@@ -144,7 +139,7 @@ void FileTreeView::on_create_directory()
     if (!newFile.exists() || (newFile.exists() && !newFile.isDirectory()))
     {
       newFile.createNewDirectory(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH, this->f);
-      this->wind->actualiser(); //TODO Observateur
+      //this->wind->actualiser(); //TODO Observateur
     }
     else
     {
@@ -176,8 +171,6 @@ void FileTreeView::on_delete_file()
   if (result == RESPONSE_OK)
   {
     toDelete.removeFile();
-    this->wind->actualiser(); // Test : Dégage si observeur fonctionne
-    //TODO Mettre à jour (l'observateur s'en charge normalement)
   }
 }
 
@@ -212,8 +205,6 @@ void FileTreeView::on_rename()
     if (!newFile.exists())
     {
       toRename.setName(newFileName);
-      this->wind->actualiser();//test: degage si onbserveur fonctionne
-      //TODO Mettre à jour (l'observateur le fait normalement)
     }
     else
     {
@@ -249,8 +240,6 @@ void FileTreeView::on_create_file()
     if (!newFile.exists())
     {
       newFile.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH, this->f);
-      this->wind->actualiser();//test : degage si observeur fonctionne
-      //TODO Mettre à jour (observateur)
     }
     else
     {
@@ -262,8 +251,6 @@ void FileTreeView::on_create_file()
 }
 
 void FileTreeView::reset(){
-  if (this->f != nullptr)
-    this->f->unsubscribeObserver(&fileObs);
 
   if (this->subFiles != nullptr)
   {

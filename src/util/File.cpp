@@ -94,7 +94,8 @@ namespace khanar
 
       void File::unsubscribeObserver(FileObserver* observer)
       {
-        this->_observers.erase(std::remove(this->_observers.begin(), this->_observers.end(), observer), this->_observers.end());
+        if (this->_observers.size() > 0)
+          this->_observers.erase(std::remove(this->_observers.begin(), this->_observers.end(), observer), this->_observers.end());
       }
 
       vector<File>* File::getRecentFiles()
@@ -479,6 +480,8 @@ namespace khanar
       void File::setName(string newname)
       {
         system(string("mv \"" + this->_parentFolderAbsolutePath + '/' + getName() + "\" \"" + this->_parentFolderAbsolutePath + '/' + newname + "\"").c_str());
+        this->updateAttributes(this->_parentFolderAbsolutePath + "/" + newname);
+        this->notifyObservers();
       }
 
       void File::removeFile()
