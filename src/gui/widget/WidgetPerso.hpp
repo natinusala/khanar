@@ -8,7 +8,7 @@ namespace khanar
   class WidgetPerso
   {
   protected:
-    void* content;
+    void* content; ///< Contenu du WidgetPerso (peut être une classe maison ou un widget Gtk)
 
   public:
     void* getContent();
