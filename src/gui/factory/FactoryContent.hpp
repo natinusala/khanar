@@ -10,7 +10,11 @@
 using namespace std;
 
 using namespace khanar;
-
+/**
+ * \namespace khanar
+ *
+ * \brief Namespace du projet
+ */
 namespace khanar
 {
   /**

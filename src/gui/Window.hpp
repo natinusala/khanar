@@ -23,10 +23,16 @@ using namespace std;
 /**
  * \namespace khanar
  *
- * Namespace du projet
+ * \brief Namespace du projet
  */
 namespace khanar
 {
+  /**
+  * \class Onglet
+  *
+  * Encapsulation des éléments d'interface du squelette
+  * de la fenêtre (liste d'onglets)
+  */
     class Window
     {
         private:
