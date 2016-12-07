@@ -387,7 +387,7 @@ namespace khanar
         }
       }
 
-      void File::createNewFile(mode_t mode)
+      void File::createNewFile(mode_t mode, File* parent)
       {
         if (this->_exists)
         {
@@ -401,9 +401,14 @@ namespace khanar
         fs.close();
 
         this->updateStat();
+
+        if (parent != nullptr)
+        {
+          parent->notifyObservers();
+        }
       }
 
-      void File::createNewDirectory(mode_t mode)
+      void File::createNewDirectory(mode_t mode, File* parent)
       {
         if (this->_exists)
         {
@@ -415,6 +420,11 @@ namespace khanar
         mkdir(this->getAbsolutePath().c_str(), mode);
 
         this->updateStat();
+
+        if (parent != nullptr)
+        {
+          parent->notifyObservers();
+        }
       }
 
       unsigned File::getUID() const

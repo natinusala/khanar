@@ -167,8 +167,6 @@ namespace khanar
 
            vector<FileObserver*> _observers;
 
-           void notifyObservers();
-
            static void updateFavorites(vector<File> newFavorites);
 
         public:
@@ -239,6 +237,7 @@ namespace khanar
 
            void subscribeObserver(FileObserver* observer); ///< Abonne un Observer à ce fichier
            void unsubscribeObserver(FileObserver* observer); ///< Désabonne un Observer à ce fichier
+           void notifyObservers(); ///< Notifie les observateurs que le fichier a changé
 
            void write(string data); ///< Ecrit dans le fichier (remplace le contenu déjà existant)
            string read(); ///< Lit le contenu du fichier
