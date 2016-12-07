@@ -125,7 +125,7 @@ namespace khanar
         File favorites = File(File::FAVORITES_DIRECTORY);
 
         if (!favorites.exists())
-          favorites.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+          favorites.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH, nullptr);
 
         Json::Value root;
         Json::Reader().parse(favorites.read(), root);
@@ -195,7 +195,7 @@ namespace khanar
         File favorites = File(File::FAVORITES_DIRECTORY);
 
         if (!favorites.exists())
-          favorites.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+          favorites.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH, nullptr);
 
         Json::Value root = Json::Value(Json::arrayValue);
 

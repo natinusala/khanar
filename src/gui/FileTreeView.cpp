@@ -133,7 +133,7 @@ void FileTreeView::on_create_directory()
     File newFile = File(this->f, newFileName);
     if (!newFile.exists() || (newFile.exists() && !newFile.isDirectory()))
     {
-      newFile.createNewDirectory(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+      newFile.createNewDirectory(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH, this->f);
       this->wind->actualiser(); //TODO Observateur
     }
     else
@@ -238,7 +238,7 @@ void FileTreeView::on_create_file()
     File newFile = File(this->f, newFileName);
     if (!newFile.exists())
     {
-      newFile.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+      newFile.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH, this->f);
       this->wind->actualiser();//test : degage si observeur fonctionne
       //TODO Mettre à jour (observateur)
     }

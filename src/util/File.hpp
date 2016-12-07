@@ -211,8 +211,8 @@ namespace khanar
            void move(string newpath); ///< Déplace/renomme le fichier
            File copy(string newpath) const; ///< Copie le fichier dans newpath et renvoie son objet File
            void removeFile(); ///< Supprime le fichier/dossier (récursivement) (le nom remove n'a pas pu être utilisé à cause d'un conflit avec le rename de cstdio)
-           void createNewFile(mode_t mode); ///< Si le fichier n'existe pas, le crée (fichier vide) ainsi que son chemin
-           void createNewDirectory(mode_t mode); ///< Si le dossier n'existe pas, le crée ainsi que son chemin
+           void createNewFile(mode_t mode, File* parent); ///< Si le fichier n'existe pas, le crée (fichier vide) ainsi que son chemin
+           void createNewDirectory(mode_t mode, File* parent); ///< Si le dossier n'existe pas, le crée ainsi que son chemin
            void createDirectories(mode_t mode); ///< Crée tous les dossiers du chemin de la racine vers le fichier
            void setGID(gid_t const& gid); ///< Modifie le GID du fichier
            void setUID(uid_t const& uid); ///< Modifie le UID du fichier
