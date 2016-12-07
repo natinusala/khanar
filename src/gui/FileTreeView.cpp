@@ -17,7 +17,8 @@ void FileTreeView::on_button_press(GdkEventButton* button_event)
 {
   if((button_event->type == 4) && (button_event->button == 3))
   {
-    menuPopup.popup(button_event->button, button_event->time);
+    if (!recents)
+      menuPopup.popup(button_event->button, button_event->time);
   }
   else if
   ((button_event->type == 5) && (button_event->button == 1))
@@ -369,19 +370,6 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path, 
 
   refTreeModel = Gtk::ListStore::create(Columns);
   treeView.set_model(refTreeModel);
-
-  if (this->f != nullptr)
-    this->f->unsubscribeObserver(&fileObs);
-
-  if (this->subFiles != nullptr)
-  {
-    for (int i = 0; i < subFiles->size(); i++)
-    {
-      File f = subFiles->at(i);
-      f.unsubscribeObserver(&fileObs);
-    }
-  }
-
 
   this->f = new File(path);
   f->subscribeObserver(&fileObs);
