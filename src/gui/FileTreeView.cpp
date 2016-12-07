@@ -263,6 +263,60 @@ void FileTreeView::on_create_file()
   }
 }
 
+void FileTreeView::reset(){
+        refTreeModel->clear();
+        subFiles = this->f->getSubFiles();
+
+
+      Gtk::TreeModel::Row row;
+      for (int i = 0; i < subFiles->size(); i++)
+      {
+        File f = (*subFiles)[i];
+        if(!f.isHidden()){
+          row = *(refTreeModel->append());
+          row[Columns.col_id]=i;
+          row[Columns.col_ico]= f.getFileType().getIcon();
+          row[Columns.col_name] = f.getName();
+          string size =f.getFormattedSize();
+          if (size =="n/a"){
+            row[Columns.col_number] = " ";
+          }else{
+            row[Columns.col_number] = size;
+          }
+        }
+      }
+
+
+}
+
+void FileTreeView::reset(string filepath){
+        refTreeModel->clear();
+        this->f = new File(filepath);
+        subFiles = this->f->getSubFiles();
+
+
+      Gtk::TreeModel::Row row;
+      for (int i = 0; i < subFiles->size(); i++)
+      {
+        File f = (*subFiles)[i];
+        if(!f.isHidden()){
+          row = *(refTreeModel->append());
+          row[Columns.col_id]=i;
+          row[Columns.col_ico]= f.getFileType().getIcon();
+          row[Columns.col_name] = f.getName();
+          string size =f.getFormattedSize();
+          if (size =="n/a"){
+            row[Columns.col_number] = " ";
+          }else{
+            row[Columns.col_number] = size;
+          }
+        }
+      }
+
+
+}
+
+
 
 FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
 {

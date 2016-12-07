@@ -40,7 +40,7 @@ namespace khanar
   void Window::updatePropBar(khanar::File file)
   {
     int page =  this->_notebook->get_current_page();
-    this->_onglets.at(page).setPropBar(file);
+    this->_onglets.at(page)->setPropBar(file);
   }
 
   File Window::getClipboard()
@@ -60,10 +60,9 @@ namespace khanar
 
 
   void Window::addOnglet(string str){
-    Onglet onglet = Onglet("", str, this);
-    FileTreeView *widget = new FileTreeView(this->_win,this, "");
+    Onglet* onglet = new Onglet("", str, this, _win);
 
-    Gtk::Box *add = onglet.getContent(widget->getVbox());
+    Gtk::Box *add = onglet->getContent();
     this->_onglets.push_back(onglet);
     Gtk::Box* tmp = nullptr;
     Gtk::Label* label = nullptr;
@@ -75,17 +74,16 @@ namespace khanar
 
     this->_notebook->remove_page(-1);
     this->_notebook->append_page(*add,*tmp);
+    this->_notebook->set_current_page(-1);
     actualiser();
     labelOngletPlus();
 
 
   }
   void Window::addOnglet(string filepath, string title){
-      //TODO Récupérer la liste des fichier du répèrtoire à afficher
-      FileTreeView *widget = new FileTreeView(this->_win,this, filepath);
-      Onglet onglet = Onglet(filepath, title, this);
+      Onglet* onglet = new Onglet(filepath, title, this, _win);
 
-      Gtk::Box *add = onglet.getContent(widget->getVbox());
+      Gtk::Box *add = onglet->getContent();
       this->_onglets.push_back(onglet);
       Gtk::Box* tmp = nullptr;
       Gtk::Label* label = nullptr;
@@ -97,6 +95,7 @@ namespace khanar
 
       this->_notebook->remove_page(-1);
       this->_notebook->append_page(*add,*tmp);
+
       actualiser();
       labelOngletPlus();
 
@@ -120,56 +119,20 @@ namespace khanar
   }
 
   void Window::actualiser(){
-    int page =  this->_notebook->get_current_page();
-    string path = this->_onglets.at(page).getPath();
-    FileTreeView *widget = new FileTreeView(this->_win,this, path);
-    Onglet onglet = Onglet(path, this->_onglets.at(page).getName(), this);
-    _onglets.erase(_onglets.begin() + page);
-    _onglets.insert(_onglets.begin() + page, onglet);
-    Gtk::Box *add = this->_onglets.at(page).getContent(widget->getVbox());
-    Gtk::Box* tmp = nullptr;
-    Gtk::Label* label = nullptr;
-    RefPtr<Builder> tab_builder = Assets::buildGtkFromResource(close_glade);
-    tab_builder->get_widget("label",label);
-    label->set_text(this->_onglets.at(page).getName());
-    tab_builder->get_widget("box1",tmp);
-
-
-    this->_notebook->remove_page(page);
-    this->_notebook->insert_page(*add ,*tmp, page);
-
-    this->_notebook->set_current_page(page);
-
-
+      int page = this->_notebook->get_current_page();
+      this->_onglets.at(page)->actualiser();
   }
 
   void Window::actualiser(string filepath){
-    int page =  this->_notebook->get_current_page();
-    string path = filepath;
-    FileTreeView *widget = new FileTreeView(this->_win,this, path);
-    Onglet onglet = Onglet(path, this->_onglets.at(page).getName(), this);
-    _onglets.erase(_onglets.begin() + page);
-    _onglets.insert(_onglets.begin() + page, onglet);
-    Gtk::Box *add = this->_onglets.at(page).getContent(widget->getVbox());
-    Gtk::Box* tmp = nullptr;
-    Gtk::Label* label = nullptr;
-    RefPtr<Builder> tab_builder = Assets::buildGtkFromResource(close_glade);
-    tab_builder->get_widget("label",label);
-    label->set_text(this->_onglets.at(page).getName());
-    tab_builder->get_widget("box1",tmp);
-
-
-    this->_notebook->remove_page(page);
-    this->_notebook->insert_page(*add ,*tmp, page);
-    this->_notebook->set_current_page(page);
-
+    int page = this->_notebook->get_current_page();
+    this->_onglets.at(page)->actualiser(filepath);
 
   }
 
 
 string Window::getCurrentFile(){
     int page =  this->_notebook->get_current_page();
-    string path = this->_onglets.at(page).getPath();
+    string path = this->_onglets.at(page)->getPath();
     return path;
   }
 }

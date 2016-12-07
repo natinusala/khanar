@@ -5,7 +5,7 @@
 #include "../util/File.hpp"
 #include "Window.hpp"
 
-using namespace khanar;
+ namespace khanar{
 
 class FileTreeView
 {
@@ -13,10 +13,13 @@ public:
   FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path);
   ~FileTreeView();
   Gtk::Box* getVbox();
+  void reset();
+  void reset(string filepath);
 protected:
   void on_button_quit();
   void on_button_press(GdkEventButton* button_event);
   void on_button_press_actu(const Gtk::TreeModel::Path& path,Gtk::TreeViewColumn* c);
+
   void on_terminal();
   void on_create_file();
   void on_delete_file();
@@ -62,5 +65,5 @@ protected:
   Gtk::TreeView treeView;
   Glib::RefPtr<Gtk::ListStore> refTreeModel;
 };
-
+}
 #endif

@@ -14,7 +14,7 @@
         <property name="margin_top">5</property>
         <property name="margin_bottom">5</property>
         <property name="icon_name">x-office-document</property>
-        <property name="icon_size">6</property>
+        <property name="icon_size">3</property>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -32,7 +32,8 @@
           <object class="GtkLabel" id="nom">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">CMOSH.glade</property>
+            <property name="label" translatable="yes">
+</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -44,7 +45,6 @@
           <object class="GtkLabel" id="type">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Fichier GLADE</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -69,7 +69,6 @@
           <object class="GtkLabel" id="taill">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">124ko</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -105,7 +104,7 @@
           <object class="GtkLabel" id="acces">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Accédé : 31/12/2015 </property>
+            <property name="label" translatable="yes">Accédé : </property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -117,7 +116,7 @@
           <object class="GtkLabel" id="modifie">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Modifié : 28/09/2016</property>
+            <property name="label" translatable="yes">Modifié : </property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -179,7 +178,6 @@
           <object class="GtkLabel" id="nomProprietaire">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Killy</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -265,6 +263,7 @@
             <items>
               <item translatable="yes">Groupe 1</item>
               <item translatable="yes">Killy</item>
+              <item translatable="yes">Aucun</item>
             </items>
           </object>
           <packing>
