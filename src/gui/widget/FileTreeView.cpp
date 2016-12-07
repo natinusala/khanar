@@ -368,7 +368,6 @@ void FileTreeView::search(string search){
       for (int i = 0; i < _subFilesSearch->size(); i++)
       {
         File f = _subFilesSearch->at(i);
-        cout << f.getAbsolutePath() <<endl;
         if(!f.isHidden()){
           row = *(_refTreeModel->append());
           row[Columns.col_id]=i;
