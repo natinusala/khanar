@@ -11,7 +11,7 @@ using namespace khanar;
 namespace khanar
 {
   /**
-  * \class FileType
+  * \class Factory
   *
   * Interface servant de base aux Factory du projet
   */

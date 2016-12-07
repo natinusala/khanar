@@ -11,6 +11,11 @@ using namespace khanar;
 
 namespace khanar
 {
+  /**
+  * \class FactoryGlade
+  *
+  * Implémentation de Factory donnant des widgets générés par Glade
+  */
   class FactoryGlade : public Factory
   {
   public:
