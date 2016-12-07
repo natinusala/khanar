@@ -13,15 +13,13 @@ namespace khanar{
         this->_path = path;
         this->_name = name;
         this->_wind = wind;
-<<<<<<< HEAD
         this->treeview = new FileTreeView(_wind, wind , path);
-=======
+
 
         Gtk::Box* prop = nullptr;
         this->_builder->get_widget("proprietes", prop);
 
         prop->hide();
->>>>>>> ce0233133b00ea71490590f1547d8cca65d56931
     }
 
     void Onglet::on_button_clicked_refresh()
