@@ -7,9 +7,9 @@ using namespace khanar;
 
 void FileTreeView::on_button_press_actu(const Gtk::TreeModel::Path& path,Gtk::TreeViewColumn* c)
 {
-      Gtk::TreeModel::iterator iter = treeView.get_selection()->get_selected();
+      Gtk::TreeModel::iterator iter = _treeView.get_selection()->get_selected();
       int id = (*iter)[Columns.col_id];
-      this->wind->updatePropBar(&subFiles->at(id));
+      this->_wind->updatePropBar(&_subFiles->at(id));
 }
 
 
@@ -17,18 +17,18 @@ void FileTreeView::on_button_press(GdkEventButton* button_event)
 {
   if((button_event->type == 4) && (button_event->button == 3))
   {
-    if (!recents)
-      menuPopup.popup(button_event->button, button_event->time);
+    if (!_recents)
+      _menuPopup.popup(button_event->button, button_event->time);
   }
   else if
   ((button_event->type == 5) && (button_event->button == 1))
   {
-    Gtk::TreeModel::iterator iter = treeView.get_selection()->get_selected();
+    Gtk::TreeModel::iterator iter = _treeView.get_selection()->get_selected();
     int id = (*iter)[Columns.col_id];
-    if (subFiles->at(id).isDirectory()){
-        this->wind->actualiser(subFiles->at(id).getAbsolutePath());
+    if (_subFiles->at(id).isDirectory()){
+        this->_wind->actualiser(_subFiles->at(id).getAbsolutePath());
     }else{
-      subFiles->at(id).openFile();
+      _subFiles->at(id).openFile();
 
     }
   }
@@ -38,86 +38,86 @@ void FileTreeView::on_button_press(GdkEventButton* button_event)
 
 void FileTreeView::on_sort_ascending()
 {
-  this->f->setSortStrategy(this->f->getSortStrategy(), false);
+  this->_f->setSortStrategy(this->_f->getSortStrategy(), false);
 }
 
 void FileTreeView::on_sort_descending()
 {
-  this->f->setSortStrategy(this->f->getSortStrategy(), true);
+  this->_f->setSortStrategy(this->_f->getSortStrategy(), true);
 }
 
 void FileTreeView::on_sort_name()
 {
-  this->f->setSortStrategy(File::NAME_FILESORTSTRATEGY, this->f->isSortStrategyDescending());
+  this->_f->setSortStrategy(File::NAME_FILESORTSTRATEGY, this->_f->isSortStrategyDescending());
 }
 
 void FileTreeView::on_sort_size()
 {
-  this->f->setSortStrategy(File::SIZE_FILESORTSTRATEGY, this->f->isSortStrategyDescending());
+  this->_f->setSortStrategy(File::SIZE_FILESORTSTRATEGY, this->_f->isSortStrategyDescending());
 }
 
 void FileTreeView::on_sort_date()
 {
-  this->f->setSortStrategy(File::ACCESSTIME_FILESORTSTRATEGY, this->f->isSortStrategyDescending());
+  this->_f->setSortStrategy(File::ACCESSTIME_FILESORTSTRATEGY, this->_f->isSortStrategyDescending());
 }
 
 void FileTreeView::on_paste()
 {
-  File toPaste = this->wind->getClipboard();
-  File toPasteParent = this->wind->getClipboardParent();
-  bool shouldDeleteClipboard = this->wind->getShouldDeleteClipboard();
+  File toPaste = this->_wind->getClipboard();
+  File toPasteParent = this->_wind->getClipboardParent();
+  bool shouldDeleteClipboard = this->_wind->getShouldDeleteClipboard();
 
   if (shouldDeleteClipboard)
   {
-    if (this->f->getAbsolutePath() == toPasteParent.getAbsolutePath())
+    if (this->_f->getAbsolutePath() == toPasteParent.getAbsolutePath())
     {
-      Gtk::MessageDialog dialog = MessageDialog(*this->parentWindow, "Erreur");
+      Gtk::MessageDialog dialog = MessageDialog(*this->_parentWindow, "Erreur");
       dialog.set_secondary_text("Dossier source et de destination identiques");
       dialog.run();
     }
     else
     {
-      toPaste.move(this->f->getAbsolutePath() + "/" + toPaste.getName(), this->f);
+      toPaste.move(this->_f->getAbsolutePath() + "/" + toPaste.getName(), this->_f);
     }
   }
   else
   {
-    if (this->f->getAbsolutePath() == toPasteParent.getAbsolutePath())
+    if (this->_f->getAbsolutePath() == toPasteParent.getAbsolutePath())
     {
-      toPaste.copy(this->f->getAbsolutePath() + "/" + toPaste.getName() + " (copie)", this->f);
+      toPaste.copy(this->_f->getAbsolutePath() + "/" + toPaste.getName() + " (copie)", this->_f);
     }
     else
     {
-      toPaste.copy(this->f->getAbsolutePath() + "/" + toPaste.getName(), this->f);
+      toPaste.copy(this->_f->getAbsolutePath() + "/" + toPaste.getName(), this->_f);
     }
 
-    this->wind->updateClipboard(File(), File(), false);
+    this->_wind->updateClipboard(File(), File(), false);
   }
 }
 
 void FileTreeView::on_copy()
 {
-  Gtk::TreeModel::iterator iter = treeView.get_selection()->get_selected();
+  Gtk::TreeModel::iterator iter = _treeView.get_selection()->get_selected();
   int id = (*iter)[Columns.col_id];
 
-  File toCopy = this->subFiles->at(id);
+  File toCopy = this->_subFiles->at(id);
 
-  this->wind->updateClipboard(toCopy, *this->f, false);
+  this->_wind->updateClipboard(toCopy, *this->_f, false);
 }
 
 void FileTreeView::on_cut()
 {
-  Gtk::TreeModel::iterator iter = treeView.get_selection()->get_selected();
+  Gtk::TreeModel::iterator iter = _treeView.get_selection()->get_selected();
   int id = (*iter)[Columns.col_id];
 
-  File toCut = this->subFiles->at(id);
+  File toCut = this->_subFiles->at(id);
 
-  this->wind->updateClipboard(toCut, *this->f, true);
+  this->_wind->updateClipboard(toCut, *this->_f, true);
 }
 
 void FileTreeView::on_create_directory()
 {
-  Gtk::Dialog dialog = Dialog("Créer un dossier", *this->parentWindow, true);
+  Gtk::Dialog dialog = Dialog("Créer un dossier", *this->_parentWindow, true);
 
   dialog.add_button("Créer", RESPONSE_OK);
   dialog.add_button("Annuler", RESPONSE_CANCEL);
@@ -136,15 +136,15 @@ void FileTreeView::on_create_directory()
   {
     //Création du nouveau fichier
     string newFileName = text.get_buffer()->get_text();
-    File newFile = File(this->f, newFileName);
+    File newFile = File(this->_f, newFileName);
     if (!newFile.exists() || (newFile.exists() && !newFile.isDirectory()))
     {
-      newFile.createNewDirectory(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH, this->f);
+      newFile.createNewDirectory(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH, this->_f);
       //this->wind->actualiser(); //TODO Observateur
     }
     else
     {
-      Gtk::MessageDialog dialog = MessageDialog(*this->parentWindow, "Erreur");
+      Gtk::MessageDialog dialog = MessageDialog(*this->_parentWindow, "Erreur");
       dialog.set_secondary_text("Le dossier existe déjà.");
       dialog.run();
     }
@@ -153,17 +153,17 @@ void FileTreeView::on_create_directory()
 
 void FileTreeView::on_terminal()
 {
-  this->f->openXterm();
+  this->_f->openXterm();
 }
 
 void FileTreeView::on_delete_file()
 {
-  Gtk::TreeModel::iterator iter = treeView.get_selection()->get_selected();
+  Gtk::TreeModel::iterator iter = _treeView.get_selection()->get_selected();
   int id = (*iter)[Columns.col_id];
 
-  File toDelete = this->subFiles->at(id);
+  File toDelete = this->_subFiles->at(id);
 
-  Gtk::MessageDialog dialog = MessageDialog(*this->parentWindow, "Etes-vous sûr ?");
+  Gtk::MessageDialog dialog = MessageDialog(*this->_parentWindow, "Etes-vous sûr ?");
   dialog.set_secondary_text("Etes-vous sûr de vouloir supprimer " + toDelete.getName() + (toDelete.isDirectory() ? " et tout ce qu'il contient" : "") + " ?");
 
   dialog.add_button("Non", RESPONSE_NO);
@@ -177,12 +177,12 @@ void FileTreeView::on_delete_file()
 
 void FileTreeView::on_rename()
 {
-  Gtk::TreeModel::iterator iter = treeView.get_selection()->get_selected();
+  Gtk::TreeModel::iterator iter = _treeView.get_selection()->get_selected();
   int id = (*iter)[Columns.col_id];
 
-  File toRename = this->subFiles->at(id);
+  File toRename = this->_subFiles->at(id);
 
-  Gtk::Dialog dialog = Dialog("Renommer", *this->parentWindow, true);
+  Gtk::Dialog dialog = Dialog("Renommer", *this->_parentWindow, true);
 
   dialog.add_button("Renommer", RESPONSE_OK);
   dialog.add_button("Annuler", RESPONSE_CANCEL);
@@ -202,14 +202,14 @@ void FileTreeView::on_rename()
   {
     //Vérification que le nouveau fichier n'existe pas déjà
     string newFileName = text.get_buffer()->get_text();
-    File newFile = File(this->f, newFileName);
+    File newFile = File(this->_f, newFileName);
     if (!newFile.exists())
     {
       toRename.setName(newFileName);
     }
     else
     {
-      Gtk::MessageDialog dialog = MessageDialog(*this->parentWindow, "Erreur");
+      Gtk::MessageDialog dialog = MessageDialog(*this->_parentWindow, "Erreur");
       dialog.set_secondary_text("Le fichier existe déjà.");
       dialog.run();
     }
@@ -218,7 +218,7 @@ void FileTreeView::on_rename()
 
 void FileTreeView::on_create_file()
 {
-  Gtk::Dialog dialog = Dialog("Créer un fichier", *this->parentWindow, true);
+  Gtk::Dialog dialog = Dialog("Créer un fichier", *this->_parentWindow, true);
 
   dialog.add_button("Créer", RESPONSE_OK);
   dialog.add_button("Annuler", RESPONSE_CANCEL);
@@ -237,14 +237,14 @@ void FileTreeView::on_create_file()
   {
     //Création du nouveau fichier
     string newFileName = text.get_buffer()->get_text();
-    File newFile = File(this->f, newFileName);
+    File newFile = File(this->_f, newFileName);
     if (!newFile.exists())
     {
-      newFile.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH, this->f);
+      newFile.createNewFile(S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH, this->_f);
     }
     else
     {
-      Gtk::MessageDialog dialog = MessageDialog(*this->parentWindow, "Erreur");
+      Gtk::MessageDialog dialog = MessageDialog(*this->_parentWindow, "Erreur");
       dialog.set_secondary_text("Le fichier existe déjà.");
       dialog.run();
     }
@@ -253,34 +253,34 @@ void FileTreeView::on_create_file()
 
 void FileTreeView::reset(){
 
-  if (this->subFiles != nullptr)
+  if (this->_subFiles != nullptr)
   {
-    for (int i = 0; i < this->subFiles->size(); i++)
+    for (int i = 0; i < this->_subFiles->size(); i++)
     {
-      this->subFiles->at(i).unsubscribeObserver(&fileObs);
+      this->_subFiles->at(i).unsubscribeObserver(&_fileObs);
     }
   }
-        refTreeModel->clear();
-        if (recents){
-          subFiles = this->f->getRecentFiles();
+        _refTreeModel->clear();
+        if (_recents){
+          _subFiles = this->_f->getRecentFiles();
         } else
         {
-          subFiles = this->f->getSubFiles(true);
+          _subFiles = this->_f->getSubFiles(true);
         }
 
 
 
-        for (int i = 0; i < this->subFiles->size(); i++)
+        for (int i = 0; i < this->_subFiles->size(); i++)
         {
-          this->subFiles->at(i).subscribeObserver(&fileObs);
+          this->_subFiles->at(i).subscribeObserver(&_fileObs);
         }
 
       Gtk::TreeModel::Row row;
-      for (int i = 0; i < subFiles->size(); i++)
+      for (int i = 0; i < _subFiles->size(); i++)
       {
-        File f = subFiles->at(i);
+        File f = _subFiles->at(i);
         if(!f.isHidden()){
-          row = *(refTreeModel->append());
+          row = *(_refTreeModel->append());
           row[Columns.col_id]=i;
           row[Columns.col_ico]= f.getFileType().getIcon();
           row[Columns.col_name] = f.getName();
@@ -300,42 +300,42 @@ void FileTreeView::reset(){
 }
 
 void FileTreeView::reset(string filepath){
-  if (this->f != nullptr)
-    this->f->unsubscribeObserver(&fileObs);
+  if (this->_f != nullptr)
+    this->_f->unsubscribeObserver(&_fileObs);
 
-  if (this->subFiles != nullptr)
+  if (this->_subFiles != nullptr)
   {
-    for (int i = 0; i < this->subFiles->size(); i++)
+    for (int i = 0; i < this->_subFiles->size(); i++)
     {
-      this->subFiles->at(i).unsubscribeObserver(&fileObs);
+      this->_subFiles->at(i).unsubscribeObserver(&_fileObs);
     }
   }
-        refTreeModel->clear();
-        FileSortStrategy oldStrategy = this->f->getSortStrategy();
-        bool oldOrder = this->f->isSortStrategyDescending();
+        _refTreeModel->clear();
+        FileSortStrategy oldStrategy = this->_f->getSortStrategy();
+        bool oldOrder = this->_f->isSortStrategyDescending();
 
-        this->f = new File(filepath);
-        recents = false;
+        this->_f = new File(filepath);
+        _recents = false;
 
-        this->f->subscribeObserver(&fileObs);
+        this->_f->subscribeObserver(&_fileObs);
 
-        this->f->setSortStrategy(oldStrategy, oldOrder);
+        this->_f->setSortStrategy(oldStrategy, oldOrder);
 
-        subFiles = this->f->getSubFiles(true);
+        _subFiles = this->_f->getSubFiles(true);
 
-        for (int i = 0; i < this->subFiles->size(); i++)
+        for (int i = 0; i < this->_subFiles->size(); i++)
           {
-            this->subFiles->at(i).subscribeObserver(&fileObs);
+            this->_subFiles->at(i).subscribeObserver(&_fileObs);
           }
 
 
 
       Gtk::TreeModel::Row row;
-      for (int i = 0; i < subFiles->size(); i++)
+      for (int i = 0; i < _subFiles->size(); i++)
       {
-        File f = (*subFiles)[i];
+        File f = (*_subFiles)[i];
         if(!f.isHidden()){
-          row = *(refTreeModel->append());
+          row = *(_refTreeModel->append());
           row[Columns.col_id]=i;
           row[Columns.col_ico]= f.getFileType().getIcon();
           row[Columns.col_name] = f.getName();
@@ -352,33 +352,25 @@ void FileTreeView::reset(string filepath){
 }
 
 void FileTreeView::search(string search){
-        refTreeModel->clear();
-        /*FileSortStrategy oldStrategy = this->f->getSortStrategy();
-        bool oldOrder = this->f->isSortStrategyDescending();
-
-        recents = false;
-
-      //  this->f->subscribeObserver(&fileObs);
-
-        this->f->setSortStrategy(oldStrategy, oldOrder);*/
-        if (subFilesSearch != nullptr)
+        _refTreeModel->clear();
+        if (_subFilesSearch != nullptr)
         {
-          delete subFilesSearch;
-          subFilesSearch = nullptr;
+          delete _subFilesSearch;
+          _subFilesSearch = nullptr;
         }
 
-        subFilesSearch = this->f->search(search);
+        _subFilesSearch = this->_f->search(search);
 
-        if (subFilesSearch == nullptr)
+        if (_subFilesSearch == nullptr)
           return;
 
       Gtk::TreeModel::Row row;
-      for (int i = 0; i < subFilesSearch->size(); i++)
+      for (int i = 0; i < _subFilesSearch->size(); i++)
       {
-        File f = subFilesSearch->at(i);
+        File f = _subFilesSearch->at(i);
         cout << f.getAbsolutePath() <<endl;
         if(!f.isHidden()){
-          row = *(refTreeModel->append());
+          row = *(_refTreeModel->append());
           row[Columns.col_id]=i;
           row[Columns.col_ico]= f.getFileType().getIcon();
           row[Columns.col_name] = f.getName();
@@ -400,39 +392,39 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path, 
 {
   this->content = this;
 
-  this->parentWindow = win;
-  this->wind = wind;
-  this->recents = recents;
+  this->_parentWindow = win;
+  this->_wind = wind;
+  this->_recents = recents;
 
-  scrolledWindow.add(treeView);
+  _scrolledWindow.add(_treeView);
 
-  scrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-  this->VBox.set_size_request(250,250);
-  this->VBox.set_hexpand(true);
-  this->VBox.set_vexpand(true);
-  this->VBox.pack_start(scrolledWindow);
+  _scrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  this->_VBox.set_size_request(250,250);
+  this->_VBox.set_hexpand(true);
+  this->_VBox.set_vexpand(true);
+  this->_VBox.pack_start(_scrolledWindow);
 
-  refTreeModel = Gtk::ListStore::create(Columns);
-  treeView.set_model(refTreeModel);
+  _refTreeModel = Gtk::ListStore::create(Columns);
+  _treeView.set_model(_refTreeModel);
 
-  this->f = new File(path);
-  f->subscribeObserver(&fileObs);
+  this->_f = new File(path);
+  _f->subscribeObserver(&_fileObs);
 
-  if (recents){
-    subFiles = File::getRecentFiles();
+  if (_recents){
+    _subFiles = File::getRecentFiles();
   }
   else {
-    subFiles = this->f->getSubFiles();
+    _subFiles = this->_f->getSubFiles();
   }
 
 
   Gtk::TreeModel::Row row;
-  for (int i = 0; i < subFiles->size(); i++)
+  for (int i = 0; i < _subFiles->size(); i++)
   {
-    File f = subFiles->at(i);
-    f.subscribeObserver(&fileObs);
+    File f = _subFiles->at(i);
+    f.subscribeObserver(&_fileObs);
     if(!f.isHidden()){
-      row = *(refTreeModel->append());
+      row = *(_refTreeModel->append());
       row[Columns.col_id]=i;
       row[Columns.col_ico]= f.getFileType().getIcon();
       row[Columns.col_name] = f.getName();
@@ -446,19 +438,19 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path, 
   }
 
   auto cell = Gtk::manage(new Gtk::CellRendererPixbuf);
-  treeView.append_column("   ", *cell);
-  auto pColumn = treeView.get_column(0);
+  _treeView.append_column("   ", *cell);
+  auto pColumn = _treeView.get_column(0);
   if(pColumn)
   {
     Glib::ustring str = "icon_name";
     pColumn->add_attribute(*cell,str,Columns.col_ico);
   }
-  treeView.append_column("Nom", Columns.col_name);
-  treeView.append_column("Taille", Columns.col_number);
+  _treeView.append_column("Nom", Columns.col_name);
+  _treeView.append_column("Taille", Columns.col_number);
 
   for(guint i = 0; i < 2; i++)
   {
-    auto column = treeView.get_column(i);
+    auto column = _treeView.get_column(i);
     column->set_reorderable();
   }
 
@@ -466,60 +458,60 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path, 
   auto item = Gtk::manage(new Gtk::MenuItem("Créer un nouveau fichier", true));
   item->signal_activate().connect_notify(
      sigc::mem_fun(*this, &FileTreeView::on_create_file) );
-  menuPopup.append(*item);
+  _menuPopup.append(*item);
 
   item = Gtk::manage(new Gtk::MenuItem("Créer un nouveau dossier", true));
   item->signal_activate().connect_notify(
      sigc::mem_fun(*this, &FileTreeView::on_create_directory) );
-  menuPopup.append(*item);
+  _menuPopup.append(*item);
 
   item = Gtk::manage(new Gtk::SeparatorMenuItem());
-  menuPopup.append(*item);
+  _menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Couper", true));
  item->signal_activate().connect_notify(
     sigc::mem_fun(*this, &FileTreeView::on_cut) );
- menuPopup.append(*item);
+ _menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Copier", true));
  item->signal_activate().connect_notify(
     sigc::mem_fun(*this, &FileTreeView::on_copy) );
- menuPopup.append(*item);
+ _menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Coller ici", true));
  item->signal_activate().connect_notify(
     sigc::mem_fun(*this, &FileTreeView::on_paste) );
- menuPopup.append(*item);
+ _menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::SeparatorMenuItem());
- menuPopup.append(*item);
+ _menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Renommer", true));
  item->signal_activate().connect_notify(
     sigc::mem_fun(*this, &FileTreeView::on_rename) );
- menuPopup.append(*item);
+ _menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Supprimer", true));
  item->signal_activate().connect_notify(
     sigc::mem_fun(*this, &FileTreeView::on_delete_file) );
- menuPopup.append(*item);
+ _menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::SeparatorMenuItem());
- menuPopup.append(*item);
+_menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Ouvrir un terminal ici", true));
  item->signal_activate().connect_notify(
     sigc::mem_fun(*this, &FileTreeView::on_terminal) );
- menuPopup.append(*item);
+ _menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::SeparatorMenuItem());
- menuPopup.append(*item);
+ _menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::MenuItem("Ajouter/supprimer des favoris", true));
- menuPopup.append(*item);
+ _menuPopup.append(*item);
 
  item = Gtk::manage(new Gtk::SeparatorMenuItem());
- menuPopup.append(*item);
+ _menuPopup.append(*item);
 
  Gtk::Menu* sortMenu = Gtk::manage(new Gtk::Menu());
 
@@ -553,24 +545,24 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path, 
 
  item = Gtk::manage(new Gtk::MenuItem("Trier", true));
  item->set_submenu(*sortMenu);
- menuPopup.append(*item);
+ _menuPopup.append(*item);
 
-  menuPopup.show_all();
-  treeView.signal_button_press_event().connect_notify(sigc::mem_fun(*this, &FileTreeView::on_button_press), false);
-  treeView.set_activate_on_single_click(true);
-  treeView.signal_row_activated().connect_notify(sigc::mem_fun(*this, &FileTreeView::on_button_press_actu));
+  _menuPopup.show_all();
+  _treeView.signal_button_press_event().connect_notify(sigc::mem_fun(*this, &FileTreeView::on_button_press), false);
+  _treeView.set_activate_on_single_click(true);
+  _treeView.signal_row_activated().connect_notify(sigc::mem_fun(*this, &FileTreeView::on_button_press_actu));
 
-  this->VBox.show_all_children();
+  this->_VBox.show_all_children();
 }
 
 FileTreeView::~FileTreeView()
 {
-  delete this->f;
+  delete this->_f;
 }
 
 Gtk::Box* FileTreeView::getVbox(){
 
-  return &this->VBox;
+  return &this->_VBox;
 }
 
 void OngletFileObserver::fileUpdated(khanar::File *file)
@@ -579,15 +571,15 @@ void OngletFileObserver::fileUpdated(khanar::File *file)
 }
 
 string FileTreeView::getPath(){
-  if(!recents){
-    return this->f->getAbsolutePath();
+  if(!_recents){
+    return this->_f->getAbsolutePath();
   }
   return ("Fichiers récents");
 }
 
 string FileTreeView::getName(){
-  if(!recents){
-    return this->f->getName();
+  if(!_recents){
+    return this->_f->getName();
   }
   return ("Fichiers récents");
 }

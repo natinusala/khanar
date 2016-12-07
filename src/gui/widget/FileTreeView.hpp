@@ -9,7 +9,12 @@
  namespace khanar{
 
    class FileTreeView;
-
+   /**
+   * \class OngletFileObserver
+   *
+   * Interface du pattern Observer pour observer la mise à jour des fichiers
+   * Ici, le sujet est FileTreeView
+   */
    class OngletFileObserver : public FileObserver
    {
    private:
@@ -22,46 +27,56 @@
      void fileUpdated(File* file) override;
    };
 
+   /**
+   * \class FileTreeView
+   *
+   * Implémentation concrète de ContentWidget. Correspond a une vue arborescente d'une directory.
+   *
+   */
 class FileTreeView : public ContentWidget
 {
 public:
+  /**
+  * \brief Constructeur prenant une fenetre Gtk, une fenetre native, un chemin et un booleen en paramètres
+  * \param[in] win la fenêtre Gtk à partir de laquelle on créé les menus
+  * \param[in] wind la fenetre khanar a partir de laquelle on met à jour la vue
+  * \param[in] path le chemin versle dossier à afficher
+  * \param[in] recents Booléen permettant de savoir si il faut afficher le dossier courant ou les fichiers récents
+  */
   FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path, bool recents);
-  ~FileTreeView();
-  Gtk::Box* getVbox();
-  void reset();
-  void reset(string filepath);
-  void search(string search);
-  string getPath();
-  string getName();
-protected:
-  void on_button_quit();
-  void on_button_press(GdkEventButton* button_event);
-  void on_button_press_actu(const Gtk::TreeModel::Path& path,Gtk::TreeViewColumn* c);
+  ~FileTreeView();///Destructeur de la classe
+  Gtk::Box* getVbox(); /// Méthode de récupération du widget Gtk principal du FileTreeView
+  void reset(); ///Mise à jour de la vue
+  void reset(string filepath); ///Mise à jour de la vue en changeant le sujet File
+  void search(string search); ///Mise à jour de la vue en fonction d'un critère de recherche
+  string getPath(); ///Retourne le chemin absolu du fichier courant
+  string getName(); /// Retourne le nom du fichier courant
+private:
+  void on_button_quit(); ///Handler du clic sur quitter
+  void on_button_press(GdkEventButton* button_event); /// Handler du clic sur le TreeView
+  void on_button_press_actu(const Gtk::TreeModel::Path& path,Gtk::TreeViewColumn* c); /// Handler du clic sur le bouton d'actualisation
+  void on_terminal(); ///Handler de l'ouverture d'un terminal
+  void on_create_file(); /// Handler de la création d'un fichier
+  void on_delete_file(); /// Handler de la supression d'un fichier
+  void on_create_directory(); /// Handler de la création d'un dossier
+  void on_rename(); /// Handler du changement de nom d'un fichier/dossier
+  void on_cut(); /// Handler de coupe
+  void on_copy(); /// Handler de copie
+  void on_paste(); /// Handler de collage
+  void on_sort_ascending(); /// Modifie le tri vers la manière ascendante
+  void on_sort_descending(); /// Modifie le tri vers la manière descendante
+  void on_sort_name(); /// Modifie le tri vers un tri nominal
+  void on_sort_size(); /// Modifie le tri vers un tri en fonction de la taille
+  void on_sort_date(); /// Modifie le tri vers un tri en fonction de la date
 
-  void on_terminal();
-  void on_create_file();
-  void on_delete_file();
-  void on_create_directory();
-  void on_rename();
-  void on_cut();
-  void on_copy();
-  void on_paste();
-
-  void on_sort_ascending();
-  void on_sort_descending();
-  void on_sort_name();
-  void on_sort_size();
-  void on_sort_date();
-
-  OngletFileObserver fileObs = OngletFileObserver(this);
-
-  Gtk::Window* parentWindow;
-  khanar::Window* wind;
-  Gtk::Menu menuPopup;
-  File* f;
-  vector<File>* subFiles;
-  vector<File>* subFilesSearch;
-  bool recents;
+  OngletFileObserver _fileObs = OngletFileObserver(this);
+  Gtk::Window* _parentWindow;
+  khanar::Window* _wind;
+  Gtk::Menu _menuPopup;
+  File* _f;
+  vector<File>* _subFiles;
+  vector<File>* _subFilesSearch;
+  bool _recents;
 
 
   //Tree model columns:
@@ -81,11 +96,11 @@ protected:
   ModelColumns Columns;
 
   //Child widgets:
-  Gtk::Box VBox;
+  Gtk::Box _VBox;
 
-  Gtk::ScrolledWindow scrolledWindow;
-  Gtk::TreeView treeView;
-  Glib::RefPtr<Gtk::ListStore> refTreeModel;
+  Gtk::ScrolledWindow _scrolledWindow;
+  Gtk::TreeView _treeView;
+  Glib::RefPtr<Gtk::ListStore> _refTreeModel;
 };
 }
 #endif
