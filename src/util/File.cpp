@@ -296,6 +296,9 @@ namespace khanar
           absolutepath = string(exp_result.we_wordv[0]);
         }
 
+        //Résolution des URI
+        absolutepath = urlDecode(absolutepath);
+
         //Construction
         size_t pos = absolutepath.find_last_of("/");
         this->_name = absolutepath.substr(pos+1);
