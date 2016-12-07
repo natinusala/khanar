@@ -7,6 +7,18 @@ using namespace khanar;
 
 //TODO Couper/copier avec this->clipboard et this->shouldDeleteClipboard
 
+
+void FileTreeView::on_button_press_actu(const Gtk::TreeModel::Path& path,Gtk::TreeViewColumn* c)
+{
+      Gtk::TreeModel::iterator iter = treeView.get_selection()->get_selected();
+      int id = (*iter)[Columns.col_id];
+      if (! subFiles->at(id).isDirectory()){
+          this->wind->updatePropBar(subFiles->at(id));
+      }
+
+}
+
+
 void FileTreeView::on_button_press(GdkEventButton* button_event)
 {
   if((button_event->type == 4) && (button_event->button == 3))
@@ -24,9 +36,10 @@ void FileTreeView::on_button_press(GdkEventButton* button_event)
       subFiles->at(id).openFile();
 
     }
+  }
 
   }
-}
+
 
 void FileTreeView::on_sort_ascending()
 {
@@ -391,6 +404,9 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
 
   menuPopup.show_all();
   treeView.signal_button_press_event().connect_notify(sigc::mem_fun(*this, &FileTreeView::on_button_press), false);
+  treeView.set_activate_on_single_click(true);
+  treeView.signal_row_activated().connect_notify(sigc::mem_fun(*this, &FileTreeView::on_button_press_actu));
+
   this->VBox.show_all_children();
 }
 

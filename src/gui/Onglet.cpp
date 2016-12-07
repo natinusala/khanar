@@ -29,12 +29,25 @@ namespace khanar{
 
         }
 
+
+        void Onglet::on_button_clicked_navig(GdkEventButton* button_event)
+            {
+              string path = this->entry->get_text();
+              File f = File(path);
+              if(f.isDirectory()){
+                this->_wind->actualiser(path);
+              }
+
+            }
+
     Gtk::Box* Onglet::getContent(Gtk::Widget *widget){
 
         Gtk::Box* add = nullptr;
         Gtk::Box* container = nullptr;
         Gtk::Button* actualiser = nullptr;
         Gtk::Button* retour = nullptr;
+        Gtk::Button* navig = nullptr;
+        this->entry = nullptr;
 
         this->_builder->get_widget("box3",container);
 
@@ -44,8 +57,16 @@ namespace khanar{
 
         this->_builder->get_widget("precedent", retour);
 
+        this->_builder->get_widget("navig", navig);
+
+        this->_builder->get_widget("entry1", this->entry);
+
+        this->entry->set_activates_default(true);
+        navig->set_can_default(true);
         actualiser->signal_clicked().connect_notify(sigc::mem_fun(*this, &Onglet::on_button_clicked_refresh));
         retour->signal_clicked().connect_notify(sigc::mem_fun(*this, &Onglet::on_button_clicked_return));
+        //navig->signal_clicked().connect_notify(sigc::mem_fun(*this, &Onglet::on_button_clicked_navig));
+        //navig->signal_key_press_event().connect_notify(sigc::mem_fun(*this, &Onglet::on_button_clicked_navig));
         widget->show_all();
 
         container->pack_start(*widget);
@@ -72,7 +93,7 @@ namespace khanar{
     this->_builder->get_widget("groupecombo",box);
     nom->set_text(f.getName());
     type->set_text(f.getFileType().getName());
-    taill->set_text(to_string(f.getSize()/1000)+"ko");
+    taill->set_text(f.getFormattedSize());
     char buffer [50];
     time_t rawtime = (time_t) f.getLastAccessTime();
     struct tm * timeinfo;

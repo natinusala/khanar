@@ -37,6 +37,12 @@ namespace khanar
     this->_shouldDeleteClipboard = shouldDeleteClipboard;
   }
 
+  void Window::updatePropBar(khanar::File file)
+  {
+    int page =  this->_notebook->get_current_page();
+    this->_onglets.at(page).setPropBar(file);
+  }
+
   File Window::getClipboard()
   {
     return this->_clipboard;
@@ -69,9 +75,9 @@ namespace khanar
 
     this->_notebook->remove_page(-1);
     this->_notebook->append_page(*add,*tmp);
-    labelOngletPlus();
-    this->_notebook->set_current_page(this->_onglets.size()-1);
     actualiser();
+    labelOngletPlus();
+
 
   }
   void Window::addOnglet(string filepath, string title){
@@ -91,10 +97,10 @@ namespace khanar
 
       this->_notebook->remove_page(-1);
       this->_notebook->append_page(*add,*tmp);
-      labelOngletPlus();
-      this->_notebook->set_current_page(this->_onglets.size()-1);
       actualiser();
-      //onglet.setPropBar(File("/home/killy/Téléchargements/cunei.ttf"));
+      labelOngletPlus();
+
+
 
   }
 
