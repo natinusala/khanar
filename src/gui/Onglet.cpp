@@ -12,6 +12,11 @@ namespace khanar{
         this->_path = path;
         this->_name = name;
         this->_wind = wind;
+
+        Gtk::Box* prop = nullptr;
+        this->_builder->get_widget("proprietes", prop);
+
+        prop->hide();
     }
 
     void Onglet::on_button_clicked_refresh()
@@ -75,8 +80,8 @@ namespace khanar{
   }
 
 
-  void Onglet::setPropBar(File f){
-
+  void Onglet::setPropBar(File f)
+  {
     Gtk::Label* nom = nullptr;
     Gtk::Label* type = nullptr;
     Gtk::Label* taill = nullptr;
@@ -84,13 +89,23 @@ namespace khanar{
     Gtk::Label* modifie = nullptr;
     Gtk::Label* nomProprio = nullptr;
     Gtk::ComboBoxText* box = nullptr;
-    this->_builder->get_widget("nom",nom);
-    this->_builder->get_widget("type",type);
-    this->_builder->get_widget("taill",taill);
-    this->_builder->get_widget("acces",acces);
-    this->_builder->get_widget("modifie",modifie);
-    this->_builder->get_widget("nomProprietaire",nomProprio);
-    this->_builder->get_widget("groupecombo",box);
+    Gtk::Image* icon = nullptr;
+
+
+    Gtk::Box* prop = nullptr;
+    this->_builder->get_widget("proprietes", prop);
+
+    prop->show();
+
+    this->_builder->get_widget("nom", nom);
+    this->_builder->get_widget("type", type);
+    this->_builder->get_widget("taill", taill);
+    this->_builder->get_widget("acces", acces);
+    this->_builder->get_widget("modifie", modifie);
+    this->_builder->get_widget("nomProprietaire", nomProprio);
+    this->_builder->get_widget("groupecombo", box);
+    this->_builder->get_widget("Icone", icon);
+
     nom->set_text(f.getName());
     type->set_text(f.getFileType().getName());
     taill->set_text(f.getFormattedSize());
@@ -114,7 +129,9 @@ namespace khanar{
     strcat(result,buffer);
     modifie->set_text(result);
 
+    icon->set_from_icon_name(f.getFileType().getIcon(), Gtk::BuiltinIconSize::ICON_SIZE_DIALOG);
 
+    nomProprio->set_text(File::getUIDName(f.getUID()));
   }
 
   string Onglet::getPath(){
