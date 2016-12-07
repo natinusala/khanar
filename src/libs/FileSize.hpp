@@ -6,7 +6,6 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <sys/stat.h> /* for stat() function */
 
 using namespace std;
 
