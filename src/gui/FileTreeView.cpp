@@ -265,7 +265,7 @@ void FileTreeView::on_create_file()
 
 void FileTreeView::reset(){
         refTreeModel->clear();
-        subFiles = this->f->getSubFiles();
+        subFiles = this->f->getSubFiles(true);
 
 
       Gtk::TreeModel::Row row;
@@ -292,7 +292,7 @@ void FileTreeView::reset(){
 void FileTreeView::reset(string filepath){
         refTreeModel->clear();
         this->f = new File(filepath);
-        subFiles = this->f->getSubFiles();
+        subFiles = this->f->getSubFiles(true);
 
 
       Gtk::TreeModel::Row row;

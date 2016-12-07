@@ -36,7 +36,7 @@ namespace khanar
     class FileObserver
     {
       public:
-        virtual void fileUpdated(File* file) = 0;
+        virtual void fileUpdated(File* file) = 0; ///< Méthode exécutée par le sujet lorsqu'il est modifié
     };
 
     /**
@@ -51,10 +51,15 @@ namespace khanar
         string _icon;
 
       public:
+        /**
+        * \brief Constructeur
+        * \param[in] n le nom
+        * \param[in] i l'icône
+        */
         FileType(string n, string i);
 
-        string getName();
-        string getIcon();
+        string getName(); ///< Renvoie le nom
+        string getIcon(); ///< Renvoie l'icône
 
     };
 

@@ -47,6 +47,13 @@ namespace khanar
 
 
     public:
+      /**
+      * \brief Constructeur
+      * \param[in] path le dossier à ouvrir
+      * \param[in] name le nom de l'onglet
+      * \param[in] wind la fenêtre parent de l'onglet
+      * \param[in] win la fenêtre parent Gtk
+      */
       Onglet(string path, string name, khanar::Window* wind, Gtk::Window*& win);
       void actualiser();
       void actualiser(string filepath);

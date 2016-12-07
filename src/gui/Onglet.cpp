@@ -20,7 +20,6 @@ namespace khanar{
         this->_builder->get_widget("proprietes", prop);
 
         prop->hide();
-
     }
 
     void Onglet::on_button_clicked_refresh()
