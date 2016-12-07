@@ -260,7 +260,7 @@ namespace khanar
         {
           file << data;
           file.close();
-          this->updateStat();
+          this->updateStat(true);
         }
       }
 
@@ -293,7 +293,17 @@ namespace khanar
         wordexp_t exp_result;
         if (wordexp(absolutepath.c_str(), &exp_result, 0) == 0)
         {
-          absolutepath = string(exp_result.we_wordv[0]);
+          string newabsolutepath = "";
+          for (int i  = 0; i < exp_result.we_wordc; i++)
+          {
+            if (i != 0)
+            {
+              newabsolutepath += " ";
+            }
+
+            newabsolutepath += string(exp_result.we_wordv[i]);
+          }
+          absolutepath = newabsolutepath;
         }
 
         //Résolution des URI
@@ -317,26 +327,27 @@ namespace khanar
         }
 
         this->_absolutePath = string(absolutepath);
-        this->updateStat();
+        this->updateStat(false);
       }
 
-      void File::updateStat()
+      void File::updateStat(bool notify)
       {
         this->_fileStat = (const struct stat) {0};
         this->_exists = stat(this->getAbsolutePath().c_str(), &this->_fileStat) == 0;
-        this->notifyObservers();
+        if (notify)
+          this->notifyObservers();
       }
 
       void File::setUID(uid_t const& uid)
       {
         chown(this->_absolutePath.c_str(), uid, -1);
-        this->updateStat();
+        this->updateStat(true);
       }
 
       void File::setGID(gid_t const& gid)
       {
         chown(this->_absolutePath.c_str(), -1, gid);
-        this->updateStat();
+        this->updateStat(true);
       }
 
       vector<File> File::search(string expression)
@@ -403,7 +414,7 @@ namespace khanar
         fs.open(this->_absolutePath, ios::out);
         fs.close();
 
-        this->updateStat();
+        this->updateStat(false);
 
         if (parent != nullptr)
         {
@@ -422,7 +433,7 @@ namespace khanar
 
         mkdir(this->getAbsolutePath().c_str(), mode);
 
-        this->updateStat();
+        this->updateStat(false);
 
         if (parent != nullptr)
         {
@@ -467,7 +478,7 @@ namespace khanar
 
       void File::setName(string newname)
       {
-        move(this->_parentFolderAbsolutePath + '/' + newname);
+        system(string("mv \"" + this->_parentFolderAbsolutePath + '/' + getName() + "\" \"" + this->_parentFolderAbsolutePath + '/' + newname + "\"").c_str());
       }
 
       void File::removeFile()
@@ -482,20 +493,24 @@ namespace khanar
         }
 
         remove(this->_absolutePath.c_str());
-        this->updateStat();
+        this->updateStat(true);
         this->notifyObservers();
       }
 
-      File File::copy(string newpath) const
+      File File::copy(string newpath, File* parent) const
       {
         system(string("cp -R \"" + this->_absolutePath + "\" \"" + newpath + "\"").c_str());
+        if (parent != nullptr)
+          parent->notifyObservers();
         return File(newpath);
       }
 
-      void File::move(string newpath)
+      void File::move(string newpath, File* parent)
       {
         rename(this->_absolutePath.c_str(), newpath.c_str());
         updateAttributes(newpath);
+        if (parent != nullptr)
+          parent->notifyObservers();
       }
 
       void File::setPermission(enum Permission const& perm, bool value)
@@ -547,7 +562,7 @@ namespace khanar
           chmod(this->_absolutePath.c_str(), this->_fileStat.st_mode & ~toSet);
         }
 
-        this->updateStat();
+        this->updateStat(true);
       }
 
       bool File::getPermission(enum Permission const& perm) const
@@ -658,7 +673,7 @@ namespace khanar
       {
         this->_sortStrategy = strategy;
         this->_sortDescending = descending;
-        this->sortSubFiles();
+        this->sortSubFiles(true);
       }
 
       bool File::isDirectory() const
@@ -694,7 +709,7 @@ namespace khanar
         {
           if (strcmp(fichier->d_name, ".") != 0 && strcmp(fichier->d_name, ".."))
           {
-            list.push_back(File(this->_absolutePath + "/" + string(fichier->d_name)));
+            list.push_back(File(this, string(fichier->d_name)));
           }
           fichier = readdir(dir);
         }
@@ -705,10 +720,10 @@ namespace khanar
         this->_subFiles = list;
         this->_subFilesCreated = true;
 
-        sortSubFiles();
+        sortSubFiles(false);
       }
 
-      void File::sortSubFiles()
+      void File::sortSubFiles(bool notify)
       {
         if (!this->isDirectory() || !this->_subFilesCreated)
         {
@@ -724,7 +739,8 @@ namespace khanar
           sort(_subFiles.begin(), _subFiles.end(), this->_sortStrategy);
         }
 
-        this->notifyObservers();
+        if (notify)
+          this->notifyObservers();
       }
 
       string File::getExtension() const

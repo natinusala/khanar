@@ -7,6 +7,20 @@
 
  namespace khanar{
 
+   class FileTreeView;
+
+   class OngletFileObserver : public FileObserver
+   {
+   private:
+     FileTreeView* _fileTreeView;
+
+   public:
+     OngletFileObserver(FileTreeView* fileTreeView) : _fileTreeView(fileTreeView)
+     {}
+
+     void fileUpdated(File* file) override;
+   };
+
 class FileTreeView
 {
 public:
@@ -34,6 +48,8 @@ protected:
   void on_sort_name();
   void on_sort_size();
   void on_sort_date();
+
+  OngletFileObserver fileObs = OngletFileObserver(this);
 
   Gtk::Window* parentWindow;
   khanar::Window* wind;

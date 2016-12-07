@@ -164,13 +164,13 @@ namespace khanar
 
            bool _sortDescending;
 
-           void updateStat();
+           void updateStat(bool notify);
            void updateSubFiles();
-           void sortSubFiles();
+           void sortSubFiles(bool notify);
 
            void updateAttributes(string absolutepath);
 
-           vector<FileObserver*> _observers;
+           vector<FileObserver*> _observers = vector<FileObserver*>();
 
            static void updateFavorites(vector<File> newFavorites);
 
@@ -213,8 +213,8 @@ namespace khanar
            bool isHidden() const; ///< Renvoie si le fichier est caché ou non (commence par un '.')
 
            void setName(string newname); ///< Renomme le fichier (le nom rename n'a pas pu être utilisé à cause d'un conflit avec le rename de cstdio)
-           void move(string newpath); ///< Déplace/renomme le fichier
-           File copy(string newpath) const; ///< Copie le fichier dans newpath et renvoie son objet File
+           void move(string newpath, File* parent); ///< Déplace/renomme le fichier
+           File copy(string newpath, File* parent) const; ///< Copie le fichier dans newpath et renvoie son objet File
            void removeFile(); ///< Supprime le fichier/dossier (récursivement) (le nom remove n'a pas pu être utilisé à cause d'un conflit avec le rename de cstdio)
            void createNewFile(mode_t mode, File* parent); ///< Si le fichier n'existe pas, le crée (fichier vide) ainsi que son chemin
            void createNewDirectory(mode_t mode, File* parent); ///< Si le dossier n'existe pas, le crée ainsi que son chemin

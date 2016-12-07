@@ -41,13 +41,11 @@ void FileTreeView::on_button_press(GdkEventButton* button_event)
 void FileTreeView::on_sort_ascending()
 {
   this->f->setSortStrategy(this->f->getSortStrategy(), false);
-  //TODO Mise à jour (l'observateur sur f s'en charge)
 }
 
 void FileTreeView::on_sort_descending()
 {
   this->f->setSortStrategy(this->f->getSortStrategy(), true);
-  //TODO Mise à jour (l'observateur sur f s'en charge)
 }
 
 void FileTreeView::on_sort_name()
@@ -81,18 +79,18 @@ void FileTreeView::on_paste()
     }
     else
     {
-      toPaste.move(this->f->getAbsolutePath() + "/" + toPaste.getName());
+      toPaste.move(this->f->getAbsolutePath() + "/" + toPaste.getName(), this->f);
     }
   }
   else
   {
     if (this->f->getAbsolutePath() == toPasteParent.getAbsolutePath())
     {
-      toPaste.copy(this->f->getAbsolutePath() + "/" + toPaste.getName() + " (copie)");
+      toPaste.copy(this->f->getAbsolutePath() + "/" + toPaste.getName() + " (copie)", this->f);
     }
     else
     {
-      toPaste.copy(this->f->getAbsolutePath() + "/" + toPaste.getName());
+      toPaste.copy(this->f->getAbsolutePath() + "/" + toPaste.getName(), this->f);
     }
 
     //TODO Mettre à jour (l'observateur le fait)
@@ -264,23 +262,41 @@ void FileTreeView::on_create_file()
 }
 
 void FileTreeView::reset(){
+  if (this->f != nullptr)
+    this->f->unsubscribeObserver(&fileObs);
+
+  if (this->subFiles != nullptr)
+  {
+    for (int i = 0; i < this->subFiles->size(); i++)
+    {
+      this->subFiles->at(i).unsubscribeObserver(&fileObs);
+    }
+  }
         refTreeModel->clear();
         subFiles = this->f->getSubFiles(true);
 
 
+        for (int i = 0; i < this->subFiles->size(); i++)
+        {
+          this->subFiles->at(i).subscribeObserver(&fileObs);
+        }
+
       Gtk::TreeModel::Row row;
       for (int i = 0; i < subFiles->size(); i++)
       {
-        File f = (*subFiles)[i];
+        File f = subFiles->at(i);
         if(!f.isHidden()){
           row = *(refTreeModel->append());
           row[Columns.col_id]=i;
           row[Columns.col_ico]= f.getFileType().getIcon();
           row[Columns.col_name] = f.getName();
           string size =f.getFormattedSize();
-          if (size =="n/a"){
+          if (size =="n/a")
+          {
             row[Columns.col_number] = " ";
-          }else{
+          }
+          else
+          {
             row[Columns.col_number] = size;
           }
         }
@@ -290,9 +306,33 @@ void FileTreeView::reset(){
 }
 
 void FileTreeView::reset(string filepath){
+  if (this->f != nullptr)
+    this->f->unsubscribeObserver(&fileObs);
+
+  if (this->subFiles != nullptr)
+  {
+    for (int i = 0; i < this->subFiles->size(); i++)
+    {
+      this->subFiles->at(i).unsubscribeObserver(&fileObs);
+    }
+  }
         refTreeModel->clear();
+        FileSortStrategy oldStrategy = this->f->getSortStrategy();
+        bool oldOrder = this->f->isSortStrategyDescending();
+
         this->f = new File(filepath);
+
+        this->f->subscribeObserver(&fileObs);
+
+        this->f->setSortStrategy(oldStrategy, oldOrder);
+
         subFiles = this->f->getSubFiles(true);
+
+        for (int i = 0; i < this->subFiles->size(); i++)
+          {
+            this->subFiles->at(i).subscribeObserver(&fileObs);
+          }
+
 
 
       Gtk::TreeModel::Row row;
@@ -336,10 +376,24 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
   refTreeModel = Gtk::ListStore::create(Columns);
   treeView.set_model(refTreeModel);
 
+  if (this->f != nullptr)
+    this->f->unsubscribeObserver(&fileObs);
+
+  if (this->subFiles != nullptr)
+  {
+    for (int i = 0; i < subFiles->size(); i++)
+    {
+      File f = subFiles->at(i);
+      f.unsubscribeObserver(&fileObs);
+    }
+  }
+
+
   this->f = new File(path);
+  f->subscribeObserver(&fileObs);
 
   if (path ==""){
-    subFiles = this->f->getRecentFiles();
+    subFiles = File::getRecentFiles();
   }
   else {
     subFiles = this->f->getSubFiles();
@@ -349,7 +403,8 @@ FileTreeView::FileTreeView(Gtk::Window*& win,khanar::Window* wind, string path)
   Gtk::TreeModel::Row row;
   for (int i = 0; i < subFiles->size(); i++)
   {
-    File f = (*subFiles)[i];
+    File f = subFiles->at(i);
+    f.subscribeObserver(&fileObs);
     if(!f.isHidden()){
       row = *(refTreeModel->append());
       row[Columns.col_id]=i;
@@ -490,4 +545,9 @@ FileTreeView::~FileTreeView()
 Gtk::Box* FileTreeView::getVbox(){
 
   return &this->VBox;
+}
+
+void OngletFileObserver::fileUpdated(khanar::File *file)
+{
+  _fileTreeView->reset();
 }
